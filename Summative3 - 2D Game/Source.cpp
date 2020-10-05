@@ -17,7 +17,7 @@ int main() {
 
 	window.setFramerateLimit(60);
 
-	float step = 1 / 60;
+	float step = (1.0f / 60.0f);
 	float stepTime = 0;
 	bool drawn = false;
 	sf::Clock clock;
@@ -59,7 +59,7 @@ int main() {
 
 		//<start>Stuff needed for EasySFML
 		CObjectController::UpdateObjects();
-		for each (sf::Drawable * Draw in CWindowUtilities::ToDrawList) //Draw every object on the draw list
+		for (sf::Drawable * Draw : CWindowUtilities::ToDrawList) //Draw every object on the draw list
 		{
 			window.draw(*Draw);
 		}
