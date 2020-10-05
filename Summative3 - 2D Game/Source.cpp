@@ -1,5 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include "SFML/EasySFML.h"
 
 #include <iostream>
 #include <windows.h>
@@ -7,7 +6,7 @@
 #include <string>
 #include <vector>
 
-
+#include "EasySFML.h"
 
 int FixedUpdate();
 
@@ -72,5 +71,5 @@ int FixedUpdate()
 
 void Draw(sf::RenderWindow& mainWindow)
 {
-
+	
 }
