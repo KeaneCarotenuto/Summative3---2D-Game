@@ -1,10 +1,13 @@
 #include <SFML/Graphics.hpp>
+#include "SFML/EasySFML.h"
 
 #include <iostream>
 #include <windows.h>
 #include <cmath>
 #include <string>
 #include <vector>
+
+
 
 int FixedUpdate();
 
