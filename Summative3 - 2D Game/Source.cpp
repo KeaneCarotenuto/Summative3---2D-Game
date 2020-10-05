@@ -55,6 +55,16 @@ int main() {
 				window.close();
 			}
 		}
+
+
+		//<start>Stuff needed for EasySFML
+		CObjectController::UpdateObjects();
+		for each (sf::Drawable * Draw in CWindowUtilities::ToDrawList) //Draw every object on the draw list
+		{
+			window.draw(*Draw);
+		}
+		CWindowUtilities::ToDrawList.clear(); //Then empty it so its ready for the next frame
+		//<end>
 	}
 
 	return 0;
