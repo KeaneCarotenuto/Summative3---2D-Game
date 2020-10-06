@@ -78,15 +78,15 @@ void WorldLayer::populateTileMaps()
 			
 			val = Noise.GetValue(i*(2.0f/50.0f), j * (2.0f / 50.0f), 0.5);
 			val -= (0.1 * ((abs(25 - i) + abs(25 - j))-20));
-			if (val < -0.8)
+			if (val < -0.9)
 			{
 				map[i][j] = 0;
 			}
-			else if (val < -0.5)
+			else if (val < -0.7)
 			{
 				map[i][j] = 1;
 			}
-			else if (val < -0.2)
+			else if (val < -0.4)
 			{
 				map[i][j] = 2;
 			}
@@ -98,7 +98,7 @@ void WorldLayer::populateTileMaps()
 			{
 				map[i][j] = 4;
 			}
-			else if (val < 1)
+			else if (val < 1.3)
 			{
 				map[i][j] = 5;
 			}
@@ -181,7 +181,7 @@ void WorldLayer::resetLightMap()
 	int iGlobalLightLevel;
 	if (Altitude > 0)
 	{
-		iGlobalLightLevel = 5;
+		iGlobalLightLevel = 0;
 	}
 	else
 	{
