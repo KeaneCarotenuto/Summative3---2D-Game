@@ -5,6 +5,7 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <time.h>
 
 #include "EasySFML.h"
 #include "WorldLayer.h"
@@ -15,7 +16,7 @@ CPlayer player({ 100,100 }, {20,30}, sf::Color::Green);
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "2D Game");
-
+	srand(time(0));
 	window.setFramerateLimit(60);
 
 	WorldLayer* world = new WorldLayer();
