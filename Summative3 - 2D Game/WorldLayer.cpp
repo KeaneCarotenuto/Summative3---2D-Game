@@ -147,7 +147,7 @@ void WorldLayer::resetLightMap()
 	int iGlobalLightLevel;
 	if (Altitude > 0)
 	{
-		iGlobalLightLevel = 5;
+		iGlobalLightLevel = 0;
 	}
 	else
 	{
@@ -169,85 +169,117 @@ void WorldLayer::resetLightMap()
 	}
 }
 
-void WorldLayer::renderLightMap()
+void WorldLayer::renderLightMap(bool isCircular)
 {
-	
-	for (int x = 10; x > 0; x--)
-	{
-		for (int i = 0; i < 50; i++)
+	if (isCircular) {
+		int tempMap[50][50];
+
+		for (int x = 0; x < 50; x++) {
+			for (int y = 0; y < 50; y++) {
+
+				if (LightMap[x][y] > 0) {
+
+					tempMap[x][y] = LightMap[x][y];
+					for (int tx = 0; tx < 50; tx++) {
+						for (int ty = 0; ty < 50; ty++) {
+							int l = 10 - std::abs(std::sqrt((ty - y) * (ty - y) + (tx - x) * (tx - x)));
+							l = (l > 9 ? 9 : (l < 0 ? 0 : l));
+							tempMap[tx][ty] = (l > tempMap[tx][ty] ? l : tempMap[tx][ty]);
+						}
+					}
+
+				}
+
+			}
+		}
+
+		for (int x = 0; x < 50; x++) {
+			for (int y = 0; y < 50; y++) {
+				LightMap[x][y] = tempMap[x][y];
+			}
+		}
+	}
+	else {
+		for (int x = 10; x > 0; x--)
 		{
-			for (int j = 0; j < 50; j++)
+			for (int i = 0; i < 50; i++)
 			{
-				if (LightMap[i][j] == x && WallTilemap[i][j] == nullptr)
+				for (int j = 0; j < 50; j++)
 				{
-					if (i > 0)
+					if (LightMap[i][j] == x)
 					{
-						if (LightMap[i - 1][j] < x)
+						if (i > 0)
 						{
-							LightMap[i - 1][j] = x - 1;
+							if (LightMap[i - 1][j] < x)
+							{
+								LightMap[i - 1][j] = x - 1;
+							}
 						}
-					}
-					if (i < 49)
-					{
+						if (i < 49)
+						{
 
-						if (LightMap[i + 1][j] < x)
-						{
-							LightMap[i + 1][j] = x - 1;
-						}
+							if (LightMap[i + 1][j] < x)
+							{
+								LightMap[i + 1][j] = x - 1;
+							}
 
-					}
-					if (i > 0 && j > 0)
-					{
-						if (LightMap[i - 1][j - 1] < x)
-						{
-							LightMap[i - 1][j - 1] = x - 1;
 						}
-					}
-					if (i < 49 && j < 49)
-					{
-						if (LightMap[i + 1][j + 1] < x)
+						if (i > 0 && j > 0)
 						{
-							LightMap[i + 1][j + 1] = x - 1;
+							if (LightMap[i - 1][j - 1] < x)
+							{
+								LightMap[i - 1][j - 1] = x - 1;
+							}
 						}
-					}
-					if (j > 0)
-					{
+						if (i < 49 && j < 49)
+						{
+							if (LightMap[i + 1][j + 1] < x)
+							{
+								LightMap[i + 1][j + 1] = x - 1;
+							}
+						}
+						if (j > 0)
+						{
 
-						if (LightMap[i][j - 1] < x)
-						{
-							LightMap[i][j - 1] = x - 1;
-						}
-						
+							if (LightMap[i][j - 1] < x)
+							{
+								LightMap[i][j - 1] = x - 1;
+							}
 
 
-					}
-					if (j < 49)
-					{
 
-						if (LightMap[i][j + 1] < x)
-						{
-							LightMap[i][j + 1] = x - 1;
 						}
-						
-					}
-					if (i > 0 && j < 49)
-					{
-						if (LightMap[i - 1][j + 1] < x)
+						if (j < 49)
 						{
-							LightMap[i - 1][j + 1] = x - 1;
+
+							if (LightMap[i][j + 1] < x)
+							{
+								LightMap[i][j + 1] = x - 1;
+							}
+
 						}
-					}
-					if (i < 49 && j > 0)
-					{
-						if (LightMap[i + 1][j - 1] < x)
+						if (i > 0 && j < 49)
 						{
-							LightMap[i + 1][j - 1] = x - 1;
+							if (LightMap[i - 1][j + 1] < x)
+							{
+								LightMap[i - 1][j + 1] = x - 1;
+							}
+						}
+						if (i < 49 && j > 0)
+						{
+							if (LightMap[i + 1][j - 1] < x)
+							{
+								LightMap[i + 1][j - 1] = x - 1;
+							}
 						}
 					}
 				}
 			}
 		}
 	}
+	
+	
+	
 	
 	m_LightLevelTexture.loadFromFile("Resources/Test/LightLevels.png");
 	m_LightLevelVertices.setPrimitiveType(sf::Quads);
