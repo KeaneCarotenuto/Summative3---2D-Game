@@ -34,12 +34,12 @@ int main() {
 		}
 
 		world->resetLightMap();
-		world->addPointLight(22, 15, 9);
-		world->addPointLight(42, 35, 7);
-		world->addPointLight(15, 15, 10);
-		world->addPointLight(20, 15, 10);
-		world->addPointLight(30, 25, 10);
-		world->addPointLight(10, 35, 10);
+		world->addPointLight(10, 10, 10);
+		world->addPointLight(20, 20, 9);
+		world->addPointLight(30, 30, 10);
+		world->addPointLight(40, 40, 9);
+		world->addPointLight(50, 50, 10);
+		world->addPointLight(0, 0, 9);
 		//<start>Stuff needed for EasySFML
 		CObjectController::UpdateObjects();
 		

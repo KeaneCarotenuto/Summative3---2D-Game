@@ -147,7 +147,7 @@ void WorldLayer::resetLightMap()
 	int iGlobalLightLevel;
 	if (Altitude > 0)
 	{
-		iGlobalLightLevel = 0;
+		iGlobalLightLevel = 5;
 	}
 	else
 	{
@@ -178,7 +178,7 @@ void WorldLayer::renderLightMap()
 		{
 			for (int j = 0; j < 50; j++)
 			{
-				if (LightMap[i][j] == x)
+				if (LightMap[i][j] == x && WallTilemap[i][j] == nullptr)
 				{
 					if (i > 0)
 					{
