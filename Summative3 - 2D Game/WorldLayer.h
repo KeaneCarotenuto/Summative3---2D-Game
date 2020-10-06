@@ -4,6 +4,9 @@
 #include "EasySFML.h"
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <noise/module/perlin.h>
+#include <noise/noise.h>
+
 enum class TerrainType
 {
 	WATER,
