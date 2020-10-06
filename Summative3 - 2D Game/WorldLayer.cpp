@@ -119,7 +119,7 @@ void WorldLayer::populateTileMaps()
 
 void WorldLayer::renderTileMaps()
 {
-	m_TerrainTexture.loadFromFile("Resources/Test/tileset.png");
+	m_TerrainTexture.loadFromFile("Resources/Test/TerrainTileset.png");
 	m_TerrainVertices.setPrimitiveType(sf::Quads);
 	m_TerrainVertices.resize(50 * 50 * 4);
 
