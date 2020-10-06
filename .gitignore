@@ -349,3 +349,5 @@ MigrationBackup/
 *.tlog
 
 *.idb
+
+*.exe
