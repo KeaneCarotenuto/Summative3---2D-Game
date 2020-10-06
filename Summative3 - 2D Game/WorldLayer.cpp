@@ -342,7 +342,14 @@ void WorldLayer::renderLightMap(bool isCircular)
 
 void WorldLayer::addPointLight(int _X, int _Y, int _intensity)
 {
-	LightMap[_X][_Y] = _intensity;
+	if (WallTilemap[_X][_Y] == nullptr)
+	{
+		LightMap[_X][_Y] = _intensity;
+	}
+	else
+	{
+		LightMap[_X][_Y] = 0;
+	}
 }
 
 void WorldLayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
