@@ -6,18 +6,19 @@
 #include <SFML/Graphics.hpp>
 enum class TerrainType
 {
-	GRASS,
+	WATER,
 	SAND,
+	MUD,
+	GRASS,
 	DIRT,
 	ROCK,
-	MUD,
-	WATER,
 	HOLE
 };
 enum class WallType
 {
 	DIRT,
 	ROCK,
+	BRICK,
 	INVIS
 };
 struct TerrainTile

@@ -75,7 +75,7 @@ void WorldLayer::populateTileMaps()
 		{
 			if (((i - 4) < j) && ((i + 4) > j))
 			{
-				map[i][j] = 5;
+				map[i][j] = 0;
 			}
 			else if (((i - (6+(rand()%4+1))) < j) && ((i + (6 + (rand() % 4 + 1))) > j))
 			{
@@ -86,10 +86,10 @@ void WorldLayer::populateTileMaps()
 				switch (rand() % 3 + 1)
 				{
 				case 1:
-					map[i][j] = 0;
+					map[i][j] = 2;
 					break;
 				case 2:
-					map[i][j] = 2;
+					map[i][j] = 3;
 					break;
 				case 3:
 					map[i][j] = 4;
