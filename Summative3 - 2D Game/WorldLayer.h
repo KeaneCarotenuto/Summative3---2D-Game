@@ -44,6 +44,7 @@ public:
 	TerrainTile* TerrainTilemap[50][50];
 	SpecialTile* SpecialTilemap[50][50];
 	WallTile* WallTilemap[50][50];
+	int LightMap[50][50];
 	//TODO: Navigation 
 	
 	int Altitude;
@@ -52,6 +53,9 @@ public:
 	WorldLayer(WorldLayer* _Above, WorldLayer* _Below, int _altitude);
 	WorldLayer* loadAboveLayer();
 	WorldLayer* loadBelowLayer();
+	void resetLightMap();
+	void renderLightMap();
+	void addPointLight(int _X, int _Y, int _intensity);
 	
 private:
 	WorldLayer* m_pAboveLayer;
@@ -59,12 +63,15 @@ private:
 	std::vector<GameEntity> Entities;
 	void populateTileMaps();
 	void renderTileMaps();
+	
 
 	sf::Texture m_TerrainTexture;
 	sf::VertexArray m_TerrainVertices;
 	sf::Texture m_WallTexture;
 	sf::VertexArray m_WallVertices;
 	sf::VertexArray m_SpecialVertices;
+	sf::Texture m_LightLevelTexture;
+	sf::VertexArray m_LightLevelVertices;
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

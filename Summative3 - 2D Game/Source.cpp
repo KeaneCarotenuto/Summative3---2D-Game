@@ -33,11 +33,18 @@ int main() {
 			}
 		}
 
-
+		world->resetLightMap();
+		world->addPointLight(22, 15, 9);
+		world->addPointLight(42, 35, 7);
+		world->addPointLight(15, 15, 10);
+		world->addPointLight(20, 15, 10);
+		world->addPointLight(30, 25, 10);
+		world->addPointLight(10, 35, 10);
 		//<start>Stuff needed for EasySFML
 		CObjectController::UpdateObjects();
 		
 		window.clear();
+		world->renderLightMap();
 		window.draw(*world);
 		for (sf::Drawable * Draw : CWindowUtilities::ToDrawList) //Draw every object on the draw list
 		{
