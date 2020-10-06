@@ -18,7 +18,7 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "2D Game");
 	srand(time(0));
 	window.setFramerateLimit(60);
-
+	float spotlightX = 25, spotlightY = 25;
 	WorldLayer* world = new WorldLayer();
 
 	while (window.isOpen() == true)
@@ -31,15 +31,15 @@ int main() {
 			{
 				window.close();
 			}
+			
 		}
 
 		world->resetLightMap();
-		world->addPointLight(10, 10, 10);
-		world->addPointLight(20, 20, 9);
-		world->addPointLight(30, 30, 10);
-		world->addPointLight(40, 40, 9);
-		world->addPointLight(50, 50, 10);
-		world->addPointLight(0, 0, 9);
+		sf::Vector2f temp = player.rect.getPosition();
+		world->addPointLight((temp.x/100)*20, (temp.y / 100)*20, 9);
+		
+		
+		
 		//<start>Stuff needed for EasySFML
 		CObjectController::UpdateObjects();
 		
