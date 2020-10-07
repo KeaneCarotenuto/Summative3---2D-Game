@@ -11,7 +11,7 @@ void CPlayer::FixedUpdate()
 {
 	Movement();
 
-	ScreenWrap();
+	//ScreenWrap();
 
 	CWindowUtilities::Draw(&rect);
 
