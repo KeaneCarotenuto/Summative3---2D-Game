@@ -42,6 +42,7 @@ int main() {
 				else {
 					view.zoom(1/0.75f);
 				}
+
 				std::cout << view.getSize().x << std::endl;
 			}
 			
