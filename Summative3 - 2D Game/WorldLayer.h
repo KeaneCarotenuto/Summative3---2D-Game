@@ -45,10 +45,10 @@ class WorldLayer
 	: public sf::Drawable, public sf::Transformable
 {
 public:
-	TerrainTile* TerrainTilemap[50][50];
-	SpecialTile* SpecialTilemap[50][50];
-	WallTile* WallTilemap[50][50];
-	int LightMap[50][50];
+	TerrainTile* TerrainTilemap[500][500];
+	SpecialTile* SpecialTilemap[500][500];
+	WallTile* WallTilemap[500][500];
+	int LightMap[500][500];
 	//TODO: Navigation 
 	
 	int Altitude;

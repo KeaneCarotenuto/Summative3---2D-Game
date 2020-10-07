@@ -67,17 +67,17 @@ WorldLayer* WorldLayer::loadBelowLayer()
 
 void WorldLayer::populateTileMaps()
 {
-	int map[50][50];
+	int map[500][500];
 	noise::module::Perlin Noise;
 	Noise.SetSeed(time(0));
 	double val;
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 500; i++)
 	{
-		for (int j = 0; j < 50; j++)
+		for (int j = 0; j < 500; j++)
 		{
 			
-			val = Noise.GetValue(i*(2.0f/50.0f), j * (2.0f / 50.0f), 0.5);
-			val -= (0.1 * ((abs(25 - i) + abs(25 - j))-20));
+			val = Noise.GetValue(i*(2.0f/500.0f), j * (2.0f / 500.0f), 0.5);
+			val -= (0.1 * ((abs(250 - i) + abs(250 - j))-200));
 			if (val < -0.9)
 			{
 				map[i][j] = 0;
@@ -112,9 +112,9 @@ void WorldLayer::populateTileMaps()
 	}
 	
 	//TESTING CODE
-	for (size_t i = 0; i < 50; i++)
+	for (size_t i = 0; i < 500; i++)
 	{
-		for (size_t j = 0; j < 50; j++)
+		for (size_t j = 0; j < 500; j++)
 		{
 			TerrainTilemap[i][j] = new TerrainTile((TerrainType)(map[i][j]), i, j);
 			
@@ -137,16 +137,16 @@ void WorldLayer::renderTileMaps()
 {
 	m_TerrainTexture.loadFromFile("Resources/Test/TerrainTileset.png");
 	m_TerrainVertices.setPrimitiveType(sf::Quads);
-	m_TerrainVertices.resize(50 * 50 * 4);
+	m_TerrainVertices.resize(500 * 500 * 4);
 	m_WallTexture.loadFromFile("Resources/Test/WallTileset.png");
 	m_WallVertices.setPrimitiveType(sf::Quads);
-	m_WallVertices.resize(50 * 50 * 4);
+	m_WallVertices.resize(500 * 500 * 4);
 
-	for (int i = 0; i < 50; ++i)
+	for (int i = 0; i < 500; ++i)
 	{
-		for (int j = 0; j < 50; ++j)
+		for (int j = 0; j < 500; ++j)
 		{
-			sf::Vertex* quad = &m_TerrainVertices[(i + j * 50) * 4];
+			sf::Vertex* quad = &m_TerrainVertices[(i + j * 500) * 4];
 
 			quad[0].position = sf::Vector2f(i * 20, j * 20);
 			quad[1].position = sf::Vector2f((i+1) * 20, j * 20);
@@ -160,7 +160,7 @@ void WorldLayer::renderTileMaps()
 
 			if (WallTilemap[i][j] != nullptr)
 			{
-				sf::Vertex* quad2 = &m_WallVertices[(i + j * 50) * 4];
+				sf::Vertex* quad2 = &m_WallVertices[(i + j * 500) * 4];
 
 				quad2[0].position = sf::Vector2f(i * 20, j * 20);
 				quad2[1].position = sf::Vector2f((i + 1) * 20, j * 20);
@@ -187,9 +187,9 @@ void WorldLayer::resetLightMap()
 	{
 		iGlobalLightLevel = 0;
 	}
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 500; i++)
 	{
-		for (int j = 0; j < 50; j++)
+		for (int j = 0; j < 500; j++)
 		{
 			if (WallTilemap[i][j] == nullptr)
 			{
@@ -206,16 +206,16 @@ void WorldLayer::resetLightMap()
 void WorldLayer::renderLightMap(bool isCircular)
 {
 	if (isCircular) {
-		int tempMap[50][50];
+		int tempMap[500][500];
 
-		for (int x = 0; x < 50; x++) {
-			for (int y = 0; y < 50; y++) {
+		for (int x = 0; x < 500; x++) {
+			for (int y = 0; y < 500; y++) {
 
 				if (LightMap[x][y] > 0) {
 
 					tempMap[x][y] = LightMap[x][y];
-					for (int tx = 0; tx < 50; tx++) {
-						for (int ty = 0; ty < 50; ty++) {
+					for (int tx = 0; tx < 500; tx++) {
+						for (int ty = 0; ty < 500; ty++) {
 							int l = 10 - std::abs(std::sqrt((ty - y) * (ty - y) + (tx - x) * (tx - x)));
 							l = (l > 9 ? 9 : (l < 0 ? 0 : l));
 							tempMap[tx][ty] = (l > tempMap[tx][ty] ? l : tempMap[tx][ty]);
@@ -227,8 +227,8 @@ void WorldLayer::renderLightMap(bool isCircular)
 			}
 		}
 
-		for (int x = 0; x < 50; x++) {
-			for (int y = 0; y < 50; y++) {
+		for (int x = 0; x < 500; x++) {
+			for (int y = 0; y < 500; y++) {
 				LightMap[x][y] = tempMap[x][y];
 			}
 		}
@@ -236,9 +236,9 @@ void WorldLayer::renderLightMap(bool isCircular)
 	else {
 		for (int x = 10; x > 0; x--)
 		{
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < 500; i++)
 			{
-				for (int j = 0; j < 50; j++)
+				for (int j = 0; j < 500; j++)
 				{
 					if (LightMap[i][j] == x)
 					{
@@ -249,7 +249,7 @@ void WorldLayer::renderLightMap(bool isCircular)
 								LightMap[i - 1][j] = x - 1;
 							}
 						}
-						if (i < 49)
+						if (i < 499)
 						{
 
 							if (LightMap[i + 1][j] < x)
@@ -265,7 +265,7 @@ void WorldLayer::renderLightMap(bool isCircular)
 								LightMap[i - 1][j - 1] = x - 1;
 							}
 						}
-						if (i < 49 && j < 49)
+						if (i < 499 && j < 499)
 						{
 							if (LightMap[i + 1][j + 1] < x)
 							{
@@ -283,7 +283,7 @@ void WorldLayer::renderLightMap(bool isCircular)
 
 
 						}
-						if (j < 49)
+						if (j < 499)
 						{
 
 							if (LightMap[i][j + 1] < x)
@@ -292,14 +292,14 @@ void WorldLayer::renderLightMap(bool isCircular)
 							}
 
 						}
-						if (i > 0 && j < 49)
+						if (i > 0 && j < 499)
 						{
 							if (LightMap[i - 1][j + 1] < x)
 							{
 								LightMap[i - 1][j + 1] = x - 1;
 							}
 						}
-						if (i < 49 && j > 0)
+						if (i < 499 && j > 0)
 						{
 							if (LightMap[i + 1][j - 1] < x)
 							{
@@ -317,13 +317,13 @@ void WorldLayer::renderLightMap(bool isCircular)
 	
 	m_LightLevelTexture.loadFromFile("Resources/Test/LightLevels.png");
 	m_LightLevelVertices.setPrimitiveType(sf::Quads);
-	m_LightLevelVertices.resize(50 * 50 * 4);
+	m_LightLevelVertices.resize(500 * 500 * 4);
 
-	for (int i = 0; i < 50; ++i)
+	for (int i = 0; i < 500; ++i)
 	{
-		for (int j = 0; j < 50; ++j)
+		for (int j = 0; j < 500; ++j)
 		{
-			sf::Vertex* quad = &m_LightLevelVertices[(i + j * 50) * 4];
+			sf::Vertex* quad = &m_LightLevelVertices[(i + j * 500) * 4];
 
 			quad[0].position = sf::Vector2f(i * 20, j * 20);
 			quad[1].position = sf::Vector2f((i + 1) * 20, j * 20);
