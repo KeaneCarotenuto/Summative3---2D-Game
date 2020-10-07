@@ -21,7 +21,7 @@ int main() {
 	float spotlightX = 25, spotlightY = 25;
 	WorldLayer* world = new WorldLayer();
 
-	sf::View view(sf::FloatRect(0.f, 0.f, 10000.0f, 10000.0f));
+	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));
 
 	// want to do visibility checks? retrieve the view
 	sf::View currentView = window.getView();

@@ -90,15 +90,15 @@ void WorldLayer::populateTileMaps()
 			{
 				map[i][j] = 2;
 			}
-			else if (val < -0.2)
+			else if (val < -0.1)
 			{
 				map[i][j] = 3;
 			}
-			else if (val < -0.15)
+			else if (val < 0)
 			{
 				map[i][j] = 4;
 			}
-			else if (val < 0.3)
+			else if (val < 0.2)
 			{
 				map[i][j] = 5;
 			}
@@ -181,7 +181,7 @@ void WorldLayer::resetLightMap()
 	int iGlobalLightLevel;
 	if (Altitude > 0)
 	{
-		iGlobalLightLevel = 5;
+		iGlobalLightLevel = 0;
 	}
 	else
 	{
@@ -236,11 +236,11 @@ void WorldLayer::renderLightMap()
 	}*/
 
 
-	for (int x = 10; x > 0; x--)
+	for (int x = 9; x > 0; x--)
 	{
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < 500; i++)
 		{
-			for (int j = 0; j < 50; j++)
+			for (int j = 0; j < 500; j++)
 			{
 				if (LightMap[i][j] == x)
 				{
@@ -251,7 +251,7 @@ void WorldLayer::renderLightMap()
 							LightMap[i - 1][j] = x - 1;
 						}
 					}
-					if (i < 49)
+					if (i < 499)
 					{
 
 						if (LightMap[i + 1][j] < x)
@@ -267,7 +267,7 @@ void WorldLayer::renderLightMap()
 							LightMap[i - 1][j - 1] = x - 1;
 						}
 					}
-					if (i < 49 && j < 49)
+					if (i < 499 && j < 499)
 					{
 						if (LightMap[i + 1][j + 1] < x)
 						{
@@ -285,7 +285,7 @@ void WorldLayer::renderLightMap()
 
 
 					}
-					if (j < 49)
+					if (j < 499)
 					{
 
 						if (LightMap[i][j + 1] < x)
@@ -294,14 +294,14 @@ void WorldLayer::renderLightMap()
 						}
 
 					}
-					if (i > 0 && j < 49)
+					if (i > 0 && j < 499)
 					{
 						if (LightMap[i - 1][j + 1] < x)
 						{
 							LightMap[i - 1][j + 1] = x - 1;
 						}
 					}
-					if (i < 49 && j > 0)
+					if (i < 499 && j > 0)
 					{
 						if (LightMap[i + 1][j - 1] < x)
 						{
