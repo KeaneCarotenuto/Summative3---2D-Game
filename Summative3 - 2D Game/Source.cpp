@@ -12,7 +12,7 @@
 
 #include "CPlayer.h"
 
-CPlayer player({ 100,100 }, {20,30}, sf::Color::Green);
+CPlayer player({ 100,100 }, {20,20}, sf::Color::Green);
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "2D Game");
@@ -36,7 +36,7 @@ int main() {
 
 		world->resetLightMap();
 		sf::Vector2f temp = player.rect.getPosition();
-		world->addPointLight((temp.x/100)*20, (temp.y / 100)*20, 9);
+		world->addPointLight((temp.x/100)*5, (temp.y / 100)*5, 9);
 		
 		
 		

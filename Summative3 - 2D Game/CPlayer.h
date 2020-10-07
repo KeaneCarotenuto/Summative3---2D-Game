@@ -9,7 +9,7 @@ class CPlayer:
 {
 public:
 	sf::RectangleShape rect;
-	float moveSpeed = 5;
+	float moveSpeed = 20;
 	
 	CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col);
 
@@ -17,5 +17,8 @@ public:
 	void ScreenWrap();
 
 	virtual void FixedUpdate();
+
+private:
+	int currentStep = 0;
 };
 
