@@ -12,7 +12,7 @@
 
 #include "CPlayer.h"
 
-CPlayer player({ 100,100 }, {20,30}, sf::Color::Green);
+CPlayer player({ 100,100 }, {20,20}, sf::Color::Green);
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(5000, 5000), "2D Game");
@@ -20,6 +20,11 @@ int main() {
 	window.setFramerateLimit(60);
 	float spotlightX = 25, spotlightY = 25;
 	WorldLayer* world = new WorldLayer();
+
+	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));
+
+	// want to do visibility checks? retrieve the view
+	sf::View currentView = window.getView();
 
 	while (window.isOpen() == true)
 	{
@@ -36,15 +41,18 @@ int main() {
 
 		world->resetLightMap();
 		sf::Vector2f temp = player.rect.getPosition();
-		world->addPointLight((temp.x/100)*20, (temp.y / 100)*20, 9);
+		world->addPointLight((temp.x/20), (temp.y / 20), 9);
 		
 		
 		
 		//<start>Stuff needed for EasySFML
 		CObjectController::UpdateObjects();
+
+		view.setCenter(player.rect.getPosition());
+		window.setView(view);
 		
 		window.clear();
-		world->renderLightMap(true);
+		world->renderLightMap();
 		window.draw(*world);
 		for (sf::Drawable * Draw : CWindowUtilities::ToDrawList) //Draw every object on the draw list
 		{

@@ -58,7 +58,7 @@ public:
 	WorldLayer* loadAboveLayer();
 	WorldLayer* loadBelowLayer();
 	void resetLightMap();
-	void renderLightMap(bool isCircular);
+	void renderLightMap();
 	void addPointLight(int _X, int _Y, int _intensity);
 	
 private:
