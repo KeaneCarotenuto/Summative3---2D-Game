@@ -23,9 +23,6 @@ int main() {
 
 	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));
 
-	// want to do visibility checks? retrieve the view
-	sf::View currentView = window.getView();
-
 	while (window.isOpen() == true)
 	{
 		sf::Event newEvent;
@@ -35,6 +32,17 @@ int main() {
 			if (newEvent.type == sf::Event::Closed)
 			{
 				window.close();
+			}
+
+			if (newEvent.type == sf::Event::MouseWheelMoved)
+			{
+				if (newEvent.mouseWheel.delta > 0) {
+					view.zoom(0.75f);
+				}
+				else {
+					view.zoom(1/0.75f);
+				}
+				std::cout << view.getSize().x << std::endl;
 			}
 			
 		}
@@ -48,7 +56,7 @@ int main() {
 		//<start>Stuff needed for EasySFML
 		CObjectController::UpdateObjects();
 
-		view.setCenter(player.rect.getPosition());
+		view.setCenter(player.rect.getPosition() + sf::Vector2f(player.rect.getSize().x / 2, player.rect.getSize().y / 2));
 		
 		window.setView(view);
 		
