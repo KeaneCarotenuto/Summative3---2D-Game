@@ -36,7 +36,7 @@ int main() {
 
 		world->resetLightMap();
 		sf::Vector2f temp = player.rect.getPosition();
-		world->addPointLight((temp.x/100)*5, (temp.y / 100)*5, 9);
+		world->addPointLight((temp.x/20), (temp.y / 20), 9);
 		
 		
 		
