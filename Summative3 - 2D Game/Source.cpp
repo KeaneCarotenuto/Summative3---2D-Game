@@ -12,16 +12,16 @@
 
 #include "CPlayer.h"
 
-CPlayer player({ 100,100 }, {20,20}, sf::Color::Green);
+CPlayer player({ 5000,5000 }, {20,20}, sf::Color::Green);
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(5000, 5000), "2D Game");
+	sf::RenderWindow window(sf::VideoMode(1000, 1000), "2D Game");
 	srand(time(0));
 	window.setFramerateLimit(60);
 	float spotlightX = 25, spotlightY = 25;
 	WorldLayer* world = new WorldLayer();
 
-	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));
+	sf::View view(sf::FloatRect(0.f, 0.f, 10000.0f, 10000.0f));
 
 	// want to do visibility checks? retrieve the view
 	sf::View currentView = window.getView();
@@ -49,6 +49,7 @@ int main() {
 		CObjectController::UpdateObjects();
 
 		view.setCenter(player.rect.getPosition());
+		
 		window.setView(view);
 		
 		window.clear();

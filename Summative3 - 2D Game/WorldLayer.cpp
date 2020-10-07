@@ -77,7 +77,7 @@ void WorldLayer::populateTileMaps()
 		{
 			
 			val = Noise.GetValue(i*(2.0f/500.0f), j * (2.0f / 500.0f), 0.5);
-			val -= (0.1 * ((abs(250 - i) + abs(250 - j))-200));
+			val -= (0.0055 * (sqrt((abs(250 - i) * abs(250 - j)))));
 			if (val < -0.9)
 			{
 				map[i][j] = 0;
@@ -86,19 +86,19 @@ void WorldLayer::populateTileMaps()
 			{
 				map[i][j] = 1;
 			}
-			else if (val < -0.4)
+			else if (val < -0.6)
 			{
 				map[i][j] = 2;
 			}
-			else if (val < 0.7)
+			else if (val < 0.2)
 			{
 				map[i][j] = 3;
 			}
-			else if (val < 0.8)
+			else if (val < 0.4)
 			{
 				map[i][j] = 4;
 			}
-			else if (val < 1.3)
+			else if (val < 0.6)
 			{
 				map[i][j] = 5;
 			}
