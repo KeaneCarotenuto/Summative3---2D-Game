@@ -82,23 +82,23 @@ void WorldLayer::populateTileMaps()
 			{
 				map[i][j] = 0;
 			}
-			else if (val < -0.7)
+			else if (val < -0.8)
 			{
 				map[i][j] = 1;
 			}
-			else if (val < -0.4)
+			else if (val < -0.75)
 			{
 				map[i][j] = 2;
 			}
-			else if (val < 0.7)
+			else if (val < -0.2)
 			{
 				map[i][j] = 3;
 			}
-			else if (val < 0.8)
+			else if (val < -0.15)
 			{
 				map[i][j] = 4;
 			}
-			else if (val < 1.3)
+			else if (val < 0.3)
 			{
 				map[i][j] = 5;
 			}
