@@ -44,7 +44,7 @@ int main() {
 		CObjectController::UpdateObjects();
 		
 		window.clear();
-		world->renderLightMap(true);
+		world->renderLightMap();
 		window.draw(*world);
 		for (sf::Drawable * Draw : CWindowUtilities::ToDrawList) //Draw every object on the draw list
 		{
