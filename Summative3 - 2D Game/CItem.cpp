@@ -1,27 +1,19 @@
 #include "CItem.h"
 
-CItem::CItem(ItemType _type, sf::RenderWindow* _wind, sf::Vector2f _pos):
-	type(_type), currentInv(_wind), initialWindow(_wind), initialPos(_pos)
+
+bool CItem::operator==(const CItem& _item)
 {
-	if (!texture.loadFromFile("Resources/Sprites/Sprites.png", sf::IntRect((int)type *20, 0, 20, 20)))
-	{
-		std::cout << "[Failed to load CItem texture]   Item Type: " << (int)type;
-	}
-
-	sprite.setTexture(texture);
-
-	sprite.setPosition(_pos);
-	sprite.setScale(5, 5);
-
-}
-
-CItem::CItem()
-{
+	return (typeid(this).name() == typeid(_item).name());
 }
 
 void CItem::FixedUpdate()
 {
 	Draw();
+}
+
+CItem::CItem(sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name) :
+	currentInv(_wind), initialWindow(_wind), initialPos(_pos), itemName(_name)
+{
 }
 
 void CItem::Draw()

@@ -5,12 +5,10 @@
 #include "Stackable.h"
 
 class Resource :
-	CItem, Stackable
+	public CItem, public Stackable
 {
 public:
-	Resource();
-
-	sf::Font font;
+	Resource(sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name);
 
 	virtual void Draw();
 };
