@@ -12,20 +12,39 @@
 
 #include "CPlayer.h"
 #include "CItem.h"
+#include "ItemManager.h"
 
 CPlayer player({ 10,10 }, {20,20}, sf::Color::Green);
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "2D Game");
-	sf::RenderWindow inventory(sf::VideoMode(200, 500), "2D Game");
+	sf::RenderWindow inventory(sf::VideoMode(200, 500), "Inventory");
 
 	srand(time(0));
 	window.setFramerateLimit(60);
 	float spotlightX = 25, spotlightY = 25;
-	WorldLayer* world = new WorldLayer();
 
-	CItem* testItem = new CItem(ItemType::Stick, &window, &inventory, true);
-	CItem* testItem2 = new CItem(ItemType::Log, &window, &inventory, false);
+
+	//Create item Manager
+	ItemManager* itemMngr = new ItemManager();
+
+	//Push Inventories
+	itemMngr->inventories.push_back(&inventory);
+	itemMngr->inventories.push_back(&window);
+
+	//Push Items
+	itemMngr->items.push_back(new CItem(ItemType::Stick, &inventory, {10,10}));
+	itemMngr->items.push_back(new CItem(ItemType::Stick, &inventory, {10,40}));
+	itemMngr->items.push_back(new CItem(ItemType::Stick, &inventory, {10,40}));
+	itemMngr->items.push_back(new CItem(ItemType::Stick, &inventory, {10,40}));
+	itemMngr->items.push_back(new CItem(ItemType::Stick, &inventory, {10,40}));
+	itemMngr->items.push_back(new CItem(ItemType::Log, &inventory, {10,10}));
+	itemMngr->items.push_back(new CItem(ItemType::Pebbles, &inventory, {10,10}));
+	itemMngr->items.push_back(new CItem(ItemType::Rock, &inventory, {10,10}));
+
+
+
+	WorldLayer* world = new WorldLayer();
 	
 
 	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));
@@ -54,6 +73,11 @@ int main() {
 			}
 			
 		}
+
+		//Keeps Invntory on Top
+		HWND hwnd = inventory.getSystemHandle();
+		SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+
 
 		world->resetLightMap();
 		sf::Vector2f temp = player.rect.getPosition();

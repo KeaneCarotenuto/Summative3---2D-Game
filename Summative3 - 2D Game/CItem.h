@@ -1,9 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-#include "EasySFML.h"
+#include <iostream>
 
-#include <iostream>;
+#include "EasySFML.h"
 
 enum class ItemType
 {
@@ -14,26 +14,26 @@ enum class ItemType
 };
 
 class CItem :
-	private CGameObject
+	public CGameObject
 {
 public:
 	sf::Sprite sprite;
 	sf::Texture texture;
-	sf::VertexArray vertices;
 	ItemType type;
 
-	bool isInInv = false;
-	bool beingDragged = false;
+	sf::RenderWindow* currentInv;
 
-	sf::RenderWindow* main;
-	sf::RenderWindow* inv;
 	
+	sf::Vector2f initialPos;
+	sf::RenderWindow* initialWindow;
 
-	CItem(ItemType _type, sf::RenderWindow* _main, sf::RenderWindow* _inv, bool _isInInv);
+	CItem();
+	//CItem(ItemType _type, sf::RenderWindow* _wind, sf::Vector2f _pos);
 
 	virtual void FixedUpdate();
 
-private:
-	sf::Vector2f initialPos;
+protected:
+
+	virtual void Draw();
 };
 
