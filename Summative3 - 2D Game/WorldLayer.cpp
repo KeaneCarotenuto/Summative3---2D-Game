@@ -181,7 +181,7 @@ void WorldLayer::resetLightMap()
 	int iGlobalLightLevel;
 	if (Altitude > 0)
 	{
-		iGlobalLightLevel = 0;
+		iGlobalLightLevel = 5;
 	}
 	else
 	{
