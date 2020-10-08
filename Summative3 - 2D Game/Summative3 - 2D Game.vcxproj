@@ -163,6 +163,7 @@
     <ClInclude Include="EasySFML.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="Lumber.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SpecialTile.h" />
     <ClInclude Include="Stackable.h" />
