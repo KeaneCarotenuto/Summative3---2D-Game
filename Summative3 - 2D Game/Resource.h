@@ -5,7 +5,7 @@
 #include "Stackable.h"
 
 class Resource :
-	public CItem, public Stackable
+	public CItem, public ItemAttributes::Stackable
 {
 public:
 	Resource(sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name);

@@ -10,4 +10,5 @@ Lumber::Lumber(LumberType _type, sf::RenderWindow* _wind, sf::Vector2f _pos):
     }
 
     sprite.setTexture(texture);
+    
 }

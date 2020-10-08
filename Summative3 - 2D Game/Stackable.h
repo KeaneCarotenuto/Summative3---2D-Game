@@ -4,23 +4,26 @@
 
 #include "CItem.h"
 
-class Stackable
+namespace ItemAttributes
 {
-public:
-	std::stack<CItem*> disabledStack;
+	class Stackable
+	{
+	public:
+		std::stack<CItem*> disabledStack;
 
-protected:
+	protected:
 
-	sf::Font stackFont;
+		sf::Font stackFont;
 
-	sf::Text stackText;
+		sf::Text stackText;
 
-	Stackable() {
-		if (!stackFont.loadFromFile("Resources/Fonts/uni.ttf")) {
-			std::cout << "[Failed to load CResource font]";
+		Stackable() {
+			if (!stackFont.loadFromFile("Resources/Fonts/uni.ttf")) {
+				std::cout << "[Failed to load CResource font]";
+			}
+			stackText.setFillColor(sf::Color::White);
+			stackText.setFont(stackFont);
 		}
-		stackText.setFillColor(sf::Color::White);
-		stackText.setFont(stackFont);
-	}
-};
+	};
+}
 
