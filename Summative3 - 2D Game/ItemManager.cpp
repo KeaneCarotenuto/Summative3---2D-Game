@@ -1,4 +1,5 @@
 #include "ItemManager.h"
+#pragma warning(disable : 6011)
 
 void ItemManager::RemoveItem(CItem* _item)
 {
@@ -19,8 +20,8 @@ void ItemManager::FixedUpdate()
 		//Update Which window the mouse is currently over
 		for (sf::RenderWindow* _wind : inventories)
 		{
-			if (_wind->getPosition().x <= sf::Mouse::getPosition().x && _wind->getPosition().x + _wind->getSize().x >= sf::Mouse::getPosition().x
-				&& _wind->getPosition().y <= sf::Mouse::getPosition().y && _wind->getPosition().y + _wind->getSize().y >= sf::Mouse::getPosition().y) {
+			if (_wind->getPosition().x <= sf::Mouse::getPosition().x && (signed)_wind->getPosition().x + (signed)_wind->getSize().x >= sf::Mouse::getPosition().x
+				&& _wind->getPosition().y <= sf::Mouse::getPosition().y && (signed)_wind->getPosition().y + (signed)_wind->getSize().y >= sf::Mouse::getPosition().y) {
 				currentMouseWindow = _wind;
 				break;
 			}

@@ -20,6 +20,8 @@
 // off every 'zig'.)
 //
 
+#pragma warning(disable : 6011)
+
 #ifndef NOISE_MODULEBASE_H
 #define NOISE_MODULEBASE_H
 

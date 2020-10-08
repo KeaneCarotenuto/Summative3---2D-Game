@@ -4,7 +4,7 @@ TerrainTile::TerrainTile(TerrainType _type, int _Xpos, int _Ypos)
 {
 	Type = _type;
 	Collider.setSize(sf::Vector2f(20, 20));
-	Collider.setPosition(sf::Vector2f((_Xpos * 20), (_Ypos * 20)));
+	Collider.setPosition(sf::Vector2f((float)(_Xpos * 20), (float)(_Ypos * 20)));
 	
 	
 	
@@ -14,7 +14,7 @@ WallTile::WallTile(WallType _type, int _Xpos, int _Ypos)
 {
 	Type = _type;
 	Collider.setSize(sf::Vector2f(20, 20));
-	Collider.setPosition(sf::Vector2f((_Xpos * 20), (_Ypos * 20)));
+	Collider.setPosition(sf::Vector2f((float)(_Xpos * 20), (float)(_Ypos * 20)));
 	
 }
 
@@ -22,7 +22,7 @@ WallTile::WallTile(int _Xpos, int _Ypos)
 {
 	Type = WallType::INVIS;
 	Collider.setSize(sf::Vector2f(20, 20));
-	Collider.setPosition(sf::Vector2f((_Xpos * 20), (_Ypos * 20)));
+	Collider.setPosition(sf::Vector2f((float)(_Xpos * 20), (float)(_Ypos * 20)));
 }
 
 WorldLayer::WorldLayer()
@@ -69,14 +69,14 @@ void WorldLayer::populateTileMaps()
 {
 	int map[500][500];
 	noise::module::Perlin Noise;
-	Noise.SetSeed(time(0));
+	Noise.SetSeed((int)time(0));
 	double val;
 	for (int i = 0; i < 500; i++)
 	{
 		for (int j = 0; j < 500; j++)
 		{
 			
-			val = Noise.GetValue(i*(2.0f/500.0f), j * (2.0f / 500.0f), 0.5);
+			val = Noise.GetValue((double)(i)*(2.0f/500.0f), (double)(j) * (2.0f / 500.0f), 0.5);
 			val -= 0.006 * std::abs(std::sqrt((i - 250) * (i - 250) + (j - 250) * (j - 250)));
 			if (val < -0.9)
 			{
@@ -148,29 +148,29 @@ void WorldLayer::renderTileMaps()
 		{
 			sf::Vertex* quad = &m_TerrainVertices[(i + j * 500) * 4];
 
-			quad[0].position = sf::Vector2f(i * 20, j * 20);
-			quad[1].position = sf::Vector2f((i+1) * 20, j * 20);
-			quad[2].position = sf::Vector2f((i+1) * 20, (j+1) * 20);
-			quad[3].position = sf::Vector2f(i * 20, (j+1) * 20);
+			quad[0].position = sf::Vector2f((float)i * 20, (float)j * 20);
+			quad[1].position = sf::Vector2f((float)(i+1) * 20, (float)j * 20);
+			quad[2].position = sf::Vector2f((float)(i+1) * 20, (float)(j+1) * 20);
+			quad[3].position = sf::Vector2f((float)i * 20, (float)(j+1) * 20);
 
-			quad[0].texCoords = sf::Vector2f((int)(TerrainTilemap[i][j]->Type)*10, 0);
-			quad[1].texCoords = sf::Vector2f(((int)(TerrainTilemap[i][j]->Type) * 10) + 10, 0);
-			quad[2].texCoords = sf::Vector2f(((int)(TerrainTilemap[i][j]->Type) * 10) + 10, 10);
-			quad[3].texCoords = sf::Vector2f((int)(TerrainTilemap[i][j]->Type) * 10, 10);
+			quad[0].texCoords = sf::Vector2f((float)(TerrainTilemap[i][j]->Type)*10, 0);
+			quad[1].texCoords = sf::Vector2f(((float)(TerrainTilemap[i][j]->Type) * 10) + 10, 0);
+			quad[2].texCoords = sf::Vector2f(((float)(TerrainTilemap[i][j]->Type) * 10) + 10, 10);
+			quad[3].texCoords = sf::Vector2f((float)(TerrainTilemap[i][j]->Type) * 10, 10);
 
 			if (WallTilemap[i][j] != nullptr)
 			{
 				sf::Vertex* quad2 = &m_WallVertices[(i + j * 500) * 4];
 
-				quad2[0].position = sf::Vector2f(i * 20, j * 20);
-				quad2[1].position = sf::Vector2f((i + 1) * 20, j * 20);
-				quad2[2].position = sf::Vector2f((i + 1) * 20, (j + 1) * 20);
-				quad2[3].position = sf::Vector2f(i * 20, (j + 1) * 20);
+				quad2[0].position = sf::Vector2f((float)i * 20, (float)j * 20);
+				quad2[1].position = sf::Vector2f((float)(i + 1) * 20, (float)j * 20);
+				quad2[2].position = sf::Vector2f((float)(i + 1) * 20, (float)(j + 1) * 20);
+				quad2[3].position = sf::Vector2f((float)i * 20, (float)(j + 1) * 20);
 
-				quad2[0].texCoords = sf::Vector2f((int)(WallTilemap[i][j]->Type) * 10, 0);
-				quad2[1].texCoords = sf::Vector2f(((int)(WallTilemap[i][j]->Type) * 10) + 10, 0);
-				quad2[2].texCoords = sf::Vector2f(((int)(WallTilemap[i][j]->Type) * 10) + 10, 10);
-				quad2[3].texCoords = sf::Vector2f((int)(WallTilemap[i][j]->Type) * 10, 10);
+				quad2[0].texCoords = sf::Vector2f((float)(WallTilemap[i][j]->Type) * 10, 0);
+				quad2[1].texCoords = sf::Vector2f(((float)(WallTilemap[i][j]->Type) * 10) + 10, 0);
+				quad2[2].texCoords = sf::Vector2f(((float)(WallTilemap[i][j]->Type) * 10) + 10, 10);
+				quad2[3].texCoords = sf::Vector2f((float)(WallTilemap[i][j]->Type) * 10, 10);
 			}
 		}
 	}
@@ -326,15 +326,15 @@ void WorldLayer::renderLightMap()
 		{
 			sf::Vertex* quad = &m_LightLevelVertices[(i + j * 500) * 4];
 
-			quad[0].position = sf::Vector2f(i * 20, j * 20);
-			quad[1].position = sf::Vector2f((i + 1) * 20, j * 20);
-			quad[2].position = sf::Vector2f((i + 1) * 20, (j + 1) * 20);
-			quad[3].position = sf::Vector2f(i * 20, (j + 1) * 20);
+			quad[0].position = sf::Vector2f((float) i * 20, (float)j * 20);
+			quad[1].position = sf::Vector2f((float) (i + 1) * 20, (float)j * 20);
+			quad[2].position = sf::Vector2f((float) (i + 1) * 20, (float)(j + 1) * 20);
+			quad[3].position = sf::Vector2f((float) i * 20, (float)(j + 1) * 20);
 
-			quad[0].texCoords = sf::Vector2f(LightMap[i][j] * 10, 0);
-			quad[1].texCoords = sf::Vector2f((LightMap[i][j] * 10) + 10, 0);
-			quad[2].texCoords = sf::Vector2f((LightMap[i][j] * 10) + 10, 10);
-			quad[3].texCoords = sf::Vector2f((LightMap[i][j] * 10), 10);
+			quad[0].texCoords = sf::Vector2f((float)(LightMap[i][j] * 10), 0);
+			quad[1].texCoords = sf::Vector2f((float)(LightMap[i][j] * 10) + 10, 0);
+			quad[2].texCoords = sf::Vector2f((float) (LightMap[i][j] * 10) + 10, (float)10);
+			quad[3].texCoords = sf::Vector2f((float) (LightMap[i][j] * 10), (float)10);
 
 			
 		}
