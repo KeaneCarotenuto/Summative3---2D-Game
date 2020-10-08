@@ -2,12 +2,12 @@
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
-
+#include "GameData.h"
 #include "EasySFML.h"
 
 
 class CItem :
-	public CGameObject
+	public CGameObject, Loadable
 {
 public:
 	const std::string itemName;
@@ -25,7 +25,7 @@ public:
 	virtual void FixedUpdate();
 
 protected:
-	CItem(sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name);
+	CItem(sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name, std::string _filepath);
 
 	
 
