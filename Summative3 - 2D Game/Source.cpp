@@ -21,7 +21,7 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "2D Game");
 	sf::RenderWindow inventory(sf::VideoMode(200, 500), "Inventory");
 
-	srand(time(0));
+	srand((int)time(0));
 	window.setFramerateLimit(60);
 	float spotlightX = 25, spotlightY = 25;
 
@@ -80,7 +80,7 @@ int main() {
 
 		world->resetLightMap();
 		sf::Vector2f temp = player.rect.getPosition();
-		world->addPointLight((temp.x/20), (temp.y / 20), 9);
+		world->addPointLight((int)(temp.x/20), (int)(temp.y / 20), 9);
 		
 		
 		inventory.clear();
