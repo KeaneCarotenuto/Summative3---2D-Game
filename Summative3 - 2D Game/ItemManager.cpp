@@ -59,18 +59,21 @@ void ItemManager::FixedUpdate()
 		//Right Click to Split One off
 		else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && currentStep % 5 == 0 ) {
 			for (CItem* _item : items) {
-				if (!_item->bIsEnabled) continue;
+				if (!_item->bIsEnabled || !dynamic_cast<Stackable*>(_item)) continue;
 
 				sf::Sprite sprite = _item->sprite;
 
-				if (!_item->disabledStack.empty()) {
+				if (!dynamic_cast<Stackable*>(_item)->disabledStack.empty()) {
 					//If mouse is over item, being dragging
 					if (sprite.getGlobalBounds().contains(_item->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*_item->currentInv)))) {
 						
-						_item->disabledStack.top()->bIsEnabled = true;
-						_item->disabledStack.top()->sprite.setPosition(sprite.getPosition().x + 10, sprite.getPosition().y + 10);
+						dynamic_cast<Stackable*>(_item)->disabledStack.top()->bIsEnabled = true;
+						dynamic_cast<Stackable*>(_item)->disabledStack.top()->sprite.setPosition(sprite.getPosition().x + 10, sprite.getPosition().y + 10);
+						dynamic_cast<Stackable*>(_item)->disabledStack.top()->initialPos = { sprite.getPosition().x + 10, sprite.getPosition().y + 10 };
+						dynamic_cast<Stackable*>(_item)->disabledStack.top()->initialWindow = _item->currentInv;
+						dynamic_cast<Stackable*>(_item)->disabledStack.top()->currentInv = _item->currentInv;
 
-						_item->disabledStack.pop();
+						dynamic_cast<Stackable*>(_item)->disabledStack.pop();
 
 						break;
 					}
@@ -87,21 +90,23 @@ void ItemManager::FixedUpdate()
 			currentlyDragging->currentInv = currentlyDragging->initialWindow;
 		}
 		//Stack Items
-		else if (currentlyDragging != nullptr && currentMouseWindow != nullptr) {
+		
+		if (currentlyDragging != nullptr && currentMouseWindow != nullptr) {
 			for (CItem* _item : items)
 			{
-				if (!_item->bIsEnabled) continue;
+				if (!_item->bIsEnabled || !dynamic_cast<Stackable*>(_item)) continue;
 
 				sf::Sprite sprite = _item->sprite;
 				if (sprite.getGlobalBounds().contains(_item->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*_item->currentInv)))) {
-					if (currentlyDragging->type == _item->type && currentlyDragging != _item) {
+
+					if (currentlyDragging->itemName == _item->itemName && currentlyDragging != _item) {
 						
-						_item->disabledStack.push(currentlyDragging);
+						dynamic_cast<Stackable*>(_item)->disabledStack.push(currentlyDragging);
 						currentlyDragging->bIsEnabled = false;
 
-						while (!currentlyDragging->disabledStack.empty()) {
-							_item->disabledStack.push(currentlyDragging->disabledStack.top());
-							currentlyDragging->disabledStack.pop();
+						while (!dynamic_cast<Stackable*>(currentlyDragging)->disabledStack.empty()) {
+							dynamic_cast<Stackable*>(_item)->disabledStack.push(dynamic_cast<Stackable*>(currentlyDragging)->disabledStack.top());
+							dynamic_cast<Stackable*>(currentlyDragging)->disabledStack.pop();
 						}
 
 						break;

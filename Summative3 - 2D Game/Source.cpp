@@ -13,6 +13,7 @@
 #include "CPlayer.h"
 #include "CItem.h"
 #include "ItemManager.h"
+#include "Lumber.h"
 
 CPlayer player({ 10,10 }, {20,20}, sf::Color::Green);
 
@@ -33,15 +34,13 @@ int main() {
 	itemMngr->inventories.push_back(&window);
 
 	//Push Items
-	itemMngr->items.push_back(new CItem(ItemType::Stick, &inventory, {10,10}));
-	itemMngr->items.push_back(new CItem(ItemType::Stick, &inventory, {10,40}));
-	itemMngr->items.push_back(new CItem(ItemType::Stick, &inventory, {10,40}));
-	itemMngr->items.push_back(new CItem(ItemType::Stick, &inventory, {10,40}));
-	itemMngr->items.push_back(new CItem(ItemType::Stick, &inventory, {10,40}));
-	itemMngr->items.push_back(new CItem(ItemType::Log, &inventory, {10,10}));
-	itemMngr->items.push_back(new CItem(ItemType::Pebbles, &inventory, {10,10}));
-	itemMngr->items.push_back(new CItem(ItemType::Rock, &inventory, {10,10}));
+	itemMngr->items.push_back(new Lumber(LumberType::Stick, &inventory, {10,10}));
+	itemMngr->items.push_back(new Lumber(LumberType::Stick, &inventory, {10,80}));
+	itemMngr->items.push_back(new Lumber(LumberType::Log, &inventory, {10,80}));
+	itemMngr->items.push_back(new Lumber(LumberType::Log, &inventory, {10,80}));
+	itemMngr->items.push_back(new Lumber(LumberType::Log, &inventory, {10,80}));
 
+	std::cout << typeid(itemMngr->items[0]).name();
 
 
 	WorldLayer* world = new WorldLayer();

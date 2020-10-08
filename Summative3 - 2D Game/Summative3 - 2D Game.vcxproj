@@ -150,6 +150,8 @@
     <ClCompile Include="EasySFML.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="ItemManager.cpp" />
+    <ClCompile Include="Lumber.cpp" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SpecialTile.cpp" />
     <ClCompile Include="WorldLayer.cpp" />
@@ -160,6 +162,8 @@
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="EasySFML.h" />
     <ClInclude Include="GameEntity.h" />
+    <ClInclude Include="Lumber.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="SpecialTile.h" />
     <ClInclude Include="Stackable.h" />
     <ClInclude Include="WorldLayer.h" />

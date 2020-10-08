@@ -5,34 +5,29 @@
 
 #include "EasySFML.h"
 
-enum class ItemType
-{
-	Stick,
-	Log,
-	Pebbles,
-	Rock
-};
 
 class CItem :
 	public CGameObject
 {
 public:
-	sf::Sprite sprite;
+	const std::string itemName;
+
 	sf::Texture texture;
-	ItemType type;
+	sf::Sprite sprite;
 
 	sf::RenderWindow* currentInv;
 
-	
 	sf::Vector2f initialPos;
 	sf::RenderWindow* initialWindow;
 
-	CItem();
-	//CItem(ItemType _type, sf::RenderWindow* _wind, sf::Vector2f _pos);
+	bool operator==(const CItem& _item);
 
 	virtual void FixedUpdate();
 
 protected:
+	CItem(sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name);
+
+	
 
 	virtual void Draw();
 };

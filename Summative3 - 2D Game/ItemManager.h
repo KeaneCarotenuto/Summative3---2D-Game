@@ -5,6 +5,7 @@
 #include "EasySFML.h"
 #include "CPlayer.h"
 #include "CItem.h"
+#include "Stackable.h"
 
 
 class ItemManager:
