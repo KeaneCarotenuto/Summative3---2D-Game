@@ -7,10 +7,10 @@
 
 
 class CItem :
-	public CGameObject, Loadable
+	public CGameObject, public Loadable
 {
 public:
-	const std::string itemName;
+	std::string itemName;
 
 	sf::Texture texture;
 	sf::Sprite sprite;
