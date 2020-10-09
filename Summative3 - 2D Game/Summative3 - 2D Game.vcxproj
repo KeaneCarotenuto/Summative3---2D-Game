@@ -151,7 +151,6 @@
     <ClCompile Include="EasySFML.cpp" />
     <ClCompile Include="GameData.cpp" />
     <ClCompile Include="GameEntity.cpp" />
-    <ClCompile Include="InstanceFactory.cpp" />
     <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="Lumber.cpp" />
     <ClCompile Include="Resource.cpp" />
@@ -161,7 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameData.h" />
-    <ClInclude Include="InstanceFactory.h" />
     <ClInclude Include="ItemManager.h" />
     <ClInclude Include="CItem.h" />
     <ClInclude Include="CPlayer.h" />
