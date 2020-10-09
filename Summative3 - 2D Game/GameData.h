@@ -22,7 +22,8 @@ public:
 	{
 		std::string GroupID;
 		int linecount;
-		std::vector<Data> GroupData;
+		std::vector<Data> Data;
+		
 	};
 	
 

@@ -60,7 +60,7 @@ GameData::GameData(std::string Path, std::string Filename)
 			Data datamember;
 			datamember.DataID = Arg1;
 			datamember.DataString = Arg2;
-			Groups.top().GroupData.push_back(datamember);
+			Groups.top().Data.push_back(datamember);
 		}
 	
 
@@ -75,7 +75,7 @@ std::string GameData::GetByID(std::string ID, std::string GroupID)
 	{
 		if (dg.GroupID == GroupID)
 		{
-			for (Data d : dg.GroupData)
+			for (Data d : dg.Data)
 			{
 				if (d.DataID == ID)
 				{
