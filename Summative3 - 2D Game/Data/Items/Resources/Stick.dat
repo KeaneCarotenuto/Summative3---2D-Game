@@ -1,2 +1,8 @@
 #DATA FILE
+<Group:ToolStats>
+	<Durability:100>
+</Group:ToolStats>
+<Group:TEST>
+	<Durability:200>
+</Group:TEST>
 <ENDFILE>

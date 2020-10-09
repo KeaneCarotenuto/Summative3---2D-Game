@@ -1,6 +1,51 @@
 #include "ItemManager.h"
 #pragma warning(disable : 6011)
 
+
+
+ItemManager::ItemManager(std::map < std::string, sf::RenderWindow*> _allWindows):
+	Loadable("Items/", "Manager")
+{
+	//Registers All Windows handed to it under map with name and pointer
+	for (std::map < std::string, sf::RenderWindow*>::iterator it = _allWindows.begin(); it != _allWindows.end(); it++) {
+		RegisterWindow(it->first, it->second);
+	}
+
+	//For every inventory Group (e.g, PlayerInv or WorldInv), get the data in the group
+	for (GameData::DataGroup _group : Data->FileData) {
+		//For all of the data in that group (e.g. {"Stick","10"}), get that data
+		for (GameData::Data _data : _group.GroupData) {
+
+			//Find the window that the group is a part of, from the map of windows, using the Group ID
+			std::map < std::string, sf::RenderWindow*>::iterator windIt = mapOfWindows.find(_group.GroupID);
+			if (windIt != mapOfWindows.end()) {
+
+				//Repeat for the amount of times specified in the file (e.g. "10")
+				for (int i = 0; i < std::stoi(_data.DataString); i++) {
+
+					//Find the item constructor function from the map of items, using the data id from the file
+					std::map <std::string, CItem* (*)(sf::RenderWindow* _wind, sf::Vector2f _pos)>::iterator itemIt = mapOfItems.find(_data.DataID);
+					if (itemIt != mapOfItems.end()) {
+
+						//Create the actual item and push it to the list of items
+						items.push_back(itemIt->second(windIt->second, { 10,10 }));
+					}
+				}
+
+			}
+			
+		}
+	}
+
+	
+	
+}
+
+ItemManager::~ItemManager()
+{
+	
+}
+
 void ItemManager::RemoveItem(CItem* _item)
 {
 	std::vector<CItem*>::iterator pos = std::find(items.begin(), items.end(), _item);
@@ -121,4 +166,11 @@ void ItemManager::FixedUpdate()
 	}
 
 	currentStep++;
+}
+
+void ItemManager::RegisterWindow(std::string _str, sf::RenderWindow* _wind)
+{
+	inventories.push_back(_wind);
+
+	mapOfWindows[_str] = _wind;
 }

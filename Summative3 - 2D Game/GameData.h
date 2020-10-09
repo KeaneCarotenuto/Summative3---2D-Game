@@ -12,6 +12,7 @@ namespace fs = std::filesystem;
 #pragma once
 class GameData
 {
+public:
 	struct Data
 	{
 		std::string DataID;
@@ -21,14 +22,14 @@ class GameData
 	{
 		std::string GroupID;
 		int linecount;
-		std::vector<Data> GroupData;
+		std::vector<Data> Data;
+		
 	};
 	
-public:
+
 	GameData(std::string Path, std::string _name);
 	std::string GetByID(std::string ID, std::string GroupID = "");
-	
-private:
+
 	std::vector<DataGroup> FileData;
 };
 class Loadable

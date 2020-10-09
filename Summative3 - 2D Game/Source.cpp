@@ -15,6 +15,7 @@
 #include "ItemManager.h"
 #include "Lumber.h"
 
+
 CPlayer player({ 10,10 }, {20,20}, sf::Color::Green);
 
 int main() {
@@ -26,22 +27,14 @@ int main() {
 	float spotlightX = 25, spotlightY = 25;
 
 
-	//Create item Manager
-	ItemManager* itemMngr = new ItemManager();
+	//Create Map of Widows and thier ID's
+	std::map <std::string, sf::RenderWindow*> windowsMap{
+		{"PlayerInv",&inventory},
+		{"WorldInv",&window}
+	};
 
-	//Push Inventories
-	itemMngr->inventories.push_back(&inventory);
-	itemMngr->inventories.push_back(&window);
-
-	//Push Items
-	itemMngr->items.push_back(new Lumber(LumberType::Stick, &inventory, {10,10}));
-	itemMngr->items.push_back(new Lumber(LumberType::Stick, &inventory, {10,80}));
-	itemMngr->items.push_back(new Lumber(LumberType::Log, &inventory, {10,80}));
-	itemMngr->items.push_back(new Lumber(LumberType::Log, &inventory, {10,80}));
-	itemMngr->items.push_back(new Lumber(LumberType::Log, &inventory, {10,80}));
-
-	std::cout << typeid(itemMngr->items[0]).name();
-
+	//Create itemmanager and hand it the map of windows
+	ItemManager* itemMngr = new ItemManager(windowsMap);
 
 	WorldLayer* world = new WorldLayer();
 	
@@ -78,9 +71,9 @@ int main() {
 		SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 
 
-		world->resetLightMap();
+		/*world->resetLightMap();
 		sf::Vector2f temp = player.rect.getPosition();
-		world->addPointLight((int)(temp.x/20), (int)(temp.y / 20), 9);
+		world->addPointLight((int)(temp.x/20), (int)(temp.y / 20), 9);*/
 		
 		
 		inventory.clear();

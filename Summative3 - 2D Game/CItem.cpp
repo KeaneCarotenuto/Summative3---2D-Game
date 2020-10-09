@@ -8,7 +8,7 @@ bool CItem::operator==(const CItem& _item)
 
 void CItem::FixedUpdate()
 {
-	
+	std::cout << Data->GetByID("MEME");
 	Draw();
 }
 
