@@ -14,7 +14,7 @@ ItemManager::ItemManager(std::map < std::string, sf::RenderWindow*> _allWindows)
 	//For every inventory Group (e.g, PlayerInv or WorldInv), get the data in the group
 	for (GameData::DataGroup _group : Data->FileData) {
 		//For all of the data in that group (e.g. {"Stick","10"}), get that data
-		for (GameData::Data _data : _group.GroupData) {
+		for (GameData::Data _data : _group.Data) {
 
 			//Find the window that the group is a part of, from the map of windows, using the Group ID
 			std::map < std::string, sf::RenderWindow*>::iterator windIt = mapOfWindows.find(_group.GroupID);
