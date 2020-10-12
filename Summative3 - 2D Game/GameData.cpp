@@ -24,33 +24,42 @@ GameData::GameData(std::string Path, std::string Filename)
 	DataGroup Misc;
 	std::string Arg1;
 	std::string Arg2;
+	std::string Arg3;
 	std::string Temp;
 	std::stack<DataGroup> Groups;
 	Groups.push(Misc);
 	while (bReading)
 	{
 		std::string line;
+		std::string tag;
 		std::getline(Reader, line);
 		if (line == ""||line[0] == '#')
 		{
 			continue;
 		}
-		if (line == "<ENDFILE>")
+
+		std::istringstream stream(line);
+		std::getline(stream, Temp, '<');
+		std::getline(stream, tag, '>');
+		std::istringstream tagstream(tag);
+
+		if (tag == "ENDFILE")
 		{
 			bReading = false;
 			break;
 		}
-		std::istringstream stream(line);
-		std::getline(stream, Temp, '<');
-		std::getline(stream, Arg1, ':');
-		std::getline(stream, Arg2, '>');
+		
+		
+		std::getline(tagstream, Arg1, ':');
+		
+		
 		if (Arg1 == "Group")
 		{
 			DataGroup temp;
-			temp.GroupID = Arg2;
+			std::getline(tagstream, temp.GroupID);
 			Groups.push(temp);
 		}
-		else if (Arg1 == "/Group")
+		else if (tag == "/Group")
 		{
 			FileData.push_back(Groups.top());
 			Groups.pop();
@@ -58,8 +67,9 @@ GameData::GameData(std::string Path, std::string Filename)
 		else
 		{
 			Data datamember;
-			datamember.DataID = Arg1;
-			datamember.DataString = Arg2;
+			datamember.DataType = Arg1;
+			std::getline(tagstream, datamember.DataID, ':');
+			std::getline(tagstream, datamember.DataString);
 			Groups.top().Data.push_back(datamember);
 		}
 	

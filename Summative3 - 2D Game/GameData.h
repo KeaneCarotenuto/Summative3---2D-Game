@@ -15,6 +15,7 @@ class GameData
 public:
 	struct Data
 	{
+		std::string DataType;
 		std::string DataID;
 		std::string DataString;
 	};
@@ -36,6 +37,7 @@ class Loadable
 {
 public:
 	GameData* Data;
+	
 protected:
 	Loadable(std::string Filepath, std::string _name);
 	
