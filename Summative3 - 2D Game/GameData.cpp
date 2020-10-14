@@ -89,6 +89,40 @@ GameData::GameData(std::string Path, std::string Filename)
 	Reader.close();
 }
 
+void GameData::Save(std::string Path, std::string Filename)
+{
+	DataGroup* CurrentGroup;
+	std::ofstream Writer;
+	Writer.open(Path + Filename + ".dat");
+	Writer << "#" + Filename + "\n#DATA  FILE\n";
+	Writer << SaveGroup(FileData);
+	Writer << "<ENDFILE>";
+	Writer.close();
+}
+
+std::string GameData::SaveGroup(DataGroup datg, int depth)
+{
+	std::string result = "";
+	std::string indent = "";
+	for (int i = 0; i < depth; i++)
+	{
+		indent += "\t";
+	}
+	for (Data dat : datg.m_Data)
+	{
+		result += indent + "<" + dat.DataType + ":" + dat.DataID + ":" + dat.DataString + ">\n";
+	}
+	for (DataGroup datg : datg.m_Groups)
+	{
+		result += indent + "<Group:" + datg.GroupID + ">\n";
+		result += SaveGroup(datg, depth + 1);
+		result += indent + "</Group>\n";
+	}
+	return result;
+}
+
+
+
 std::string GameData::GetByID(std::string ID, std::string GroupID)
 {
 	for (DataGroup dg : FileData.m_Groups)

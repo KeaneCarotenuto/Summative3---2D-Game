@@ -39,6 +39,12 @@ public:
 			DataID = Name;
 			DataString = Inp;
 		}
+		Data(bool Inp, std::string Name)
+		{
+			DataType = "Bool";
+			DataID = Name;
+			DataString = Inp ? "True" : "False";
+		}
 		operator int()
 		{
 			return std::stoi(DataString);
@@ -50,6 +56,10 @@ public:
 		operator std::string()
 		{
 			return DataString;
+		}
+		operator bool()
+		{
+			return (DataString == "True");
 		}
 	};
 	struct DataGroup
@@ -68,7 +78,7 @@ public:
 			{
 				m_Data.push_back(Data(dat,"M" + std::to_string(index++)));
 			}
-			GroupID = typeid(T).name + "_Vector";
+			GroupID = "Vector";
 		}
 
 		template<class T>
@@ -90,7 +100,7 @@ public:
 			{
 				m_Groups.push_back(DataGroup(dat, "V" + std::to_string(index)));
 			}
-			GroupID = typeid(T).name + "_Vector_Vector";
+			GroupID = "Vector(Vector)";
 		}
 
 		template<class T>
@@ -119,6 +129,12 @@ public:
 	
 
 	GameData(std::string Path, std::string _name);
+	GameData() 
+	{
+
+	}
+	void Save(std::string Path, std::string Filename);
+	std::string SaveGroup(DataGroup datg, int depth = 0);
 	std::string GetByID(std::string ID, std::string GroupID = "");
 
 	DataGroup FileData;

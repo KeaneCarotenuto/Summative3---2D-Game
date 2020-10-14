@@ -27,6 +27,8 @@ public:
 
 	void RegisterWindow(std::string _str, sf::RenderWindow* _wind);
 
+	
+
 private:
 	int currentStep = 0;
 
