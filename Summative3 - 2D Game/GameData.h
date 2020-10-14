@@ -8,6 +8,9 @@
 #include <time.h>
 #include <sstream>
 #include <filesystem>
+#define Variable(var) GameData::Data(var, #var)
+#define Group(var) GameData::DataGroup(var, #var)
+
 namespace fs = std::filesystem;
 #pragma once
 class GameData
@@ -20,7 +23,30 @@ public:
 		std::string DataString;
 
 		Data();
-
+		//Data(int Inp)
+		//{
+		//	DataType = "Int";
+		//	DataID = GET_VARIABLE_NAME(Inp);
+		//	DataString = std::to_string(Inp);
+		//}
+		//Data(float Inp)
+		//{
+		//	DataType = "Float";
+		//	DataID = GET_VARIABLE_NAME(Inp);
+		//	DataString = std::to_string(Inp);
+		//}
+		//Data(std::string Inp)
+		//{
+		//	DataType = "String";
+		//	DataID = GET_VARIABLE_NAME(Inp);
+		//	DataString = Inp;
+		//}
+		//Data(bool Inp)
+		//{
+		//	DataType = "Bool";
+		//	DataID = GET_VARIABLE_NAME(Inp);
+		//	DataString = Inp ? "True" : "False";
+		//}
 		Data(int Inp, std::string Name)
 		{
 			DataType = "Int";

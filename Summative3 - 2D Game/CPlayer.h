@@ -29,17 +29,17 @@ public:
 	{
 		GameData dat;
 		dat.FileData.GroupID = "PlayerData";
-		dat.FileData.m_Data.push_back(GameData::Data(Health, "Health"));
-		dat.FileData.m_Data.push_back(GameData::Data(Hunger, "Hunger"));
-		dat.FileData.m_Data.push_back(GameData::Data(Thirst, "Thirst"));
-		dat.FileData.m_Data.push_back(GameData::Data(IsBleeding, "IsBleeding"));
+		dat.FileData.m_Data.push_back(Variable(Health));
+		dat.FileData.m_Data.push_back(Variable(Hunger));
+		dat.FileData.m_Data.push_back(Variable(Thirst));
+		dat.FileData.m_Data.push_back(Variable(IsBleeding));
 
-		dat.FileData.m_Data.push_back(GameData::Data(Str, "Str"));
-		dat.FileData.m_Data.push_back(GameData::Data(Agi, "Agi"));
-		dat.FileData.m_Data.push_back(GameData::Data(Wis, "Wis"));
-		dat.FileData.m_Data.push_back(GameData::Data(Def, "Def"));
+		dat.FileData.m_Data.push_back(Variable(Str));
+		dat.FileData.m_Data.push_back(Variable(Agi));
+		dat.FileData.m_Data.push_back(Variable(Wis));
+		dat.FileData.m_Data.push_back(Variable(Def));
 
-		dat.FileData.m_Groups.push_back(Effects);
+		dat.FileData.m_Groups.push_back(Group(Effects));
 
 		return dat;
 	}
