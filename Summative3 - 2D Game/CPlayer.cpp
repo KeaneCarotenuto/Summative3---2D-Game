@@ -15,6 +15,7 @@ CPlayer::CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col)
 	Wis = Data->FileData.m_Data[6];
 	Def = Data->FileData.m_Data[7];
 	Effects = Data->FileData.m_Groups[0];
+	TestVector = Data->FileData.m_Groups[1];
 
 }
 

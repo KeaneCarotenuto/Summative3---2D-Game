@@ -26,7 +26,8 @@ GameData::GameData(std::string Path, std::string Filename)
 	std::string Arg3;
 	std::string Temp;
 	std::stack<DataGroup*> Groups;
-	DataGroup* Parent = &FileData;
+	std::stack<DataGroup*> Parent;
+	Parent.push(&FileData);
 	std::cout << "Started Reading" << std::endl;
 	Groups.push(&FileData);
 	while (bReading)
@@ -61,16 +62,17 @@ GameData::GameData(std::string Path, std::string Filename)
 			std::getline(tagstream, temp.GroupID);
 			
 			std::cout << "Created Group: " << temp.GroupID << std::endl;
-			Parent = Groups.top();
+			Parent.push(Groups.top());
 			
 			Groups.push(&temp);
-			Parent->m_Groups.push_back(temp);
+			Parent.top()->m_Groups.push_back(*Groups.top());
 		}
 		else if (tag == "/Group")
 		{
 			
 			std::cout << "Closed Group: " << Groups.top()->GroupID << std::endl;
 			Groups.pop();
+			Parent.pop();
 			
 		}
 		else
@@ -80,14 +82,15 @@ GameData::GameData(std::string Path, std::string Filename)
 			std::getline(tagstream, datamember.DataID, ':');
 			std::getline(tagstream, datamember.DataString);
 			std::cout << "Created " << datamember.DataType << " member: " << datamember.DataID << " [" << datamember.DataString << "]" << std::endl;
-			if (!Parent->m_Groups.empty())
+			if (!Groups.empty())
 			{
-				Parent->m_Groups.back().m_Data.push_back(datamember);
+				Groups.top()->m_Data.push_back(datamember);
 			}
 			else
 			{
-				Parent->m_Data.push_back(datamember);
+				Parent.top()->m_Data.push_back(datamember);
 			}
+			
 
 		}
 	
@@ -95,6 +98,16 @@ GameData::GameData(std::string Path, std::string Filename)
 	}
 	std::cout << "Stopped Reading" << std::endl;
 	Reader.close();
+}
+
+void GameData::AddVariable(Data dat)
+{
+	FileData.m_Data.push_back(dat);
+}
+
+void GameData::AddGroup(DataGroup datg)
+{
+	FileData.m_Groups.push_back(datg);
 }
 
 void GameData::Save(std::string Path, std::string Filename)
