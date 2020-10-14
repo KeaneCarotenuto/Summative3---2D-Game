@@ -23,23 +23,26 @@ public:
 	int Wis;
 	int Def;
 
-	std::vector<std::string> Effects = { "Ayyyyyy","LmaOOOO","ThisWORKSSSS","and its COOL","INDENTSSSSS","WOOOOOOO","YAY","FUNNNNNN","B)","Neat" };
+	std::vector<std::string> Effects;
+	std::vector<std::vector<int>> TestVector;
 	
 	operator GameData()
 	{
 		GameData dat;
+
 		dat.FileData.GroupID = "PlayerData";
-		dat.FileData.m_Data.push_back(Variable(Health));
-		dat.FileData.m_Data.push_back(Variable(Hunger));
-		dat.FileData.m_Data.push_back(Variable(Thirst));
-		dat.FileData.m_Data.push_back(Variable(IsBleeding));
+		dat.AddVariable(Variable(Health));
+		dat.AddVariable(Variable(Hunger));
+		dat.AddVariable(Variable(Thirst));
+		dat.AddVariable(Variable(IsBleeding));
 
-		dat.FileData.m_Data.push_back(Variable(Str));
-		dat.FileData.m_Data.push_back(Variable(Agi));
-		dat.FileData.m_Data.push_back(Variable(Wis));
-		dat.FileData.m_Data.push_back(Variable(Def));
+		dat.AddVariable(Variable(Str));
+		dat.AddVariable(Variable(Agi));
+		dat.AddVariable(Variable(Wis));
+		dat.AddVariable(Variable(Def));
 
-		dat.FileData.m_Groups.push_back(Group(Effects));
+		dat.AddGroup(Group(Effects));
+		dat.AddGroup(Group(TestVector));
 
 		return dat;
 	}

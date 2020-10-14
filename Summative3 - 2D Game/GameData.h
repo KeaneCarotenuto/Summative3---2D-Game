@@ -23,30 +23,6 @@ public:
 		std::string DataString;
 
 		Data();
-		//Data(int Inp)
-		//{
-		//	DataType = "Int";
-		//	DataID = GET_VARIABLE_NAME(Inp);
-		//	DataString = std::to_string(Inp);
-		//}
-		//Data(float Inp)
-		//{
-		//	DataType = "Float";
-		//	DataID = GET_VARIABLE_NAME(Inp);
-		//	DataString = std::to_string(Inp);
-		//}
-		//Data(std::string Inp)
-		//{
-		//	DataType = "String";
-		//	DataID = GET_VARIABLE_NAME(Inp);
-		//	DataString = Inp;
-		//}
-		//Data(bool Inp)
-		//{
-		//	DataType = "Bool";
-		//	DataID = GET_VARIABLE_NAME(Inp);
-		//	DataString = Inp ? "True" : "False";
-		//}
 		Data(int Inp, std::string Name)
 		{
 			DataType = "Int";
@@ -115,18 +91,19 @@ public:
 			{
 				m_Data.push_back(Data(dat, "M" + std::to_string(index++)));
 			}
+			
 			GroupID = Name;
 		}
 
 		template<class T>
-		DataGroup(std::vector<std::vector<T>> Inp)
+		DataGroup(std::vector<std::vector<T>> Inp, std::string Name)
 		{
 			int index = 1;
-			for (T dat : Inp)
+			for (std::vector<T> dat : Inp)
 			{
-				m_Groups.push_back(DataGroup(dat, "V" + std::to_string(index)));
+				m_Groups.push_back(DataGroup(dat, "M" + std::to_string(index++)));
 			}
-			GroupID = "Vector(Vector)";
+			GroupID = Name;
 		}
 
 		template<class T>
@@ -140,9 +117,22 @@ public:
 					result.push_back(dat);
 				}
 			}
-			
 			return result;
 		}
+		template<class T>
+		operator std::vector<std::vector<T>>()
+		{
+			std::vector<std::vector<T>> result;
+			if (!m_Groups.empty())
+			{
+				for (DataGroup datg : m_Groups)
+				{
+					result.push_back(datg);
+				}
+			}
+			return result;
+		}
+
 		
 		
 	};
@@ -153,6 +143,8 @@ public:
 	{
 
 	}
+	void AddVariable(Data dat);
+	void AddGroup(DataGroup datg);
 	void Save(std::string Path, std::string Filename);
 	std::string SaveGroup(DataGroup datg, int depth = 0);
 	std::string GetByID(std::string ID, std::string GroupID = "");

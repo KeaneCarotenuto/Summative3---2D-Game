@@ -1,8 +1,8 @@
 #PlayerData
 #DATA  FILE
-<Int:Health:100>
-<Float:Hunger:4.209877>
-<Float:Thirst:42.098942>
+<Int:Health:0>
+<Float:Hunger:6.594705>
+<Float:Thirst:65.945679>
 <Bool:IsBleeding:False>
 <Int:Str:18>
 <Int:Agi:12>
@@ -19,5 +19,51 @@
 	<String:M8:FUNNNNNN>
 	<String:M9:B)>
 	<String:M10:Neat>
+</Group>
+<Group:TestVector>
+	<Group:M1>
+		<Int:M1:5>
+		<Int:M2:6>
+		<Int:M3:2>
+		<Int:M4:3>
+	</Group>
+	<Group:M2>
+		<Int:M1:6>
+		<Int:M2:7>
+		<Int:M3:2>
+		<Int:M4:33>
+		<Int:M5:4>
+		<Int:M6:7>
+		<Int:M7:4>
+	</Group>
+	<Group:M3>
+		<Int:M1:4>
+		<Int:M2:7>
+		<Int:M3:3>
+		<Int:M4:4>
+		<Int:M5:5>
+		<Int:M6:2>
+		<Int:M7:4>
+		<Int:M8:3>
+	</Group>
+	<Group:M4>
+		<Int:M1:0>
+		<Int:M2:5>
+		<Int:M3:3>
+		<Int:M4:5>
+	</Group>
+	<Group:M5>
+		<Int:M1:1>
+		<Int:M2:6>
+		<Int:M3:3>
+		<Int:M4:4>
+		<Int:M5:5>
+		<Int:M6:34>
+		<Int:M7:24>
+		<Int:M8:56>
+		<Int:M9:45>
+		<Int:M10:34>
+		<Int:M11:23>
+	</Group>
 </Group>
 <ENDFILE>
