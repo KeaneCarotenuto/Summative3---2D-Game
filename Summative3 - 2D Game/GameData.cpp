@@ -80,7 +80,15 @@ GameData::GameData(std::string Path, std::string Filename)
 			std::getline(tagstream, datamember.DataID, ':');
 			std::getline(tagstream, datamember.DataString);
 			std::cout << "Created " << datamember.DataType << " member: " << datamember.DataID << " [" << datamember.DataString << "]" << std::endl;
-			Parent->m_Groups.back().m_Data.push_back(datamember);
+			if (!Parent->m_Groups.empty())
+			{
+				Parent->m_Groups.back().m_Data.push_back(datamember);
+			}
+			else
+			{
+				Parent->m_Data.push_back(datamember);
+			}
+
 		}
 	
 

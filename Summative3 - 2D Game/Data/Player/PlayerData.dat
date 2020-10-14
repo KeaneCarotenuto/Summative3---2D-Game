@@ -1,13 +1,13 @@
 #PlayerData
 #DATA  FILE
-<Int:Health:0>
-<Float:Hunger:0.000000>
-<Float:Thirst:0.000000>
+<Int:Health:100>
+<Float:Hunger:2.010037>
+<Float:Thirst:20.100365>
 <Bool:IsBleeding:False>
-<Int:Str:0>
-<Int:Agi:0>
-<Int:Wis:0>
-<Int:Def:0>
+<Int:Str:18>
+<Int:Agi:12>
+<Int:Wis:8>
+<Int:Def:6>
 <Group:Vector>
 	<String:M1:Ayyyyyy>
 	<String:M2:LmaOOOO>
