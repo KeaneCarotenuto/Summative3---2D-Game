@@ -114,13 +114,7 @@ public:
 					result.push_back(dat);
 				}
 			}
-			else if (!m_Groups.empty())
-			{
-				for (DataGroup group : m_Groups)
-				{
-					result.push_back(group);
-				}
-			}
+			
 			return result;
 		}
 		

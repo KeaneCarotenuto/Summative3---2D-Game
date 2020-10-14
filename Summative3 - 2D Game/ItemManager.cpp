@@ -43,7 +43,7 @@ ItemManager::ItemManager(std::map < std::string, sf::RenderWindow*> _allWindows)
 
 ItemManager::~ItemManager()
 {
-	
+	Data->Save(FilePath, "Manager");
 }
 
 void ItemManager::RemoveItem(CItem* _item)
