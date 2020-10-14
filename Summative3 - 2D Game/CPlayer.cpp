@@ -1,10 +1,17 @@
 #include "CPlayer.h"
 
 CPlayer::CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col)
+	: Loadable("Player/", "PlayerData")
 {
 	rect.setPosition(_pos);
 	rect.setSize(_size);
 	rect.setFillColor(_col);
+}
+
+CPlayer::~CPlayer()
+{
+	GameData SaveData(*this);
+	SaveData.Save(FilePath, "PlayerData");
 }
 
 void CPlayer::FixedUpdate()

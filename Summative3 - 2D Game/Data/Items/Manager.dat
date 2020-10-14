@@ -1,8 +1,8 @@
 #DATA FILE
 <Group:PlayerInv>
-	<Stick:2>
-</Group:PlayerInv>
+	<Int:Stick:2>
+</Group>
 <Group:WorldInv>
-	<Log:5>
-</Group:WorldInv>
+	<Int:Log:5>
+</Group>
 <ENDFILE>

@@ -1,0 +1,23 @@
+#PlayerData
+#DATA  FILE
+<Int:Health:0>
+<Float:Hunger:0.000000>
+<Float:Thirst:0.000000>
+<Bool:IsBleeding:False>
+<Int:Str:0>
+<Int:Agi:0>
+<Int:Wis:0>
+<Int:Def:0>
+<Group:Vector>
+	<String:M1:Ayyyyyy>
+	<String:M2:LmaOOOO>
+	<String:M3:ThisWORKSSSS>
+	<String:M4:and its COOL>
+	<String:M5:INDENTSSSSS>
+	<String:M6:WOOOOOOO>
+	<String:M7:YAY>
+	<String:M8:FUNNNNNN>
+	<String:M9:B)>
+	<String:M10:Neat>
+</Group>
+<ENDFILE>

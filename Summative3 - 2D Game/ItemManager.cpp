@@ -12,16 +12,16 @@ ItemManager::ItemManager(std::map < std::string, sf::RenderWindow*> _allWindows)
 	}
 
 	//For every inventory Group (e.g, PlayerInv or WorldInv), get the data in the group
-	for (GameData::DataGroup _group : Data->FileData) {
+	for (GameData::DataGroup _group : Data->FileData.m_Groups) {
 		//For all of the data in that group (e.g. {"Stick","10"}), get that data
-		for (GameData::Data _data : _group.GroupData) {
+		for (GameData::Data _data : _group.m_Data) {
 
 			//Find the window that the group is a part of, from the map of windows, using the Group ID
 			std::map < std::string, sf::RenderWindow*>::iterator windIt = mapOfWindows.find(_group.GroupID);
 			if (windIt != mapOfWindows.end()) {
 
 				//Repeat for the amount of times specified in the file (e.g. "10")
-				for (int i = 0; i < std::stoi(_data.DataString); i++) {
+				for (int i = 0; i < (int)_data; i++) {
 
 					//Find the item constructor function from the map of items, using the data id from the file
 					std::map <std::string, CItem* (*)(sf::RenderWindow* _wind, sf::Vector2f _pos)>::iterator itemIt = mapOfItems.find(_data.DataID);
