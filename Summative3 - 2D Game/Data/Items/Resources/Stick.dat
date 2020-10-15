@@ -1,8 +1,0 @@
-#DATA FILE
-<Group:ToolStats>
-	<Int:Durability:100>
-</Group>
-<Group:TEST>
-	<Int:Durability:200>
-</Group>
-<ENDFILE>

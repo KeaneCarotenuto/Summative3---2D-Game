@@ -1,8 +1,0 @@
-#DATA FILE
-<Group:PlayerInv>
-	<Int:Stick:2>
-</Group>
-<Group:WorldInv>
-	<Int:Log:5>
-</Group>
-<ENDFILE>
