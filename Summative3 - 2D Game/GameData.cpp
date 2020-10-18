@@ -141,23 +141,6 @@ std::string GameData::SaveGroup(DataGroup datg, int depth)
 
 
 
-std::string GameData::GetByID(std::string ID, std::string GroupID)
-{
-	for (DataGroup dg : FileData.m_Groups)
-	{
-		if (dg.GroupID == GroupID)
-		{
-			for (Data d : dg.m_Data)
-			{
-				if (d.DataID == ID)
-				{
-					return d.DataString;
-				}
-			}
-		}
-	}
-	return std::string();
-}
 
 GameData::DataGroup::DataGroup()
 {

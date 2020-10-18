@@ -48,7 +48,10 @@
     <ClCompile Include="GameData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ItemFactory.cpp">
+    <ClCompile Include="Mineral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Consumables.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,7 +92,10 @@
     <ClInclude Include="GameData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ItemFactory.h">
+    <ClInclude Include="Mineral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Consumables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

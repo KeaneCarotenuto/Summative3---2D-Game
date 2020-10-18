@@ -9,7 +9,7 @@ class Resource :
 {
 public:
 	Resource(sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name);
-	Resource(sf::RenderWindow* _wind, GameData::DataGroup datg, CItem* (*constructor)(sf::RenderWindow* _wind, sf::Vector2f _pos));
+	Resource(sf::RenderWindow* _wind, GameData::DataGroup datg, CItem* (*constructor)(sf::RenderWindow* _wind, GameData::DataGroup _datag));
 	
 
 	operator GameData::DataGroup()

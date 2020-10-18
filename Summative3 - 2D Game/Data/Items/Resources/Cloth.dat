@@ -1,6 +1,6 @@
 #DATA FILE
 <Group:SpriteData>
 	<String:Path:Resources/Sprites/Resources.png>
-	<Int:TextureIndex:1>
+	<Int:TextureIndex:9>
 </Group>
 <ENDFILE>

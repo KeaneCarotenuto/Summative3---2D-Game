@@ -11,6 +11,7 @@
 #include <SFML/Graphics.hpp>
 #define Variable(var) GameData::Data(var, #var)
 #define Group(var) GameData::DataGroup(var, #var)
+#define GetName(var) #var
 
 namespace fs = std::filesystem;
 #pragma once
@@ -181,7 +182,7 @@ public:
 	void AddGroup(DataGroup datg);
 	void Save(std::string Path, std::string Filename);
 	std::string SaveGroup(DataGroup datg, int depth = 0);
-	std::string GetByID(std::string ID, std::string GroupID = "");
+	
 
 	DataGroup FileData;
 };

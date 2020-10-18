@@ -147,21 +147,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CItem.cpp" />
+    <ClCompile Include="Consumables.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="EasySFML.cpp" />
     <ClCompile Include="GameData.cpp" />
     <ClCompile Include="GameEntity.cpp" />
-    <ClCompile Include="ItemFactory.cpp" />
     <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="Lumber.cpp" />
+    <ClCompile Include="Mineral.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SpecialTile.cpp" />
     <ClCompile Include="WorldLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Consumables.h" />
     <ClInclude Include="GameData.h" />
-    <ClInclude Include="ItemFactory.h" />
     <ClInclude Include="ItemManager.h" />
     <ClInclude Include="CItem.h" />
     <ClInclude Include="CPlayer.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="Lumber.h" />
     <ClInclude Include="ItemAttributes.h" />
+    <ClInclude Include="Mineral.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SpecialTile.h" />
     <ClInclude Include="Stackable.h" />

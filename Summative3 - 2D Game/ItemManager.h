@@ -7,6 +7,8 @@
 #include "CItem.h"
 #include "Stackable.h"
 #include "Lumber.h"
+#include "Mineral.h"
+#include "Consumables.h"
 
 class ItemManager:
 	private CGameObject, Loadable
@@ -65,7 +67,13 @@ private:
 
 	std::map <std::string, CItem* (*)(sf::RenderWindow* _wind, GameData::DataGroup _datag)> mapOfItems = {
 		{"Stick", &Lumber::Stick},
-		{"Log", &Lumber::Log}
+		{"Log", &Lumber::Log},
+		{"Stone", &Mineral::Stone},
+		{"IronOre", &Mineral::IronOre},
+		{"CopperOre", &Mineral::CopperOre},
+		{"Meat", &Consumables::Meat},
+		{"Berries", &Consumables::Berries},
+		{"Water", &Consumables::Water}
 	};
 };
 
