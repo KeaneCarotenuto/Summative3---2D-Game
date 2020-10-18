@@ -49,6 +49,7 @@ int main() {
 		{
 			if (newEvent.type == sf::Event::Closed)
 			{
+				delete itemMngr;
 				window.close();
 			}
 

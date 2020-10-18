@@ -16,13 +16,18 @@ public:
 	sf::Sprite sprite;
 
 	sf::RenderWindow* currentInv;
+	std::string currentInvName;
 
 	sf::Vector2f initialPos;
 	sf::RenderWindow* initialWindow;
 
 	bool operator==(const CItem& _item);
 
+	virtual operator GameData::DataGroup() = 0;
+	
+
 	virtual void FixedUpdate();
+
 
 protected:
 	CItem(sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name, std::string _filepath);

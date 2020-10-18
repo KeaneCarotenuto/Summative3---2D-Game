@@ -1,0 +1,56 @@
+#Manager
+#DATA  FILE
+<Group:PlayerInv>
+	<Group:Stick>
+		<Bool:bIsEnabled:True>
+		<Group:initialPos>
+			<Float:x:12.000000>
+			<Float:y:357.999969>
+		</Group>
+		<Group:Stick>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:12.000000>
+				<Float:y:357.999969>
+			</Group>
+		</Group>
+	</Group>
+	<Group:Log>
+		<Bool:bIsEnabled:True>
+		<Group:initialPos>
+			<Float:x:76.000000>
+			<Float:y:151.000000>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:76.000000>
+				<Float:y:151.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:76.000000>
+				<Float:y:151.000000>
+			</Group>
+		</Group>
+	</Group>
+	<Group:Log>
+		<Bool:bIsEnabled:True>
+		<Group:initialPos>
+			<Float:x:104.000000>
+			<Float:y:230.999969>
+		</Group>
+	</Group>
+	<Group:Stick>
+		<Bool:bIsEnabled:True>
+		<Group:initialPos>
+			<Float:x:-3.999996>
+			<Float:y:54.999985>
+		</Group>
+	</Group>
+</Group>
+<Group:WorldInv>
+</Group>
+<ENDFILE>

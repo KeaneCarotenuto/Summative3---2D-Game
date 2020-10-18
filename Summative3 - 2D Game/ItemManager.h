@@ -29,12 +29,41 @@ public:
 
 	
 
+	operator GameData()
+	{
+		GameData dat;
+		dat.AddGroup(std::string("PlayerInv"));
+		dat.AddGroup(std::string("WorldInv"));
+		for (CItem* item : items)
+		{
+			if (!item->bIsEnabled) { continue; }
+			//Get name of current window
+			std::string currentWindow = "PlayerInv";
+
+			for (GameData::DataGroup& datg : dat.FileData.m_Groups)
+			{
+				if (datg.GroupID == currentWindow)
+				{
+					if (dynamic_cast<Resource*>(item))
+					{
+						datg.m_Groups.push_back(*dynamic_cast<Resource*>(item));
+					}
+					
+					
+				}
+			}
+		}
+		
+		return dat;
+	}
+
 private:
 	int currentStep = 0;
 
 	std::map <std::string, sf::RenderWindow*> mapOfWindows;
+	
 
-	std::map <std::string, CItem* (*)(sf::RenderWindow* _wind, sf::Vector2f _pos)> mapOfItems = {
+	std::map <std::string, CItem* (*)(sf::RenderWindow* _wind, GameData::DataGroup _datag)> mapOfItems = {
 		{"Stick", &Lumber::Stick},
 		{"Log", &Lumber::Log}
 	};

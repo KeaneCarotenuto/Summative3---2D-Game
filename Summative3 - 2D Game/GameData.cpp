@@ -27,6 +27,7 @@ GameData::GameData(std::string Path, std::string Filename)
 	std::string Temp;
 	std::stack<DataGroup*> Groups;
 	std::stack<DataGroup*> Parent;
+	DataGroup temp;
 	Parent.push(&FileData);
 	std::cout << "Started Reading" << std::endl;
 	Groups.push(&FileData);
@@ -58,19 +59,19 @@ GameData::GameData(std::string Path, std::string Filename)
 		
 		if (Arg1 == "Group")
 		{
-			DataGroup temp;
-			std::getline(tagstream, temp.GroupID);
 			
-			std::cout << "Created Group: " << temp.GroupID << std::endl;
+			std::getline(tagstream, Arg2);
+			
+			std::cout << "Created Group: " << Arg2 << std::endl;
 			Parent.push(Groups.top());
+			Groups.push(new DataGroup(Arg2));
 			
-			Groups.push(&temp);
-			Parent.top()->m_Groups.push_back(*Groups.top());
 		}
 		else if (tag == "/Group")
 		{
 			
 			std::cout << "Closed Group: " << Groups.top()->GroupID << std::endl;
+			Parent.top()->m_Groups.push_back(*Groups.top());
 			Groups.pop();
 			Parent.pop();
 			
@@ -82,14 +83,9 @@ GameData::GameData(std::string Path, std::string Filename)
 			std::getline(tagstream, datamember.DataID, ':');
 			std::getline(tagstream, datamember.DataString);
 			std::cout << "Created " << datamember.DataType << " member: " << datamember.DataID << " [" << datamember.DataString << "]" << std::endl;
-			if (!Groups.empty())
-			{
-				Groups.top()->m_Data.push_back(datamember);
-			}
-			else
-			{
-				Parent.top()->m_Data.push_back(datamember);
-			}
+			
+			
+			Groups.top()->m_Data.push_back(Data(datamember));
 			
 
 		}
@@ -110,9 +106,10 @@ void GameData::AddGroup(DataGroup datg)
 	FileData.m_Groups.push_back(datg);
 }
 
+
+
 void GameData::Save(std::string Path, std::string Filename)
 {
-	DataGroup* CurrentGroup;
 	std::ofstream Writer;
 	Writer.open(Path + Filename + ".dat");
 	Writer << "#" + Filename + "\n#DATA  FILE\n";
@@ -166,6 +163,42 @@ GameData::DataGroup::DataGroup()
 {
 }
 
+GameData::DataGroup::DataGroup(std::string _name)
+{
+	GroupID = _name;
+}
+
+GameData::Data GameData::DataGroup::GetDataByID(std::string _ID)
+{
+	for (GameData::Data dat : m_Data)
+	{
+		if (dat.DataID == _ID)
+		{
+			return dat;
+		}
+	}
+	return Data();
+}
+
+GameData::DataGroup GameData::DataGroup::GetGroupByID(std::string _ID)
+{
+	for (GameData::DataGroup datg : m_Groups)
+	{
+		if (datg.GroupID == _ID)
+		{
+			return datg;
+		}
+	}
+	return DataGroup();
+}
+
 GameData::Data::Data()
 {
+}
+
+GameData::Data::Data(const Data& copy)
+{
+	DataType = copy.DataType;
+	DataID = copy.DataID;
+	DataString = copy.DataString;
 }

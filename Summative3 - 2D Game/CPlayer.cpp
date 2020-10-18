@@ -6,16 +6,7 @@ CPlayer::CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col)
 	rect.setPosition(_pos);
 	rect.setSize(_size);
 	rect.setFillColor(_col);
-	Health = Data->FileData.m_Data[0];
-	Hunger = Data->FileData.m_Data[1];
-	Thirst = Data->FileData.m_Data[2];
-	IsBleeding = Data->FileData.m_Data[3];
-	Str = Data->FileData.m_Data[4];
-	Agi = Data->FileData.m_Data[5];
-	Wis = Data->FileData.m_Data[6];
-	Def = Data->FileData.m_Data[7];
-	Effects = Data->FileData.m_Groups[0];
-	TestVector = Data->FileData.m_Groups[1];
+	
 
 }
 
