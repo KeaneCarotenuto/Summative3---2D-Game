@@ -18,11 +18,6 @@ public:
 	
 	Mineral(MineralType _type, GameData::DataGroup _datag, sf::RenderWindow* _wind, CItem* (*constructor)(sf::RenderWindow* _wind, GameData::DataGroup _datag));
 
-	std::map<MineralType, std::string> MineralTypeNames = {
-		{MineralType::Stone, "Stone"},
-		{MineralType::CopperOre, "CopperOre"},
-		{MineralType::IronOre, "IronOre"}
-	};
 
 	//Functions that create and return an isntance of a specific Object
 	static CItem* Stone(sf::RenderWindow* _wind, GameData::DataGroup _datag) { return new Mineral(MineralType::Stone, _datag, _wind, Stone); }
