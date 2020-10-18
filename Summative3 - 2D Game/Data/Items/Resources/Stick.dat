@@ -1,8 +1,6 @@
 #DATA FILE
-<Group:ToolStats>
-	<Int:Durability:100>
-</Group>
-<Group:TEST>
-	<Int:Durability:200>
+<Group:SpriteData>
+	<String:Path:Resources/Sprites/Resources.png>
+	<Int:TextureIndex:0>
 </Group>
 <ENDFILE>

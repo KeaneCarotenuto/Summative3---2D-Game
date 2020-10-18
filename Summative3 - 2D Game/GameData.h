@@ -8,8 +8,10 @@
 #include <time.h>
 #include <sstream>
 #include <filesystem>
+#include <SFML/Graphics.hpp>
 #define Variable(var) GameData::Data(var, #var)
 #define Group(var) GameData::DataGroup(var, #var)
+#define GetName(var) #var
 
 namespace fs = std::filesystem;
 #pragma once
@@ -23,6 +25,7 @@ public:
 		std::string DataString;
 
 		Data();
+		Data(const Data& copy);
 		Data(int Inp, std::string Name)
 		{
 			DataType = "Int";
@@ -71,6 +74,10 @@ public:
 		std::vector<DataGroup> m_Groups;
 		
 		DataGroup();
+		DataGroup(std::string _name);
+
+		Data GetDataByID(std::string _ID);
+		DataGroup GetGroupByID(std::string _ID);
 
 		template<class T>
 		DataGroup(std::vector<T> Inp)
@@ -104,6 +111,34 @@ public:
 				m_Groups.push_back(DataGroup(dat, "M" + std::to_string(index++)));
 			}
 			GroupID = Name;
+		}
+
+		DataGroup(sf::Vector2f Inp, std::string Name)
+		{
+			m_Data.push_back(Data(Inp.x, "x"));
+			m_Data.push_back(Data(Inp.y, "y"));
+			GroupID = Name;
+		}
+
+		operator sf::Vector2f()
+		{
+			sf::Vector2f result;
+			if (!m_Data.empty())
+			{
+				for (Data dat : m_Data)
+				{
+					if (dat.DataID == "x")
+					{
+						result.x = dat;
+					}
+					else if (dat.DataID == "y")
+					{
+						result.y = dat;
+					}
+
+				}
+			}
+			return result;
 		}
 
 		template<class T>
@@ -147,7 +182,7 @@ public:
 	void AddGroup(DataGroup datg);
 	void Save(std::string Path, std::string Filename);
 	std::string SaveGroup(DataGroup datg, int depth = 0);
-	std::string GetByID(std::string ID, std::string GroupID = "");
+	
 
 	DataGroup FileData;
 };

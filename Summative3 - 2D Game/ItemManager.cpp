@@ -14,23 +14,25 @@ ItemManager::ItemManager(std::map < std::string, sf::RenderWindow*> _allWindows)
 	//For every inventory Group (e.g, PlayerInv or WorldInv), get the data in the group
 	for (GameData::DataGroup _group : Data->FileData.m_Groups) {
 		//For all of the data in that group (e.g. {"Stick","10"}), get that data
-		for (GameData::Data _data : _group.m_Data) {
+		for (GameData::DataGroup& _childgroup : _group.m_Groups) {
 
 			//Find the window that the group is a part of, from the map of windows, using the Group ID
 			std::map < std::string, sf::RenderWindow*>::iterator windIt = mapOfWindows.find(_group.GroupID);
 			if (windIt != mapOfWindows.end()) {
 
-				//Repeat for the amount of times specified in the file (e.g. "10")
-				for (int i = 0; i < (int)_data; i++) {
+				
 
 					//Find the item constructor function from the map of items, using the data id from the file
-					std::map <std::string, CItem* (*)(sf::RenderWindow* _wind, sf::Vector2f _pos)>::iterator itemIt = mapOfItems.find(_data.DataID);
+					std::map <std::string, CItem* (*)(sf::RenderWindow* _wind, GameData::DataGroup _datag)>::iterator itemIt = mapOfItems.find(_childgroup.GroupID);
 					if (itemIt != mapOfItems.end()) {
 
 						//Create the actual item and push it to the list of items
-						items.push_back(itemIt->second(windIt->second, { 10,10 }));
+
+						items.push_back(itemIt->second(windIt->second, _childgroup));
+						
+
 					}
-				}
+				
 
 			}
 			
@@ -43,7 +45,8 @@ ItemManager::ItemManager(std::map < std::string, sf::RenderWindow*> _allWindows)
 
 ItemManager::~ItemManager()
 {
-	Data->Save(FilePath, "Manager");
+	GameData SaveData(*this);
+	SaveData.Save(FilePath, "Manager");
 }
 
 void ItemManager::RemoveItem(CItem* _item)
@@ -118,7 +121,7 @@ void ItemManager::FixedUpdate()
 						dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.top()->initialPos = { sprite.getPosition().x + 10, sprite.getPosition().y + 10 };
 						dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.top()->initialWindow = _item->currentInv;
 						dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.top()->currentInv = _item->currentInv;
-
+						items.push_back(dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.top());
 						dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.pop();
 
 						break;
@@ -149,12 +152,15 @@ void ItemManager::FixedUpdate()
 						
 						dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.push(currentlyDragging);
 						currentlyDragging->bIsEnabled = false;
-
+						
 						while (!dynamic_cast<ItemAttributes::Stackable*>(currentlyDragging)->disabledStack.empty()) {
 							dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.push(dynamic_cast<ItemAttributes::Stackable*>(currentlyDragging)->disabledStack.top());
 							dynamic_cast<ItemAttributes::Stackable*>(currentlyDragging)->disabledStack.pop();
 						}
-
+						std::vector<CItem*>::iterator pos = std::find(items.begin(), items.end(), currentlyDragging);
+						if (pos != items.end()) {
+							items.erase(pos);
+						}
 						break;
 					}
 				}
@@ -173,4 +179,5 @@ void ItemManager::RegisterWindow(std::string _str, sf::RenderWindow* _wind)
 	inventories.push_back(_wind);
 
 	mapOfWindows[_str] = _wind;
+	
 }

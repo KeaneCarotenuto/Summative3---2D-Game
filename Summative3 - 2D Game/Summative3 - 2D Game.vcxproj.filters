@@ -48,6 +48,12 @@
     <ClCompile Include="GameData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mineral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Consumables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EasySFML.h">
@@ -84,6 +90,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mineral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Consumables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
