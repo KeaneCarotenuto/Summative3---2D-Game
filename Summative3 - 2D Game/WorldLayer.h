@@ -60,13 +60,16 @@ public:
 	void resetLightMap();
 	void renderLightMap();
 	void addPointLight(int _X, int _Y, int _intensity);
+	void renderTileMaps();
+	sf::Vector2f GetFirstSandTilePos();
+	bool CheckCollision(sf::Vector2f _nextPos);
 	
 private:
 	WorldLayer* m_pAboveLayer;
 	WorldLayer* m_pBelowLayer;
 	std::vector<GameEntity> Entities;
 	void populateTileMaps();
-	void renderTileMaps();
+	
 	
 
 	sf::Texture m_TerrainTexture;

@@ -127,6 +127,18 @@ void WorldLayer::populateTileMaps()
 			{
 				WallTilemap[i][j] = nullptr;
 			}
+			if (map[i][j] == 4 && rand()%3 == 1 )
+			{
+
+			}
+			else if ((map[i][j] == 5 || map[i][j] == 3) && rand() % 6 == 1)
+			{
+				SpecialTilemap[i][j] = new Tree(sf::Vector2f(i * 20, j * 20));
+			}
+			else
+			{
+				SpecialTilemap[i][j] = nullptr;
+			}
 		}
 	}
 	renderTileMaps();
@@ -135,6 +147,31 @@ void WorldLayer::populateTileMaps()
 
 void WorldLayer::renderTileMaps()
 {
+
+	float xIndex = floorf(CWindowUtilities::ScreenCentre.x / 20);
+	float yIndex = floorf(CWindowUtilities::ScreenCentre.y / 20);
+
+	float xIndexMin = xIndex - 50;
+	float yIndexMin = yIndex - 40;
+	float xIndexMax = xIndex + 50;
+	float yIndexMax = yIndex + 40;
+	if (xIndexMin <= 0)
+	{
+		xIndexMin = 0;
+	}
+	if (yIndexMin <= 0)
+	{
+		yIndexMin = 0;
+	}
+	if (xIndexMax >= 500)
+	{
+		xIndexMax = 499;
+	}
+	if (yIndexMax >= 499)
+	{
+		yIndexMax = 499;
+	}
+
 	m_TerrainTexture.loadFromFile("Resources/Test/TerrainTileset.png");
 	m_TerrainVertices.setPrimitiveType(sf::Quads);
 	m_TerrainVertices.resize(500 * 500 * 4);
@@ -142,9 +179,10 @@ void WorldLayer::renderTileMaps()
 	m_WallVertices.setPrimitiveType(sf::Quads);
 	m_WallVertices.resize(500 * 500 * 4);
 
-	for (int i = 0; i < 500; ++i)
+
+	for (int i = xIndexMin; i < xIndexMax; ++i)
 	{
-		for (int j = 0; j < 500; ++j)
+		for (int j = yIndexMin; j < yIndexMax; ++j)
 		{
 			sf::Vertex* quad = &m_TerrainVertices[(i + j * 500) * 4];
 
@@ -174,6 +212,30 @@ void WorldLayer::renderTileMaps()
 			}
 		}
 	}
+}
+
+sf::Vector2f WorldLayer::GetFirstSandTilePos()
+{
+	for (int i = 0; i < 500; i++)
+	{
+		for (int j = 0; j < 500; j++)
+		{
+			if (TerrainTilemap[i][j]->Type == TerrainType::SAND)
+			{
+				return sf::Vector2f(i * 20, j * 20);
+			}
+		}
+	}
+	return sf::Vector2f(250, 250);
+}
+
+bool WorldLayer::CheckCollision(sf::Vector2f _nextPos)
+{
+	int x = floor(_nextPos.x / 20);
+	int y = floor(_nextPos.y / 20);
+
+
+	return ((SpecialTilemap[x][y] != nullptr)||(WallTilemap[x][y] != nullptr));
 }
 
 void WorldLayer::resetLightMap()
@@ -356,6 +418,8 @@ void WorldLayer::addPointLight(int _X, int _Y, int _intensity)
 void WorldLayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 
+	
+
 	states.transform *= getTransform();
 
 	states.texture = &m_TerrainTexture;
@@ -366,4 +430,17 @@ void WorldLayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 	states.texture = &m_LightLevelTexture;
 	target.draw(m_LightLevelVertices, states);
+
+	for (int i = 0; i < 500; i++)
+	{
+		for (int j = 0; j < 500; j++)
+		{
+			if (SpecialTilemap[j][i] != nullptr)
+			{
+				CWindowUtilities::Draw(&SpecialTilemap[j][i]->Sprite, SpecialTilemap[j][i]->Sprite.getPosition());
+			}
+		}
+	}
+
+
 }
