@@ -240,6 +240,9 @@ public:
 	/// <summary>A vector of all the objects to be drawn this frame</summary>
 	static std::vector<sf::Drawable*> ToDrawList;
 
+	static sf::Vector2f ScreenCentre;
+	static float RenderDistance;
+
 	// ********************************************************************************
 	/// <summary>
 	/// <para>
@@ -253,4 +256,5 @@ public:
 	/// </para></param>
 	// ********************************************************************************
 	static void Draw(sf::Drawable* Draw);
+	static void Draw(sf::Drawable* Draw, sf::Vector2f Pos);
 };

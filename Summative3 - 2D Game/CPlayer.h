@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "EasySFML.h"
 #include "GameData.h"
+#include "WorldLayer.h"
 
 
 
@@ -12,6 +13,7 @@ class CPlayer:
 public:
 	sf::RectangleShape rect;
 	float moveSpeed = 20;
+	WorldLayer* currentWorld;
 
 	int Health;
 	float Hunger;
@@ -47,7 +49,7 @@ public:
 		return dat;
 	}
 
-	CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col);
+	CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer* _world);
 	~CPlayer();
 
 	void Movement();

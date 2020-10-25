@@ -1,12 +1,12 @@
 #include "CPlayer.h"
 
-CPlayer::CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col)
+CPlayer::CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer* _world)
 	: Loadable("Player/", "PlayerData")
 {
 	rect.setPosition(_pos);
 	rect.setSize(_size);
 	rect.setFillColor(_col);
-	
+	currentWorld = _world;
 
 }
 
@@ -23,6 +23,7 @@ void CPlayer::FixedUpdate()
 	//ScreenWrap();
 
 	CWindowUtilities::Draw(&rect);
+	CWindowUtilities::ScreenCentre = rect.getPosition();
 	Hunger += 0.001;
 	Thirst += 0.01;
 	if (Hunger > 50 || Thirst > 50)
@@ -38,21 +39,38 @@ void CPlayer::Movement()
 		//Horizontal
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
+			
 			rect.move(-moveSpeed, 0);
+			if (currentWorld->CheckCollision(rect.getPosition()))
+			{
+				rect.move(moveSpeed, 0);
+			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
 			rect.move(moveSpeed, 0);
+			if (currentWorld->CheckCollision(rect.getPosition()))
+			{
+				rect.move(-moveSpeed, 0);
+			}
 		}
 
 		//Vertical
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			rect.move(0, -moveSpeed);
+			if (currentWorld->CheckCollision(rect.getPosition()))
+			{
+				rect.move(0, moveSpeed);
+			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
 			rect.move(0, moveSpeed);
+			if (currentWorld->CheckCollision(rect.getPosition()))
+			{
+				rect.move(0, -moveSpeed);
+			}
 		}
 	}
 }
