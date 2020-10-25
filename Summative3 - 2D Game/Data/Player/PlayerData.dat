@@ -1,8 +1,8 @@
 #PlayerData
 #DATA  FILE
 <Int:Health:0>
-<Float:Hunger:6.194734>
-<Float:Thirst:61.945610>
+<Float:Hunger:0.469997>
+<Float:Thirst:4.700013>
 <Bool:IsBleeding:False>
 <Int:Str:0>
 <Int:Agi:0>

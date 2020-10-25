@@ -1,39 +1,11 @@
 #Manager
 #DATA  FILE
 <Group:PlayerInv>
-	<Group:Log>
-		<Bool:bIsEnabled:True>
-		<Group:initialPos>
-			<Float:x:-5.000000>
-			<Float:y:47.000000>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:-5.000000>
-				<Float:y:47.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:-5.000000>
-				<Float:y:47.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:-5.000000>
-				<Float:y:47.000000>
-			</Group>
-		</Group>
-	</Group>
 	<Group:Stick>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:99.000000>
-			<Float:y:174.999985>
+			<Float:x:79.000000>
+			<Float:y:257.999969>
 		</Group>
 	</Group>
 	<Group:IronOre>
@@ -53,42 +25,28 @@
 	<Group:Berries>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:13.000000>
-			<Float:y:243.000000>
+			<Float:x:10.000004>
+			<Float:y:375.999969>
 		</Group>
 		<Group:Berries>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:13.000000>
-				<Float:y:243.000000>
-			</Group>
-		</Group>
-	</Group>
-	<Group:Water>
-		<Bool:bIsEnabled:True>
-		<Group:initialPos>
-			<Float:x:37.000000>
-			<Float:y:124.999985>
-		</Group>
-		<Group:Water>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:37.000000>
-				<Float:y:124.999985>
+				<Float:x:10.000004>
+				<Float:y:375.999969>
 			</Group>
 		</Group>
 	</Group>
 	<Group:CopperOre>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:107.000000>
-			<Float:y:81.000000>
+			<Float:x:-9.000004>
+			<Float:y:104.000000>
 		</Group>
 		<Group:CopperOre>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:107.000000>
-				<Float:y:81.000000>
+				<Float:x:-9.000004>
+				<Float:y:104.000000>
 			</Group>
 		</Group>
 	</Group>
@@ -116,14 +74,56 @@
 	<Group:Meat>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:105.000000>
-			<Float:y:324.000000>
+			<Float:x:106.000000>
+			<Float:y:377.999969>
 		</Group>
 		<Group:Meat>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:105.000000>
-				<Float:y:324.000000>
+				<Float:x:106.000000>
+				<Float:y:377.999969>
+			</Group>
+		</Group>
+	</Group>
+	<Group:Water>
+		<Bool:bIsEnabled:True>
+		<Group:initialPos>
+			<Float:x:-7.000000>
+			<Float:y:234.000000>
+		</Group>
+		<Group:Water>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:-7.000000>
+				<Float:y:234.000000>
+			</Group>
+		</Group>
+	</Group>
+	<Group:Log>
+		<Bool:bIsEnabled:True>
+		<Group:initialPos>
+			<Float:x:3596.999756>
+			<Float:y:4436.000000>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:3596.999756>
+				<Float:y:4436.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:3596.999756>
+				<Float:y:4436.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:3596.999756>
+				<Float:y:4436.000000>
 			</Group>
 		</Group>
 	</Group>

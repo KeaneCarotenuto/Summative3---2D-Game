@@ -37,7 +37,7 @@ void CPlayer::Movement()
 {
 	if (currentStep % 5 == 0) {
 		//Horizontal
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
 			
 			rect.move(-moveSpeed, 0);
@@ -46,7 +46,7 @@ void CPlayer::Movement()
 				rect.move(moveSpeed, 0);
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
 			rect.move(moveSpeed, 0);
 			if (currentWorld->CheckCollision(rect.getPosition()))
@@ -56,7 +56,7 @@ void CPlayer::Movement()
 		}
 
 		//Vertical
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
 			rect.move(0, -moveSpeed);
 			if (currentWorld->CheckCollision(rect.getPosition()))
@@ -64,7 +64,7 @@ void CPlayer::Movement()
 				rect.move(0, moveSpeed);
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
 			rect.move(0, moveSpeed);
 			if (currentWorld->CheckCollision(rect.getPosition()))

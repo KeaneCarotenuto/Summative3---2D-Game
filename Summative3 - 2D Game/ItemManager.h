@@ -27,6 +27,14 @@ public:
 
 	virtual void FixedUpdate();
 
+	void StartDraggingItem(CItem* _item);
+
+	void UpdateCurrentMouseWindow();
+
+	void SplitOneItem(CItem* _item);
+
+	void StackItem(CItem* _item, CItem* _itemStack);
+
 	void RegisterWindow(std::string _str, sf::RenderWindow* _wind);
 
 	

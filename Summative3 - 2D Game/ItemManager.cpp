@@ -66,17 +66,7 @@ void ItemManager::FixedUpdate()
 	{
 
 		//Update Which window the mouse is currently over
-		for (sf::RenderWindow* _wind : inventories)
-		{
-			if (_wind->getPosition().x <= sf::Mouse::getPosition().x && (signed)_wind->getPosition().x + (signed)_wind->getSize().x >= sf::Mouse::getPosition().x
-				&& _wind->getPosition().y <= sf::Mouse::getPosition().y && (signed)_wind->getPosition().y + (signed)_wind->getSize().y >= sf::Mouse::getPosition().y) {
-				currentMouseWindow = _wind;
-				break;
-			}
-			else {
-				currentMouseWindow = nullptr;
-			}
-		}
+		UpdateCurrentMouseWindow();
 
 		//Start trying to drag an object if not current doing so
 		if (currentlyDragging == nullptr && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -87,9 +77,7 @@ void ItemManager::FixedUpdate()
 
 				//If mouse is over item, being dragging
 				if (sprite.getGlobalBounds().contains(_item->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*_item->currentInv)))) {
-					currentlyDragging = _item;
-					_item->initialPos = sprite.getPosition();
-					_item->initialWindow = _item->currentInv;
+					StartDraggingItem(_item);
 					break;
 				}
 			}
@@ -101,8 +89,8 @@ void ItemManager::FixedUpdate()
 			if (currentMouseWindow != nullptr) currentlyDragging->currentInv = currentMouseWindow;
 
 			//Update items current position to mouse
-			currentlyDragging->sprite.setPosition(currentlyDragging->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*currentlyDragging->currentInv)).x - currentlyDragging->sprite.getGlobalBounds().width / 2,
-				currentlyDragging->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*currentlyDragging->currentInv)).y - currentlyDragging->sprite.getGlobalBounds().height / 2);
+			currentlyDragging->sprite.setPosition(	currentlyDragging->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*currentlyDragging->currentInv)).x - currentlyDragging->sprite.getGlobalBounds().width / 2,
+													currentlyDragging->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*currentlyDragging->currentInv)).y - currentlyDragging->sprite.getGlobalBounds().height / 2);
 		}
 
 		//Right Click to Split One off
@@ -116,13 +104,7 @@ void ItemManager::FixedUpdate()
 					//If mouse is over item, being dragging
 					if (sprite.getGlobalBounds().contains(_item->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*_item->currentInv)))) {
 						
-						dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.top()->bIsEnabled = true;
-						dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.top()->sprite.setPosition(sprite.getPosition().x + 10, sprite.getPosition().y + 10);
-						dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.top()->initialPos = { sprite.getPosition().x + 10, sprite.getPosition().y + 10 };
-						dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.top()->initialWindow = _item->currentInv;
-						dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.top()->currentInv = _item->currentInv;
-						items.push_back(dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.top());
-						dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.pop();
+						SplitOneItem(_item);
 
 						break;
 					}
@@ -150,17 +132,7 @@ void ItemManager::FixedUpdate()
 
 					if (currentlyDragging->itemName == _item->itemName && currentlyDragging != _item) {
 						
-						dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.push(currentlyDragging);
-						currentlyDragging->bIsEnabled = false;
-						
-						while (!dynamic_cast<ItemAttributes::Stackable*>(currentlyDragging)->disabledStack.empty()) {
-							dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.push(dynamic_cast<ItemAttributes::Stackable*>(currentlyDragging)->disabledStack.top());
-							dynamic_cast<ItemAttributes::Stackable*>(currentlyDragging)->disabledStack.pop();
-						}
-						std::vector<CItem*>::iterator pos = std::find(items.begin(), items.end(), currentlyDragging);
-						if (pos != items.end()) {
-							items.erase(pos);
-						}
+						StackItem(_item, currentlyDragging);
 						break;
 					}
 				}
@@ -172,6 +144,54 @@ void ItemManager::FixedUpdate()
 	}
 
 	currentStep++;
+}
+
+void ItemManager::StartDraggingItem(CItem* _item)
+{
+	_item->initialPos = _item->sprite.getPosition();
+	_item->initialWindow = _item->currentInv;
+	currentlyDragging = _item;
+}
+
+void ItemManager::UpdateCurrentMouseWindow()
+{
+	for (sf::RenderWindow* _wind : inventories)
+	{
+		if (_wind->getPosition().x <= sf::Mouse::getPosition().x && (signed)_wind->getPosition().x + (signed)_wind->getSize().x >= sf::Mouse::getPosition().x
+			&& _wind->getPosition().y <= sf::Mouse::getPosition().y && (signed)_wind->getPosition().y + (signed)_wind->getSize().y >= sf::Mouse::getPosition().y) {
+			currentMouseWindow = _wind;
+			break;
+		}
+		else {
+			currentMouseWindow = nullptr;
+		}
+	}
+}
+
+void ItemManager::SplitOneItem(CItem* _itemStack)
+{
+	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->bIsEnabled = true;
+	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->sprite.setPosition(_itemStack->sprite.getPosition().x + 10, _itemStack->sprite.getPosition().y + 10);
+	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->initialPos = { _itemStack->sprite.getPosition().x + 10, _itemStack->sprite.getPosition().y + 10 };
+	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->initialWindow = _itemStack->currentInv;
+	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->currentInv = _itemStack->currentInv;
+	items.push_back(dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top());
+	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.pop();
+}
+
+void ItemManager::StackItem(CItem* _item, CItem* _itemStack)
+{
+	dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.push(_itemStack);
+	_itemStack->bIsEnabled = false;
+
+	while (!dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.empty()) {
+		dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.push(dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top());
+		dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.pop();
+	}
+	std::vector<CItem*>::iterator pos = std::find(items.begin(), items.end(), _itemStack);
+	if (pos != items.end()) {
+		items.erase(pos);
+	}
 }
 
 void ItemManager::RegisterWindow(std::string _str, sf::RenderWindow* _wind)
