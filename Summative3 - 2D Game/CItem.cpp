@@ -9,6 +9,10 @@ bool CItem::operator==(const CItem& _item)
 void CItem::FixedUpdate()
 {
 	
+}
+
+void CItem::Update(float _fDeltaTime)
+{
 	Draw();
 }
 

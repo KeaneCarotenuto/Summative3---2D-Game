@@ -27,6 +27,7 @@ public:
 	
 
 	virtual void FixedUpdate();
+	virtual void Update(float _fDeltaTime);
 
 
 protected:

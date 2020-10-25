@@ -16,13 +16,17 @@ CPlayer::~CPlayer()
 	SaveData.Save(FilePath, "PlayerData");
 }
 
+void CPlayer::Update(float _fDeltaTime)
+{
+	CWindowUtilities::Draw(&rect);
+}
+
 void CPlayer::FixedUpdate()
 {
 	Movement();
 
 	//ScreenWrap();
 
-	CWindowUtilities::Draw(&rect);
 	CWindowUtilities::ScreenCentre = rect.getPosition();
 	Hunger += 0.001;
 	Thirst += 0.01;

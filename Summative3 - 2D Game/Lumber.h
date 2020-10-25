@@ -17,6 +17,7 @@ public:
 
 	
 	Lumber(LumberType _type, GameData::DataGroup _datag, sf::RenderWindow* _wind, CItem* (*constructor)(sf::RenderWindow* _wind, GameData::DataGroup _datag));
+	Lumber(LumberType _type, sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name);
 
 	//Functions that create and return an isntance of a specific Object
 

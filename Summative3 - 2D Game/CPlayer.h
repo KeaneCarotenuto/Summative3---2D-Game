@@ -55,6 +55,7 @@ public:
 	void Movement();
 	void ScreenWrap();
 
+	virtual void Update(float _fDeltaTime);
 	virtual void FixedUpdate();
 
 private:

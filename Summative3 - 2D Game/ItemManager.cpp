@@ -143,11 +143,100 @@ void ItemManager::FixedUpdate()
 		currentlyDragging = nullptr;
 	}
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+	{
+		if (!freezeCraftButton) {
+			freezeCraftButton = true;
+			TryCrafting();
+		}
+	}
+	else {
+		freezeCraftButton = false;
+	}
+
+
 	currentStep++;
+}
+
+void ItemManager::TryCrafting()
+{
+	sf::RenderWindow* craftingInv = nullptr;
+	std::map < std::string, sf::RenderWindow*>::iterator craftWndIt = mapOfWindows.find("CraftingInv");
+	if (craftWndIt != mapOfWindows.end()) {
+		craftingInv = (*craftWndIt).second;
+	}
+	else {
+		return;
+	}
+
+	sf::RenderWindow* playerInv = nullptr;
+	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = mapOfWindows.find("PlayerInv");
+	if (invWndIt != mapOfWindows.end()) {
+		playerInv = (*invWndIt).second;
+	}
+	else {
+		return;
+	}
+
+
+	std::vector<CItem*> inCrafting;
+	for (CItem* _item : items)
+	{
+		if (_item->currentInv == craftingInv) {
+			inCrafting.push_back(_item);
+		}
+	}
+
+	std::vector<CItem*> stickStack;
+	std::vector<CItem*> logStack;
+	std::vector<CItem*> meatStack;
+	std::vector<CItem*> berriesStack;
+
+	for (CItem* _item : inCrafting)
+	{
+		if (dynamic_cast<Lumber*>(_item)) {
+			if (dynamic_cast<Lumber*>(_item)->type == LumberType::Stick) {
+				stickStack.push_back(_item);
+			}
+			if (dynamic_cast<Lumber*>(_item)->type == LumberType::Log) {
+				logStack.push_back(_item);
+			}
+		}
+		if (dynamic_cast<Consumables*>(_item)) {
+			if (dynamic_cast<Consumables*>(_item)->type == ConsumableType::Meat) {
+				meatStack.push_back(_item);
+			}
+			if (dynamic_cast<Consumables*>(_item)->type == ConsumableType::Berries) {
+				berriesStack.push_back(_item);
+			}
+		}
+	}
+
+	if (!stickStack.empty() && !berriesStack.empty()) {
+		RemoveOneItemFromStack(stickStack[0]);
+		
+		RemoveOneItemFromStack(berriesStack[0]);
+
+		CItem* craftedItem = new Consumables(ConsumableType::Water, craftingInv, { 10,10 }, "Water");
+		items.push_back(craftedItem);
+		craftedItem->sprite.setColor(sf::Color(255, 255, 0));
+	}
+}
+
+void ItemManager::RemoveOneItemFromStack(CItem* _itemStack)
+{
+	if (dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.empty()) {
+		RemoveItem(_itemStack);
+	}
+	else {
+		CItem* splitItem = SplitOneItem(_itemStack);
+		RemoveItem(splitItem);
+	}
 }
 
 void ItemManager::StartDraggingItem(CItem* _item)
 {
+	_item->sprite.setColor(sf::Color(255, 255, 255));
 	_item->initialPos = _item->sprite.getPosition();
 	_item->initialWindow = _item->currentInv;
 	currentlyDragging = _item;
@@ -168,15 +257,22 @@ void ItemManager::UpdateCurrentMouseWindow()
 	}
 }
 
-void ItemManager::SplitOneItem(CItem* _itemStack)
+CItem* ItemManager::SplitOneItem(CItem* _itemStack)
 {
+	CItem* toReturn = dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top();
+
 	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->bIsEnabled = true;
 	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->sprite.setPosition(_itemStack->sprite.getPosition().x + 10, _itemStack->sprite.getPosition().y + 10);
 	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->initialPos = { _itemStack->sprite.getPosition().x + 10, _itemStack->sprite.getPosition().y + 10 };
 	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->initialWindow = _itemStack->currentInv;
 	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->currentInv = _itemStack->currentInv;
+	
 	items.push_back(dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top());
+
+
 	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.pop();
+
+	return toReturn;
 }
 
 void ItemManager::StackItem(CItem* _item, CItem* _itemStack)

@@ -14,6 +14,7 @@ class Consumables :
 public:
     ConsumableType type;
     Consumables(ConsumableType _type, GameData::DataGroup _datag, sf::RenderWindow* _wind, CItem* (*constructor)(sf::RenderWindow* _wind, GameData::DataGroup _datag));
+    Consumables(ConsumableType _type, sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name);
 
     static CItem* Water(sf::RenderWindow* _wind, GameData::DataGroup _datag) { return new Consumables(ConsumableType::Water, _datag, _wind, Water); }
     static CItem* Berries(sf::RenderWindow* _wind, GameData::DataGroup _datag) { return new Consumables(ConsumableType::Berries, _datag, _wind, Berries); }

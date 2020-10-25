@@ -27,11 +27,15 @@ public:
 
 	virtual void FixedUpdate();
 
+	void TryCrafting();
+
+	void RemoveOneItemFromStack(CItem* _itemStack);
+
 	void StartDraggingItem(CItem* _item);
 
 	void UpdateCurrentMouseWindow();
 
-	void SplitOneItem(CItem* _item);
+	CItem* SplitOneItem(CItem* _item);
 
 	void StackItem(CItem* _item, CItem* _itemStack);
 
@@ -68,6 +72,7 @@ public:
 	}
 
 private:
+	bool freezeCraftButton = false;
 	int currentStep = 0;
 
 	std::map <std::string, sf::RenderWindow*> mapOfWindows;

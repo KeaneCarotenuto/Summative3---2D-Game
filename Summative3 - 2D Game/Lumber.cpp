@@ -7,3 +7,8 @@ Lumber::Lumber(LumberType _type, GameData::DataGroup _datag, sf::RenderWindow* _
 {
     
 }
+
+Lumber::Lumber(LumberType _type, sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name):
+    type(_type), Resource(_wind, _pos, _name)
+{
+}

@@ -21,16 +21,19 @@
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "2D Game");
 	sf::RenderWindow inventory(sf::VideoMode(200, 500), "Inventory");
+	sf::RenderWindow crafting(sf::VideoMode(200, 200), "Crafting");
 
 	srand((int)time(0));
-	window.setFramerateLimit(60);
+	window.setVerticalSyncEnabled(true);
+	//window.setFramerateLimit(60);
 	float spotlightX = 25, spotlightY = 25;
 
 
 	//Create Map of Widows and thier ID's
 	std::map <std::string, sf::RenderWindow*> windowsMap{
 		{"PlayerInv",&inventory},
-		{"WorldInv",&window}
+		{"WorldInv",&window},
+		{"CraftingInv",&crafting}
 	};
 
 	//Create itemmanager and hand it the map of windows
@@ -80,6 +83,7 @@ int main() {
 		
 		inventory.clear();
 		window.clear();
+		crafting.clear();
 		//<start>Stuff needed for EasySFML
 
 		window.draw(*world);
@@ -87,6 +91,7 @@ int main() {
 		CObjectController::UpdateObjects();
 
 		inventory.display();
+		crafting.display();
 
 		view.setCenter(player.rect.getPosition() + sf::Vector2f(player.rect.getSize().x / 2, player.rect.getSize().y / 2));
 		
@@ -97,7 +102,6 @@ int main() {
 		
 		for (sf::Drawable * Draw : CWindowUtilities::ToDrawList) //Draw every object on the draw list
 		{
-			
 			window.draw(*Draw);
 		}		
 		window.display();
