@@ -4,8 +4,8 @@
 	<Group:Stick>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:79.000000>
-			<Float:y:257.999969>
+			<Float:x:938.000000>
+			<Float:y:6158.000000>
 		</Group>
 	</Group>
 	<Group:IronOre>
@@ -81,147 +81,147 @@
 	<Group:CopperOre>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:10.000004>
-			<Float:y:106.000000>
+			<Float:x:38.000000>
+			<Float:y:47.999985>
 		</Group>
 		<Group:CopperOre>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:10.000004>
-				<Float:y:106.000000>
+				<Float:x:38.000000>
+				<Float:y:47.999985>
 			</Group>
 		</Group>
 	</Group>
 	<Group:Stone>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:39.000000>
-			<Float:y:-4.000000>
+			<Float:x:69.000008>
+			<Float:y:-76.000000>
 		</Group>
 		<Group:Stone>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:39.000000>
-				<Float:y:-4.000000>
+				<Float:x:69.000008>
+				<Float:y:-76.000000>
 			</Group>
 		</Group>
 		<Group:Stone>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:39.000000>
-				<Float:y:-4.000000>
+				<Float:x:69.000008>
+				<Float:y:-76.000000>
 			</Group>
 		</Group>
 	</Group>
 	<Group:Meat>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:106.000000>
-			<Float:y:377.999969>
+			<Float:x:30.000000>
+			<Float:y:99.000000>
 		</Group>
 		<Group:Meat>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:106.000000>
-				<Float:y:377.999969>
+				<Float:x:30.000000>
+				<Float:y:99.000000>
 			</Group>
 		</Group>
 	</Group>
 	<Group:Water>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:-7.000000>
-			<Float:y:234.000000>
+			<Float:x:-44.000000>
+			<Float:y:43.000000>
 		</Group>
 		<Group:Water>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:-7.000000>
-				<Float:y:234.000000>
+				<Float:x:-44.000000>
+				<Float:y:43.000000>
 			</Group>
 		</Group>
 	</Group>
 	<Group:Log>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:100.999756>
-			<Float:y:100.000000>
+			<Float:x:91.000000>
+			<Float:y:39.000000>
 		</Group>
 		<Group:Log>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
+				<Float:x:91.000000>
+				<Float:y:39.000000>
 			</Group>
 		</Group>
 		<Group:Log>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
+				<Float:x:91.000000>
+				<Float:y:39.000000>
 			</Group>
 		</Group>
 		<Group:Log>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
+				<Float:x:91.000000>
+				<Float:y:39.000000>
 			</Group>
 		</Group>
 	</Group>
 	<Group:Stick>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:100.999756>
-			<Float:y:100.000000>
+			<Float:x:114.999969>
+			<Float:y:4047.000000>
 		</Group>
 		<Group:Stick>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
+				<Float:x:114.999969>
+				<Float:y:4047.000000>
 			</Group>
 		</Group>
 		<Group:Stick>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
+				<Float:x:114.999969>
+				<Float:y:4047.000000>
 			</Group>
 		</Group>
 		<Group:Stick>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
+				<Float:x:114.999969>
+				<Float:y:4047.000000>
 			</Group>
 		</Group>
 		<Group:Stick>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
+				<Float:x:114.999969>
+				<Float:y:4047.000000>
 			</Group>
 		</Group>
 		<Group:Stick>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
+				<Float:x:114.999969>
+				<Float:y:4047.000000>
 			</Group>
 		</Group>
 		<Group:Stick>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
+				<Float:x:114.999969>
+				<Float:y:4047.000000>
 			</Group>
 		</Group>
 		<Group:Stick>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
+				<Float:x:114.999969>
+				<Float:y:4047.000000>
 			</Group>
 		</Group>
 	</Group>

@@ -49,7 +49,7 @@ public:
 	SpecialTile* SpecialTilemap[500][500];
 	WallTile* WallTilemap[500][500];
 	int LightMap[500][500];
-	//TODO: Navigation 
+	//TODO: Navigation
 	
 	int Altitude;
 	
@@ -63,6 +63,7 @@ public:
 	void renderTileMaps();
 	sf::Vector2f GetFirstSandTilePos();
 	bool CheckCollision(sf::Vector2f _nextPos);
+	void DrawSpecial();
 	
 private:
 	WorldLayer* m_pAboveLayer;

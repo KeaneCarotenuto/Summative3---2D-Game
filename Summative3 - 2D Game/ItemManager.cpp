@@ -58,7 +58,7 @@ void ItemManager::RemoveItem(CItem* _item)
 	}
 }
 
-sf::RenderWindow* currentMouseWindow = nullptr;
+
 void ItemManager::FixedUpdate()
 {
 
@@ -91,6 +91,32 @@ void ItemManager::FixedUpdate()
 			//Update items current position to mouse
 			currentlyDragging->sprite.setPosition(	currentlyDragging->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*currentlyDragging->currentInv)).x - currentlyDragging->sprite.getGlobalBounds().width / 2,
 													currentlyDragging->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*currentlyDragging->currentInv)).y - currentlyDragging->sprite.getGlobalBounds().height / 2);
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && currentStep % 5 == 0) {
+				sf::RenderWindow* worldInv = nullptr;
+				std::map < std::string, sf::RenderWindow*>::iterator invWndIt = mapOfWindows.find("WorldInv");
+				if (invWndIt != mapOfWindows.end()) {
+					worldInv = (*invWndIt).second;
+				}
+
+				for (int y = 0; y < 500; y++)
+				{
+					for (int x = 0; x < 500; x++)
+					{
+						if (world->SpecialTilemap[x][y] == nullptr) continue;
+
+						sf::Sprite sprite = world->SpecialTilemap[x][y]->Sprite;
+						if (sprite.getGlobalBounds().contains(worldInv->mapPixelToCoords(sf::Mouse::getPosition(*worldInv)))) {
+							
+
+							if (currentlyDragging->itemName == "Stick") {
+
+								AddToToDelete(world->SpecialTilemap[x][y]);
+								world->SpecialTilemap[x][y] = nullptr;
+							}
+						}
+					}
+				}
+			}
 		}
 
 		//Right Click to Split One off
@@ -156,6 +182,33 @@ void ItemManager::FixedUpdate()
 
 
 	currentStep++;
+}
+
+void ItemManager::AddToToDelete(SpecialTile* _tile)
+{
+	std::vector<SpecialTile*>::iterator pos = std::find(toDeleteSpecial.begin(), toDeleteSpecial.end(), _tile);
+	if (pos != toDeleteSpecial.end()) {
+		return;
+	}
+	else {
+		toDeleteSpecial.push_back(_tile);
+	}
+
+	
+}
+
+void ItemManager::LateDelete()
+{
+	for (SpecialTile* _spTile : toDeleteSpecial) {
+
+		std::cout << "Deleted Tree at " + std::to_string(_spTile->Sprite.getPosition().x) + ", " + std::to_string(_spTile->Sprite.getPosition().y) + "\n";
+
+		delete _spTile;
+
+		_spTile = nullptr;
+	}
+
+	toDeleteSpecial.clear();
 }
 
 void ItemManager::TryCrafting()

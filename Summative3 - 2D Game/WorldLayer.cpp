@@ -431,6 +431,11 @@ void WorldLayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.texture = &m_LightLevelTexture;
 	target.draw(m_LightLevelVertices, states);
 
+
+}
+
+void WorldLayer::DrawSpecial()
+{
 	for (int i = 0; i < 500; i++)
 	{
 		for (int j = 0; j < 500; j++)
@@ -441,6 +446,4 @@ void WorldLayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			}
 		}
 	}
-
-
 }

@@ -16,8 +16,6 @@
 #include "Lumber.h"
 
 
-
-
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "2D Game");
 	sf::RenderWindow inventory(sf::VideoMode(200, 500), "Inventory");
@@ -40,6 +38,7 @@ int main() {
 	ItemManager* itemMngr = new ItemManager(windowsMap);
 	
 	WorldLayer* world = new WorldLayer();
+	itemMngr->world = world;
 	CPlayer player({ 10,10 }, { 20,20 }, sf::Color::Green, world);
 	player.rect.setPosition(world->GetFirstSandTilePos());
 
@@ -99,6 +98,8 @@ int main() {
 		
 		world->renderTileMaps();
 		//world->renderLightMap();
+
+		world->DrawSpecial();
 		
 		for (sf::Drawable * Draw : CWindowUtilities::ToDrawList) //Draw every object on the draw list
 		{
@@ -108,7 +109,9 @@ int main() {
 		CWindowUtilities::ToDrawList.clear(); //Then empty it so its ready for the next frame
 		//<end>
 
-		
+		itemMngr->LateDelete();
 		
 	}
 }
+
+

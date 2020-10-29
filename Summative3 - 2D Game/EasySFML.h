@@ -239,6 +239,7 @@ class CWindowUtilities
 public:
 	/// <summary>A vector of all the objects to be drawn this frame</summary>
 	static std::vector<sf::Drawable*> ToDrawList;
+	static std::vector<CGameObject*> ToDeleteList;
 
 	static sf::Vector2f ScreenCentre;
 	static float RenderDistance;

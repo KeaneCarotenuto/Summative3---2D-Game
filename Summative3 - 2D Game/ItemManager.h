@@ -9,6 +9,7 @@
 #include "Lumber.h"
 #include "Mineral.h"
 #include "Consumables.h"
+#include "WorldLayer.h"
 
 class ItemManager:
 	private CGameObject, Loadable
@@ -21,11 +22,21 @@ public:
 
 	std::vector<CItem*> items;
 
+	std::vector<SpecialTile*> toDeleteSpecial;
+
+	sf::RenderWindow* currentMouseWindow = nullptr;
+
+	WorldLayer* world;
+
 	CItem* currentlyDragging = nullptr;
 	
 	void RemoveItem(CItem* _item);
 
 	virtual void FixedUpdate();
+
+	void AddToToDelete(SpecialTile* _tile);
+
+	void LateDelete();
 
 	void TryCrafting();
 
