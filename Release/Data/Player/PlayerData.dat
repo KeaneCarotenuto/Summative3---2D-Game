@@ -1,0 +1,15 @@
+#PlayerData
+#DATA  FILE
+<Int:Health:0>
+<Float:Hunger:0.487997>
+<Float:Thirst:4.880017>
+<Bool:IsBleeding:False>
+<Int:Str:0>
+<Int:Agi:0>
+<Int:Wis:0>
+<Int:Def:0>
+<Group:Effects>
+</Group>
+<Group:TestVector>
+</Group>
+<ENDFILE>
