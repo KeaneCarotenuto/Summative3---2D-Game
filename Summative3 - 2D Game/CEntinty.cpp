@@ -3,6 +3,14 @@
 
 void CEntity::Movement()
 {
+	velocity = player->rect.getPosition() - rect.getPosition();
+	float mag = sqrt(pow(rect.getPosition().x - player->rect.getPosition().x, 2) + pow(rect.getPosition().y - player->rect.getPosition().y, 2));
+	velocity *= 1/mag * moveSpeed;
+
+	rect.move(velocity);
+
+	return;
+
 	if (itemManager->currentlyDragging != nullptr) {
 		sf::Vector2f pos =  rect.getPosition();
 		sf::Vector2f playerPos = player->rect.getPosition();;

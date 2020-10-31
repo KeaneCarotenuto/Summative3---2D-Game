@@ -16,6 +16,7 @@
 #include "ItemManager.h"
 #include "Lumber.h"
 
+void GenNewIsland(int seed, WorldLayer*& world, ItemManager* itemMngr, sf::RenderWindow* _inv);
 
 int main() {
 	int seed = 1234;
@@ -24,6 +25,9 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "2D Game");
 	sf::RenderWindow inventory(sf::VideoMode(200, 500), "Inventory");
 	sf::RenderWindow crafting(sf::VideoMode(200, 200), "Crafting");
+
+	inventory.setPosition(sf::Vector2i(window.getPosition().x - inventory.getSize().x, window.getPosition().y));
+	crafting.setPosition(sf::Vector2i(inventory.getPosition().x, inventory.getPosition().y + inventory.getSize().y));
 
 	window.setVerticalSyncEnabled(true);
 	//window.setFramerateLimit(60);
@@ -43,12 +47,12 @@ int main() {
 	WorldLayer* world = new WorldLayer(seed);
 	itemMngr->world = world;
 	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green, world);
-	CEntity* bird = new CEntity(EntityType::Bird, { 1000,1000 }, { 10,10 }, sf::Color::White, world);
+	CEntity* bird = new CEntity(EntityType::Bird, { 1000,1000 }, { 15,15 }, sf::Color::White, world);
 	bird->player = &player;
 	bird->itemManager = itemMngr;
 	itemMngr->entities.push_back(bird);
 
-	CEntity* fish = new CEntity(EntityType::Fish, { 100,100 }, { 10,10 }, sf::Color::Red, world);
+	CEntity* fish = new CEntity(EntityType::Fish, { 100,100 }, { 15,15 }, sf::Color::Red, world);
 	fish->player = &player;
 	fish->itemManager = itemMngr;
 	itemMngr->entities.push_back(fish);
@@ -127,40 +131,48 @@ int main() {
 
 		if (player.rect.getPosition().x < 0) {
 			seed -= 1;
-			srand(seed);
-			delete world;
-			world = new WorldLayer(seed);
-
 			player.rect.setPosition(10000 - 50, player.rect.getPosition().y);
+
+			GenNewIsland(seed, world, itemMngr, &inventory);
 		}
 
 		if (player.rect.getPosition().x > 10000) {
 			seed += 1;
-			srand(seed);
-			delete world;
-			world = new WorldLayer(seed);
+			player.rect.setPosition(50, player.rect.getPosition().y);
 
-			player.rect.setPosition(50 , player.rect.getPosition().y);
+			GenNewIsland(seed, world, itemMngr, &inventory);
 		}
 
 		if (player.rect.getPosition().y < 0) {
 			seed -= 10000;
-			srand(seed);
-			delete world;
-			world = new WorldLayer(seed);
-
 			player.rect.setPosition(player.rect.getPosition().x, 10000 - 50);
+
+			GenNewIsland(seed, world, itemMngr, &inventory);
 		}
 
 		if (player.rect.getPosition().y > 10000) {
 			seed += 10000;
-			srand(seed);
-			delete world;
-			world = new WorldLayer(seed);
-
 			player.rect.setPosition(player.rect.getPosition().x, 50);
+
+			GenNewIsland(seed, world, itemMngr, &inventory);
 		}
 	}
 }
 
+void GenNewIsland(int seed, WorldLayer*& world, ItemManager* itemMngr, sf::RenderWindow* _inv)
+{
+	srand(seed);
+	delete world;
+	world = new WorldLayer(seed);
+
+	for (CItem* _item : itemMngr->items) {
+		if (_item->currentInv != _inv) {
+			std::vector<CItem*>::iterator pos = std::find(itemMngr->items.begin(), itemMngr->items.end(), _item);
+			if (pos != itemMngr->items.end()) {
+				delete _item;
+				itemMngr->items.erase(pos);
+			}
+		}
+	}
+}
 

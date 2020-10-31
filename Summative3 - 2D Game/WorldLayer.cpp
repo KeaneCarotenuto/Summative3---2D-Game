@@ -231,9 +231,14 @@ sf::Vector2f WorldLayer::GetFirstSandTilePos()
 	return sf::Vector2f(250, 250);
 }
 
+/// <summary>
+/// CURRENTLY DISABLED
+/// </summary>
 bool WorldLayer::CheckCollision(sf::Vector2f _nextPos)
 {
+	//REMOVE IF WANTING COLLISION (MAY BREAK)
 	return false;
+
 
 	int x = floor(_nextPos.x / 20);
 	int y = floor(_nextPos.y / 20);

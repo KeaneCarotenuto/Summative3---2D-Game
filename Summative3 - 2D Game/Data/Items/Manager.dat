@@ -137,91 +137,28 @@
 	<Group:Log>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:100.999756>
-			<Float:y:100.000000>
+			<Float:x:134.000000>
+			<Float:y:159.999969>
 		</Group>
 		<Group:Log>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
+				<Float:x:134.000000>
+				<Float:y:159.999969>
 			</Group>
 		</Group>
 		<Group:Log>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:100.999756>
-				<Float:y:100.000000>
+				<Float:x:134.000000>
+				<Float:y:159.999969>
 			</Group>
 		</Group>
-	</Group>
-	<Group:Stick>
-		<Bool:bIsEnabled:True>
-		<Group:initialPos>
-			<Float:x:126.000000>
-			<Float:y:92.000000>
-		</Group>
-		<Group:Stick>
+		<Group:Log>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:126.000000>
-				<Float:y:92.000000>
-			</Group>
-		</Group>
-		<Group:Stick>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:126.000000>
-				<Float:y:92.000000>
-			</Group>
-		</Group>
-		<Group:Stick>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:126.000000>
-				<Float:y:92.000000>
-			</Group>
-		</Group>
-		<Group:Stick>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:126.000000>
-				<Float:y:92.000000>
-			</Group>
-		</Group>
-		<Group:Stick>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:126.000000>
-				<Float:y:92.000000>
-			</Group>
-		</Group>
-		<Group:Stick>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:126.000000>
-				<Float:y:92.000000>
-			</Group>
-		</Group>
-		<Group:Stick>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:126.000000>
-				<Float:y:92.000000>
-			</Group>
-		</Group>
-		<Group:Stick>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:126.000000>
-				<Float:y:92.000000>
+				<Float:x:134.000000>
+				<Float:y:159.999969>
 			</Group>
 		</Group>
 	</Group>
@@ -440,6 +377,55 @@
 		<Group:initialPos>
 			<Float:x:1224.000000>
 			<Float:y:7644.000000>
+		</Group>
+	</Group>
+	<Group:Stick>
+		<Bool:bIsEnabled:True>
+		<Group:initialPos>
+			<Float:x:84.000000>
+			<Float:y:243.000000>
+		</Group>
+		<Group:Stick>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:84.000000>
+				<Float:y:243.000000>
+			</Group>
+		</Group>
+		<Group:Stick>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:84.000000>
+				<Float:y:243.000000>
+			</Group>
+		</Group>
+		<Group:Stick>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:84.000000>
+				<Float:y:243.000000>
+			</Group>
+		</Group>
+		<Group:Stick>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:84.000000>
+				<Float:y:243.000000>
+			</Group>
+		</Group>
+		<Group:Stick>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:84.000000>
+				<Float:y:243.000000>
+			</Group>
+		</Group>
+		<Group:Stick>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:84.000000>
+				<Float:y:243.000000>
+			</Group>
 		</Group>
 	</Group>
 </Group>

@@ -22,6 +22,8 @@ public:
 	int currentStep = 0;
 	EntityType type;
 
+	sf::Vector2f velocity;
+
 	CPlayer* player;
 
 	ItemManager* itemManager;
