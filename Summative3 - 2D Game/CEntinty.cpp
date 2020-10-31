@@ -21,13 +21,20 @@ void CEntity::Movement()
 	if (currentStep % 1 == 0) {
 		//Horizontal
 
+		int x = floor(rect.getPosition().x / 20);
+		int y = floor(rect.getPosition().y / 20);
+
 		if (rect.getPosition().x + 100 > player->rect.getPosition().x)
 		{
 
 			rect.move(-moveSpeed, 0);
+
 			if (currentWorld->CheckCollision(rect.getPosition()) || type != EntityType::Bird)
 			{
-				rect.move(moveSpeed, 0);
+				if (type == EntityType::Fish && currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
+
+				}
+				else rect.move(moveSpeed, 0);
 			}
 		}
 		
@@ -36,7 +43,10 @@ void CEntity::Movement()
 			rect.move(moveSpeed, 0);
 			if (currentWorld->CheckCollision(rect.getPosition()) || type != EntityType::Bird)
 			{
-				rect.move(-moveSpeed, 0);
+				if (type == EntityType::Fish && currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
+
+				}
+				else rect.move(-moveSpeed, 0);
 			}
 		}
 
@@ -46,7 +56,10 @@ void CEntity::Movement()
 			rect.move(0, -moveSpeed);
 			if (currentWorld->CheckCollision(rect.getPosition()) || type != EntityType::Bird)
 			{
-				rect.move(0, moveSpeed);
+				if (type == EntityType::Fish && currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
+
+				}
+				else rect.move(0, moveSpeed);
 			}
 		}
 		
@@ -55,7 +68,10 @@ void CEntity::Movement()
 			rect.move(0, moveSpeed);
 			if (currentWorld->CheckCollision(rect.getPosition()) || type != EntityType::Bird)
 			{
-				rect.move(0, -moveSpeed);
+				if (type == EntityType::Fish && currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
+
+				}
+				else rect.move(0, -moveSpeed);
 			}
 		}
 	}
@@ -80,4 +96,16 @@ CEntity::CEntity(EntityType _type, sf::Vector2f _pos, sf::Vector2f _size, sf::Co
 	rect.setFillColor(_col);
 	currentWorld = _world;
 	type = _type;
+
+	switch (type)
+	{
+	case EntityType::Bird:
+		moveSpeed = 3;
+		break;
+	case EntityType::Fish:
+		moveSpeed = 2;
+		break;
+	default:
+		break;
+	}
 }

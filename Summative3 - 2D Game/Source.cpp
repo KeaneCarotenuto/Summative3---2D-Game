@@ -46,6 +46,11 @@ int main() {
 	bird->itemManager = itemMngr;
 	itemMngr->entities.push_back(bird);
 
+	CEntity* fish = new CEntity(EntityType::Fish, { 100,100 }, { 10,10 }, sf::Color::Red, world);
+	fish->player = &player;
+	fish->itemManager = itemMngr;
+	itemMngr->entities.push_back(fish);
+
 	player.rect.setPosition(world->GetFirstSandTilePos());
 
 	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));

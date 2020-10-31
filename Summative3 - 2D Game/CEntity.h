@@ -17,7 +17,7 @@ class CEntity :
 {
 public:
 	sf::RectangleShape rect;
-	float moveSpeed = 4;
+	float moveSpeed;
 	WorldLayer* currentWorld;
 	int currentStep = 0;
 	EntityType type;
