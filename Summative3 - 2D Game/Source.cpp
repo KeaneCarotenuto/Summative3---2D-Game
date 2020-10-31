@@ -128,12 +128,13 @@ int main() {
 
 		itemMngr->LateDelete();
 		
-
+		bool changedWorld = false;
 		if (player.rect.getPosition().x < 0) {
 			seed -= 1;
 			player.rect.setPosition(10000 - 50, player.rect.getPosition().y);
 
 			GenNewIsland(seed, world, itemMngr, &inventory);
+			changedWorld = true;
 		}
 
 		if (player.rect.getPosition().x > 10000) {
@@ -141,6 +142,7 @@ int main() {
 			player.rect.setPosition(50, player.rect.getPosition().y);
 
 			GenNewIsland(seed, world, itemMngr, &inventory);
+			changedWorld = true;
 		}
 
 		if (player.rect.getPosition().y < 0) {
@@ -148,6 +150,7 @@ int main() {
 			player.rect.setPosition(player.rect.getPosition().x, 10000 - 50);
 
 			GenNewIsland(seed, world, itemMngr, &inventory);
+			changedWorld = true;
 		}
 
 		if (player.rect.getPosition().y > 10000) {
@@ -155,6 +158,16 @@ int main() {
 			player.rect.setPosition(player.rect.getPosition().x, 50);
 
 			GenNewIsland(seed, world, itemMngr, &inventory);
+			changedWorld = true;
+		}
+
+		if (changedWorld) {
+			itemMngr->world = world;
+			player.currentWorld = world;
+
+			for (CEntity* _ent : itemMngr->entities) {
+				_ent->currentWorld = world;
+			}
 		}
 	}
 }
