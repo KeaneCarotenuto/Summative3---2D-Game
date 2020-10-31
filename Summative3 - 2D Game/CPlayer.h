@@ -8,7 +8,7 @@
 
 
 class CPlayer:
-	private CGameObject, public Loadable
+	public CGameObject, public Loadable
 {
 public:
 	sf::RectangleShape rect;

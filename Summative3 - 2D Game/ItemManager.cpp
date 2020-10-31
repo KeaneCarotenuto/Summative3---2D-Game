@@ -98,24 +98,9 @@ void ItemManager::FixedUpdate()
 					worldInv = (*invWndIt).second;
 				}
 
-				for (int y = 0; y < 500; y++)
-				{
-					for (int x = 0; x < 500; x++)
-					{
-						if (world->SpecialTilemap[x][y] == nullptr) continue;
+				CheckSpecialTiles(worldInv);
 
-						sf::Sprite sprite = world->SpecialTilemap[x][y]->Sprite;
-						if (sprite.getGlobalBounds().contains(worldInv->mapPixelToCoords(sf::Mouse::getPosition(*worldInv)))) {
-							
-
-							if (currentlyDragging->itemName == "Stick") {
-
-								AddToToDelete(world->SpecialTilemap[x][y]);
-								world->SpecialTilemap[x][y] = nullptr;
-							}
-						}
-					}
-				}
+				CheckEntities(worldInv);
 			}
 		}
 
@@ -184,15 +169,85 @@ void ItemManager::FixedUpdate()
 	currentStep++;
 }
 
-void ItemManager::AddToToDelete(SpecialTile* _tile)
+void ItemManager::CheckEntities(sf::RenderWindow* worldInv)
+{
+	for (CEntity* _ent : entities) {
+		if (_ent == nullptr) continue;
+
+		sf::RectangleShape rect = _ent->rect;
+		if (rect.getGlobalBounds().contains(worldInv->mapPixelToCoords(sf::Mouse::getPosition(*worldInv)))) {
+
+
+			if (currentlyDragging->itemName == "Stick") {
+
+				if (AddToToDeleteEnt(_ent)) {
+					items.push_back(new Consumables(ConsumableType::Meat, worldInv, _ent->rect.getPosition(), "Meat"));
+
+					_ent = nullptr;
+				}
+			}
+		}
+	}
+}
+
+void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
+{
+	for (int y = 0; y < 500; y++)
+	{
+		for (int x = 0; x < 500; x++)
+		{
+			if (world->SpecialTilemap[x][y] == nullptr) continue;
+
+			sf::Sprite sprite = world->SpecialTilemap[x][y]->Sprite;
+			if (sprite.getGlobalBounds().contains(worldInv->mapPixelToCoords(sf::Mouse::getPosition(*worldInv)))) {
+
+
+				if (currentlyDragging->itemName == "Stone") {
+
+					if (AddToToDeleteSpecial(world->SpecialTilemap[x][y])) {
+						items.push_back(new Lumber(LumberType::Log, worldInv, sf::Vector2f((x-1) * 20, (y-1) * 20), "Log"));
+						items.push_back(new Lumber(LumberType::Stick, worldInv, sf::Vector2f((x-1) * 20, (y-1) * 20), "Stick"));
+
+						world->SpecialTilemap[x][y] = nullptr;
+					}
+					
+
+				}
+			}
+		}
+	}
+}
+
+bool ItemManager::AddToToDeleteSpecial(SpecialTile* _tile)
 {
 	std::vector<SpecialTile*>::iterator pos = std::find(toDeleteSpecial.begin(), toDeleteSpecial.end(), _tile);
 	if (pos != toDeleteSpecial.end()) {
-		return;
+		return false;
 	}
 	else {
 		toDeleteSpecial.push_back(_tile);
+		return true;
 	}
+}
+
+bool ItemManager::AddToToDeleteEnt(CEntity* _ent)
+{
+	std::vector<CEntity*>::iterator pos = std::find(toDeleteEnt.begin(), toDeleteEnt.end(), _ent);
+	if (pos != toDeleteEnt.end()) {
+		return false;
+	}
+	else {
+		toDeleteEnt.push_back(_ent);
+
+		pos = std::find(entities.begin(), entities.end(), _ent);
+		if (pos != entities.end()) {
+			entities.erase(pos);
+		}
+
+		return true;
+	}
+
+	
 
 	
 }
@@ -201,14 +256,20 @@ void ItemManager::LateDelete()
 {
 	for (SpecialTile* _spTile : toDeleteSpecial) {
 
-		std::cout << "Deleted Tree at " + std::to_string(_spTile->Sprite.getPosition().x) + ", " + std::to_string(_spTile->Sprite.getPosition().y) + "\n";
-
 		delete _spTile;
 
 		_spTile = nullptr;
 	}
 
+	for (CEntity* _ent : toDeleteEnt) {
+		delete _ent;
+
+		_ent = nullptr;
+
+	}
+
 	toDeleteSpecial.clear();
+	toDeleteEnt.clear();
 }
 
 void ItemManager::TryCrafting()

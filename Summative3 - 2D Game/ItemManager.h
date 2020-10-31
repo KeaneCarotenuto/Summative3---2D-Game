@@ -10,6 +10,7 @@
 #include "Mineral.h"
 #include "Consumables.h"
 #include "WorldLayer.h"
+#include "CEntity.h"
 
 class ItemManager:
 	private CGameObject, Loadable
@@ -22,7 +23,10 @@ public:
 
 	std::vector<CItem*> items;
 
+	std::vector<CEntity*> entities;
+
 	std::vector<SpecialTile*> toDeleteSpecial;
+	std::vector<CEntity*> toDeleteEnt;
 
 	sf::RenderWindow* currentMouseWindow = nullptr;
 
@@ -34,7 +38,13 @@ public:
 
 	virtual void FixedUpdate();
 
-	void AddToToDelete(SpecialTile* _tile);
+	void CheckEntities(sf::RenderWindow* worldInv);
+
+	void CheckSpecialTiles(sf::RenderWindow* worldInv);
+
+	bool AddToToDeleteSpecial(SpecialTile* _tile);
+
+	bool AddToToDeleteEnt(CEntity* _ent);
 
 	void LateDelete();
 

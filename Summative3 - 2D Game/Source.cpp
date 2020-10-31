@@ -11,6 +11,7 @@
 #include "WorldLayer.h"
 
 #include "CPlayer.h"
+#include "CEntity.h"
 #include "CItem.h"
 #include "ItemManager.h"
 #include "Lumber.h"
@@ -39,7 +40,12 @@ int main() {
 	
 	WorldLayer* world = new WorldLayer();
 	itemMngr->world = world;
-	CPlayer player({ 10,10 }, { 20,20 }, sf::Color::Green, world);
+	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green, world);
+	CEntity* bird = new CEntity(EntityType::Bird, { 1000,1000 }, { 10,10 }, sf::Color::White, world);
+	bird->player = &player;
+	bird->itemManager = itemMngr;
+	itemMngr->entities.push_back(bird);
+
 	player.rect.setPosition(world->GetFirstSandTilePos());
 
 	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));
