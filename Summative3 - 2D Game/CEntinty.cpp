@@ -4,14 +4,19 @@
 void CEntity::Movement()
 {
 	velocity = player->rect.getPosition() - rect.getPosition();
+
 	float mag = sqrt(pow(rect.getPosition().x - player->rect.getPosition().x, 2) + pow(rect.getPosition().y - player->rect.getPosition().y, 2));
+	
 	velocity *= 1/mag * moveSpeed;
+	
 
 	int x = floor((rect.getPosition() + velocity).x / 20);
 	int y = floor((rect.getPosition() + velocity).y / 20);
 
-	if (type != EntityType::Fish || currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
-		rect.move(velocity);
+	if (x > 0 && y > 0 && x < 500 && y < 500) {
+		if (type != EntityType::Fish || currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
+			rect.move(velocity);
+		}
 	}
 
 	//if (itemManager->currentlyDragging != nullptr) {
