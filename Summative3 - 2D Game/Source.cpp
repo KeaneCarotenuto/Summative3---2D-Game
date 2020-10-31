@@ -18,11 +18,13 @@
 
 
 int main() {
+	int seed = 1234;
+	srand(seed);
+
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "2D Game");
 	sf::RenderWindow inventory(sf::VideoMode(200, 500), "Inventory");
 	sf::RenderWindow crafting(sf::VideoMode(200, 200), "Crafting");
 
-	srand((int)time(0));
 	window.setVerticalSyncEnabled(true);
 	//window.setFramerateLimit(60);
 	float spotlightX = 25, spotlightY = 25;
@@ -38,7 +40,7 @@ int main() {
 	//Create itemmanager and hand it the map of windows
 	ItemManager* itemMngr = new ItemManager(windowsMap);
 	
-	WorldLayer* world = new WorldLayer();
+	WorldLayer* world = new WorldLayer(seed);
 	itemMngr->world = world;
 	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green, world);
 	CEntity* bird = new CEntity(EntityType::Bird, { 1000,1000 }, { 10,10 }, sf::Color::White, world);
@@ -122,6 +124,42 @@ int main() {
 
 		itemMngr->LateDelete();
 		
+
+		if (player.rect.getPosition().x < 0) {
+			seed -= 1;
+			srand(seed);
+			delete world;
+			world = new WorldLayer(seed);
+
+			player.rect.setPosition(10000 - 50, player.rect.getPosition().y);
+		}
+
+		if (player.rect.getPosition().x > 10000) {
+			seed += 1;
+			srand(seed);
+			delete world;
+			world = new WorldLayer(seed);
+
+			player.rect.setPosition(50 , player.rect.getPosition().y);
+		}
+
+		if (player.rect.getPosition().y < 0) {
+			seed -= 10000;
+			srand(seed);
+			delete world;
+			world = new WorldLayer(seed);
+
+			player.rect.setPosition(player.rect.getPosition().x, 10000 - 50);
+		}
+
+		if (player.rect.getPosition().y > 10000) {
+			seed += 10000;
+			srand(seed);
+			delete world;
+			world = new WorldLayer(seed);
+
+			player.rect.setPosition(player.rect.getPosition().x, 50);
+		}
 	}
 }
 

@@ -205,8 +205,8 @@ void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
 				if (currentlyDragging->itemName == "Stone") {
 
 					if (AddToToDeleteSpecial(world->SpecialTilemap[x][y])) {
-						items.push_back(new Lumber(LumberType::Log, worldInv, sf::Vector2f((x-1) * 20, (y-1) * 20), "Log"));
-						items.push_back(new Lumber(LumberType::Stick, worldInv, sf::Vector2f((x-1) * 20, (y-1) * 20), "Stick"));
+						items.push_back(new Lumber(LumberType::Log, worldInv, sprite.getPosition(), "Log"));
+						items.push_back(new Lumber(LumberType::Stick, worldInv, sprite.getPosition(), "Stick"));
 
 						world->SpecialTilemap[x][y] = nullptr;
 					}

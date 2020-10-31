@@ -25,8 +25,9 @@ WallTile::WallTile(int _Xpos, int _Ypos)
 	Collider.setPosition(sf::Vector2f((float)(_Xpos * 20), (float)(_Ypos * 20)));
 }
 
-WorldLayer::WorldLayer()
+WorldLayer::WorldLayer(int _seed)
 {
+	seed = _seed;
 	Altitude = 1;
 	//Todo: Generate TileMaps
 	populateTileMaps();
@@ -35,8 +36,9 @@ WorldLayer::WorldLayer()
 	//Todo: Spawn entities
 }
 
-WorldLayer::WorldLayer(WorldLayer* _Above, WorldLayer* _Below, int _altitude)
+WorldLayer::WorldLayer(int _seed, WorldLayer* _Above, WorldLayer* _Below, int _altitude)
 {
+	seed = _seed;
 	Altitude = _altitude;
 	//Todo: Generate TileMaps
 	populateTileMaps();
@@ -49,7 +51,7 @@ WorldLayer* WorldLayer::loadAboveLayer()
 {
 	if (m_pAboveLayer == nullptr)
 	{
-		m_pAboveLayer = new WorldLayer(nullptr, this, Altitude + 1);
+		m_pAboveLayer = new WorldLayer(seed, nullptr, this, Altitude + 1);
 	}
 	return m_pAboveLayer;
 }
@@ -58,7 +60,7 @@ WorldLayer* WorldLayer::loadBelowLayer()
 {
 	if (m_pBelowLayer == nullptr)
 	{
-		m_pBelowLayer = new WorldLayer(this, nullptr, Altitude - 1);
+		m_pBelowLayer = new WorldLayer(seed, this, nullptr, Altitude - 1);
 	}
 	return m_pBelowLayer;
 }
@@ -69,7 +71,7 @@ void WorldLayer::populateTileMaps()
 {
 	int map[500][500];
 	noise::module::Perlin Noise;
-	Noise.SetSeed((int)time(0));
+	Noise.SetSeed(seed);
 	double val;
 	for (int i = 0; i < 500; i++)
 	{
@@ -231,11 +233,19 @@ sf::Vector2f WorldLayer::GetFirstSandTilePos()
 
 bool WorldLayer::CheckCollision(sf::Vector2f _nextPos)
 {
+	return false;
+
 	int x = floor(_nextPos.x / 20);
 	int y = floor(_nextPos.y / 20);
 
+	if (x > 0 && y > 0 && x < 500 && y < 500) {
+		return ((SpecialTilemap[x][y] != nullptr) || (WallTilemap[x][y] != nullptr));
+	}
+	else {
+		return false;
+	}
 
-	return ((SpecialTilemap[x][y] != nullptr)||(WallTilemap[x][y] != nullptr));
+	
 }
 
 void WorldLayer::resetLightMap()

@@ -49,12 +49,13 @@ public:
 	SpecialTile* SpecialTilemap[500][500];
 	WallTile* WallTilemap[500][500];
 	int LightMap[500][500];
+	int seed;
 	//TODO: Navigation
 	
 	int Altitude;
 	
-	WorldLayer();
-	WorldLayer(WorldLayer* _Above, WorldLayer* _Below, int _altitude);
+	WorldLayer(int _seed);
+	WorldLayer(int _seed, WorldLayer* _Above, WorldLayer* _Below, int _altitude);
 	WorldLayer* loadAboveLayer();
 	WorldLayer* loadBelowLayer();
 	void resetLightMap();

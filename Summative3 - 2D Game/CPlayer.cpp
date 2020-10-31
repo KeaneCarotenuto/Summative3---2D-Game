@@ -39,7 +39,7 @@ void CPlayer::FixedUpdate()
 
 void CPlayer::Movement()
 {
-	if (currentStep % 5 == 0) {
+	if (currentStep % 1 == 0) {
 		//Horizontal
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
