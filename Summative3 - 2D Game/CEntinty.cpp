@@ -14,82 +14,78 @@ void CEntity::Movement()
 		rect.move(velocity);
 	}
 
-	
+	//if (itemManager->currentlyDragging != nullptr) {
+	//	sf::Vector2f pos =  rect.getPosition();
+	//	sf::Vector2f playerPos = player->rect.getPosition();;
 
-	return;
+	//	if (itemManager->currentlyDragging->itemName == "Stick" && sqrt(pow(pos.x - playerPos.x, 2) + pow(pos.y - playerPos.y, 2)) < 200) {
+	//		moveSpeed = -std::abs(moveSpeed);
+	//	}
+	//	else {
+	//		moveSpeed = std::abs(moveSpeed);
+	//	}
+	//}
+	//else {
+	//	moveSpeed = std::abs(moveSpeed);
+	//}
 
-	if (itemManager->currentlyDragging != nullptr) {
-		sf::Vector2f pos =  rect.getPosition();
-		sf::Vector2f playerPos = player->rect.getPosition();;
+	//if (currentStep % 1 == 0) {
+	//	//Horizontal
 
-		if (itemManager->currentlyDragging->itemName == "Stick" && sqrt(pow(pos.x - playerPos.x, 2) + pow(pos.y - playerPos.y, 2)) < 200) {
-			moveSpeed = -std::abs(moveSpeed);
-		}
-		else {
-			moveSpeed = std::abs(moveSpeed);
-		}
-	}
-	else {
-		moveSpeed = std::abs(moveSpeed);
-	}
+	//	int x = floor(rect.getPosition().x / 20);
+	//	int y = floor(rect.getPosition().y / 20);
 
-	if (currentStep % 1 == 0) {
-		//Horizontal
+	//	if (rect.getPosition().x + 100 > player->rect.getPosition().x)
+	//	{
 
-		int x = floor(rect.getPosition().x / 20);
-		int y = floor(rect.getPosition().y / 20);
+	//		rect.move(-moveSpeed, 0);
 
-		if (rect.getPosition().x + 100 > player->rect.getPosition().x)
-		{
+	//		if (currentWorld->CheckCollision(rect.getPosition()) || type != EntityType::Bird)
+	//		{
+	//			if (type == EntityType::Fish && currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
 
-			rect.move(-moveSpeed, 0);
+	//			}
+	//			else rect.move(moveSpeed, 0);
+	//		}
+	//	}
+	//	
+	//	if (rect.getPosition().x - 100 < player->rect.getPosition().x)
+	//	{
+	//		rect.move(moveSpeed, 0);
+	//		if (currentWorld->CheckCollision(rect.getPosition()) || type != EntityType::Bird)
+	//		{
+	//			if (type == EntityType::Fish && currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
 
-			if (currentWorld->CheckCollision(rect.getPosition()) || type != EntityType::Bird)
-			{
-				if (type == EntityType::Fish && currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
+	//			}
+	//			else rect.move(-moveSpeed, 0);
+	//		}
+	//	}
 
-				}
-				else rect.move(moveSpeed, 0);
-			}
-		}
-		
-		if (rect.getPosition().x - 100 < player->rect.getPosition().x)
-		{
-			rect.move(moveSpeed, 0);
-			if (currentWorld->CheckCollision(rect.getPosition()) || type != EntityType::Bird)
-			{
-				if (type == EntityType::Fish && currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
+	//	//Vertical
+	//	if (rect.getPosition().y + 100 > player->rect.getPosition().y)
+	//	{
+	//		rect.move(0, -moveSpeed);
+	//		if (currentWorld->CheckCollision(rect.getPosition()) || type != EntityType::Bird)
+	//		{
+	//			if (type == EntityType::Fish && currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
 
-				}
-				else rect.move(-moveSpeed, 0);
-			}
-		}
+	//			}
+	//			else rect.move(0, moveSpeed);
+	//		}
+	//	}
+	//	
+	//	if (rect.getPosition().y - 100 < player->rect.getPosition().y)
+	//	{
+	//		rect.move(0, moveSpeed);
+	//		if (currentWorld->CheckCollision(rect.getPosition()) || type != EntityType::Bird)
+	//		{
+	//			if (type == EntityType::Fish && currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
 
-		//Vertical
-		if (rect.getPosition().y + 100 > player->rect.getPosition().y)
-		{
-			rect.move(0, -moveSpeed);
-			if (currentWorld->CheckCollision(rect.getPosition()) || type != EntityType::Bird)
-			{
-				if (type == EntityType::Fish && currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
-
-				}
-				else rect.move(0, moveSpeed);
-			}
-		}
-		
-		if (rect.getPosition().y - 100 < player->rect.getPosition().y)
-		{
-			rect.move(0, moveSpeed);
-			if (currentWorld->CheckCollision(rect.getPosition()) || type != EntityType::Bird)
-			{
-				if (type == EntityType::Fish && currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
-
-				}
-				else rect.move(0, -moveSpeed);
-			}
-		}
-	}
+	//			}
+	//			else rect.move(0, -moveSpeed);
+	//		}
+	//	}
+	//}
 }
 
 void CEntity::Update(float _fDeltaTime)
