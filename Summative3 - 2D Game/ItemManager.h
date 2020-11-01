@@ -11,17 +11,15 @@
 #include "Consumables.h"
 #include "WorldLayer.h"
 #include "CEntity.h"
+#include "Globals.h"
 
 
 class ItemManager:
 	private CGameObject, Loadable
 {
 public:
-	ItemManager(std::map < std::string, sf::RenderWindow*> _allWindows);
+	ItemManager();
 	~ItemManager();
-
-	std::vector<sf::RenderWindow*> inventories;
-	std::map <std::string, sf::RenderWindow*> mapOfWindows;
 
 	std::vector<CItem*> items;
 
@@ -63,8 +61,6 @@ public:
 	CItem* SplitOneItem(CItem* _item);
 
 	void StackItem(CItem* _item, CItem* _itemStack);
-
-	void RegisterWindow(std::string _str, sf::RenderWindow* _wind);
 
 	
 

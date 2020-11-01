@@ -1,7 +1,5 @@
 #include "CItem.h"
 
-std::map <std::string, sf::RenderWindow*> CItem::mapOfWindows;
-
 bool CItem::operator==(const CItem& _item)
 {
 	return (typeid(this).name() == typeid(_item).name());
@@ -15,8 +13,8 @@ void CItem::FixedUpdate()
 void CItem::Update(float _fDeltaTime)
 {
 	sf::RenderWindow* worldInv = nullptr;
-	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = CItem::mapOfWindows.find("WorldInv");
-	if (invWndIt != CItem::mapOfWindows.end()) {
+	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("WorldInv");
+	if (invWndIt != Globals::mapOfWindows.end()) {
 		worldInv = (*invWndIt).second;
 	}
 	else {

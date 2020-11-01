@@ -15,6 +15,7 @@
 #include "CItem.h"
 #include "ItemManager.h"
 #include "Lumber.h"
+#include "Globals.h"
 
 void GenNewIsland(int seed, WorldLayer*& world, ItemManager* itemMngr, sf::RenderWindow* _inv);
 
@@ -41,20 +42,22 @@ int main() {
 		{"CraftingInv",&crafting}
 	};
 
-	/*for (std::map < std::string, sf::RenderWindow*>::iterator it = windowsMap.begin(); it != windowsMap.end(); it++) {
+	Globals::mapOfWindows = windowsMap;
+
+	for (std::map < std::string, sf::RenderWindow*>::iterator it = windowsMap.begin(); it != windowsMap.end(); it++) {
 		Globals::RegisterWindow(it->first, it->second);
-	}*/
+	}
 
 	//Create itemmanager and hand it the map of windows
-	ItemManager* itemMngr = new ItemManager(windowsMap);
+	ItemManager* itemMngr = new ItemManager();
 	//CItem::itemManager = itemMngr;
 
-	CItem::mapOfWindows = itemMngr->mapOfWindows;
+	
 
 	WorldLayer* world = new WorldLayer(seed);
 	itemMngr->world = world;
 
-	itemMngr->SpawnMapItems();
+	//itemMngr->SpawnMapItems();
 	
 
 	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green, world);

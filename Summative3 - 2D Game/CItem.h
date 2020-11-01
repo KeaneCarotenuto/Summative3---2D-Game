@@ -4,13 +4,13 @@
 #include <iostream>
 #include "GameData.h"
 #include "EasySFML.h"
+#include "Globals.h"
 
 
 class CItem :
 	public CGameObject, public Loadable
 {
 public:
-	static std::map <std::string, sf::RenderWindow*> mapOfWindows;
 
 	std::string itemName;
 
