@@ -25,10 +25,13 @@ void CItem::Update(float _fDeltaTime)
 	}
 
 	if (currentInv == worldInv) {
-		CWindowUtilities::Draw(&sprite,sprite.getPosition());
+		if (sqrt(pow(sprite.getPosition().x - CWindowUtilities::ScreenCentre.x, 2) + pow(sprite.getPosition().y - CWindowUtilities::ScreenCentre.y, 2)) <= CWindowUtilities::RenderDistance)
+		{
+			Draw();
+		}
 	}
 	else {
-		CWindowUtilities::Draw(&sprite);
+		Draw();
 	}
 	
 }
