@@ -1,13 +1,13 @@
-#include "ItemManager.h"
 #pragma warning(disable : 6011)
+#include "ItemManager.h"
 
 
 
-ItemManager::ItemManager(std::map < std::string, sf::RenderWindow*> _allWindows):
+ItemManager::ItemManager():
 	Loadable("Items/", "Manager")
 {
 	//Registers All Windows handed to it under map with name and pointer
-	for (std::map < std::string, sf::RenderWindow*>::iterator it = _allWindows.begin(); it != _allWindows.end(); it++) {
+	for (std::map < std::string, sf::RenderWindow*>::iterator it = Globals::mapOfWindows.begin(); it != Globals::mapOfWindows.end(); it++) {
 		RegisterWindow(it->first, it->second);
 	}
 
@@ -17,8 +17,8 @@ ItemManager::ItemManager(std::map < std::string, sf::RenderWindow*> _allWindows)
 		for (GameData::DataGroup& _childgroup : _group.m_Groups) {
 
 			//Find the window that the group is a part of, from the map of windows, using the Group ID
-			std::map < std::string, sf::RenderWindow*>::iterator windIt = mapOfWindows.find(_group.GroupID);
-			if (windIt != mapOfWindows.end()) {
+			std::map < std::string, sf::RenderWindow*>::iterator windIt = Globals::mapOfWindows.find(_group.GroupID);
+			if (windIt != Globals::mapOfWindows.end()) {
 
 				
 
@@ -93,8 +93,8 @@ void ItemManager::FixedUpdate()
 													currentlyDragging->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*currentlyDragging->currentInv)).y - currentlyDragging->sprite.getGlobalBounds().height / 2);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && currentStep % 5 == 0) {
 				sf::RenderWindow* worldInv = nullptr;
-				std::map < std::string, sf::RenderWindow*>::iterator invWndIt = mapOfWindows.find("WorldInv");
-				if (invWndIt != mapOfWindows.end()) {
+				std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("WorldInv");
+				if (invWndIt != Globals::mapOfWindows.end()) {
 					worldInv = (*invWndIt).second;
 				}
 
@@ -275,8 +275,8 @@ void ItemManager::LateDelete()
 void ItemManager::TryCrafting()
 {
 	sf::RenderWindow* craftingInv = nullptr;
-	std::map < std::string, sf::RenderWindow*>::iterator craftWndIt = mapOfWindows.find("CraftingInv");
-	if (craftWndIt != mapOfWindows.end()) {
+	std::map < std::string, sf::RenderWindow*>::iterator craftWndIt = Globals::mapOfWindows.find("CraftingInv");
+	if (craftWndIt != Globals::mapOfWindows.end()) {
 		craftingInv = (*craftWndIt).second;
 	}
 	else {
@@ -284,8 +284,8 @@ void ItemManager::TryCrafting()
 	}
 
 	sf::RenderWindow* playerInv = nullptr;
-	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = mapOfWindows.find("PlayerInv");
-	if (invWndIt != mapOfWindows.end()) {
+	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("PlayerInv");
+	if (invWndIt != Globals::mapOfWindows.end()) {
 		playerInv = (*invWndIt).second;
 	}
 	else {
@@ -334,6 +334,31 @@ void ItemManager::TryCrafting()
 		CItem* craftedItem = new Consumables(ConsumableType::Water, craftingInv, { 10,10 }, "Water");
 		items.push_back(craftedItem);
 		craftedItem->sprite.setColor(sf::Color(255, 255, 0));
+	}
+}
+
+void ItemManager::SpawnMapItems()
+{
+	sf::RenderWindow* worldInv = nullptr;
+	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("WorldInv");
+	if (invWndIt != Globals::mapOfWindows.end()) {
+		worldInv = (*invWndIt).second;
+	}
+	else {
+		std::cout << "Failed to Find World Inv\n";
+		return;
+	}
+
+	for (int x = 0; x < WorldLayer::width; x++) {
+		for (int y = 0; y < WorldLayer::height; y++) {
+			if (world->TerrainTilemap[x][y]->Type == TerrainType::ROCK && rand() % 500 == 0) {
+				items.push_back(new Mineral(MineralType::Stone, worldInv, sf::Vector2f(x*20, y*20), "Stone"));
+			}
+
+			if (world->TerrainTilemap[x][y]->Type == TerrainType::GRASS && rand() % 500 == 0) {
+				items.push_back(new Lumber(LumberType::Stick, worldInv, sf::Vector2f(x * 20, y * 20), "Stick"));
+			}
+		}
 	}
 }
 
@@ -407,7 +432,4 @@ void ItemManager::StackItem(CItem* _item, CItem* _itemStack)
 void ItemManager::RegisterWindow(std::string _str, sf::RenderWindow* _wind)
 {
 	inventories.push_back(_wind);
-
-	mapOfWindows[_str] = _wind;
-	
 }

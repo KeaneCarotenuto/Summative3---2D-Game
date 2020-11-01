@@ -69,16 +69,16 @@ WorldLayer* WorldLayer::loadBelowLayer()
 
 void WorldLayer::populateTileMaps()
 {
-	int map[500][500];
+	int map[width][height];
 	noise::module::Perlin Noise;
 	Noise.SetSeed(seed);
 	double val;
-	for (int i = 0; i < 500; i++)
+	for (int i = 0; i < width; i++)
 	{
-		for (int j = 0; j < 500; j++)
+		for (int j = 0; j < height; j++)
 		{
 			
-			val = Noise.GetValue((double)(i)*(2.0f/500.0f), (double)(j) * (2.0f / 500.0f), 0.5);
+			val = Noise.GetValue((double)(i)*(2.0f/ width), (double)(j) * (2.0f / height), 0.5);
 			val -= 0.006 * std::abs(std::sqrt((i - 250) * (i - 250) + (j - 250) * (j - 250)));
 			if (val < -0.9)
 			{
@@ -114,9 +114,9 @@ void WorldLayer::populateTileMaps()
 	}
 	
 	//TESTING CODE
-	for (size_t i = 0; i < 500; i++)
+	for (size_t i = 0; i < width; i++)
 	{
-		for (size_t j = 0; j < 500; j++)
+		for (size_t j = 0; j < height; j++)
 		{
 			TerrainTilemap[i][j] = new TerrainTile((TerrainType)(map[i][j]), i, j);
 			
@@ -129,14 +129,20 @@ void WorldLayer::populateTileMaps()
 			{
 				WallTilemap[i][j] = nullptr;
 			}
+
 			if (map[i][j] == 4 && rand()%3 == 1 )
 			{
 
 			}
-			else if ((map[i][j] == 5 || map[i][j] == 3) && rand() % 6 == 1)
+			else if (map[i][j] == 5 && rand() % 50 == 0) 
+			{
+				SpecialTilemap[i][j] = new Boulder(sf::Vector2f(i * 20, j * 20));
+			}
+			else if ( map[i][j] == 3 && rand() % 6 == 1)
 			{
 				SpecialTilemap[i][j] = new Tree(sf::Vector2f(i * 20, j * 20));
 			}
+
 			else
 			{
 				SpecialTilemap[i][j] = nullptr;
@@ -165,21 +171,21 @@ void WorldLayer::renderTileMaps()
 	{
 		yIndexMin = 0;
 	}
-	if (xIndexMax >= 500)
+	if (xIndexMax >= width)
 	{
-		xIndexMax = 499;
+		xIndexMax = width - 1;
 	}
-	if (yIndexMax >= 499)
+	if (yIndexMax >= height)
 	{
-		yIndexMax = 499;
+		yIndexMax = height - 1;
 	}
 
 	m_TerrainTexture.loadFromFile("Resources/Test/TerrainTileset.png");
 	m_TerrainVertices.setPrimitiveType(sf::Quads);
-	m_TerrainVertices.resize(500 * 500 * 4);
+	m_TerrainVertices.resize(width * height * 4);
 	m_WallTexture.loadFromFile("Resources/Test/WallTileset.png");
 	m_WallVertices.setPrimitiveType(sf::Quads);
-	m_WallVertices.resize(500 * 500 * 4);
+	m_WallVertices.resize(width * height * 4);
 
 
 	for (int i = xIndexMin; i < xIndexMax; ++i)
@@ -218,9 +224,9 @@ void WorldLayer::renderTileMaps()
 
 sf::Vector2f WorldLayer::GetFirstSandTilePos()
 {
-	for (int i = 0; i < 500; i++)
+	for (int i = 0; i < width; i++)
 	{
-		for (int j = 0; j < 500; j++)
+		for (int j = 0; j < height; j++)
 		{
 			if (TerrainTilemap[i][j]->Type == TerrainType::SAND)
 			{
@@ -243,7 +249,7 @@ bool WorldLayer::CheckCollision(sf::Vector2f _nextPos)
 	int x = floor(_nextPos.x / 20);
 	int y = floor(_nextPos.y / 20);
 
-	if (x > 0 && y > 0 && x < 500 && y < 500) {
+	if (x > 0 && y > 0 && x < width && y < height) {
 		return ((SpecialTilemap[x][y] != nullptr) || (WallTilemap[x][y] != nullptr));
 	}
 	else {
@@ -264,9 +270,9 @@ void WorldLayer::resetLightMap()
 	{
 		iGlobalLightLevel = 0;
 	}
-	for (int i = 0; i < 500; i++)
+	for (int i = 0; i < width; i++)
 	{
-		for (int j = 0; j < 500; j++)
+		for (int j = 0; j < height; j++)
 		{
 			if (WallTilemap[i][j] == nullptr)
 			{
@@ -315,9 +321,9 @@ void WorldLayer::renderLightMap()
 
 	for (int x = 9; x > 0; x--)
 	{
-		for (int i = 0; i < 500; i++)
+		for (int i = 0; i < width; i++)
 		{
-			for (int j = 0; j < 500; j++)
+			for (int j = 0; j < height; j++)
 			{
 				if (LightMap[i][j] == x)
 				{
@@ -328,7 +334,7 @@ void WorldLayer::renderLightMap()
 							LightMap[i - 1][j] = x - 1;
 						}
 					}
-					if (i < 499)
+					if (i < width-1)
 					{
 
 						if (LightMap[i + 1][j] < x)
@@ -344,7 +350,7 @@ void WorldLayer::renderLightMap()
 							LightMap[i - 1][j - 1] = x - 1;
 						}
 					}
-					if (i < 499 && j < 499)
+					if (i < width-1 && j < height-1)
 					{
 						if (LightMap[i + 1][j + 1] < x)
 						{
@@ -362,7 +368,7 @@ void WorldLayer::renderLightMap()
 
 
 					}
-					if (j < 499)
+					if (j < height-1)
 					{
 
 						if (LightMap[i][j + 1] < x)
@@ -371,14 +377,14 @@ void WorldLayer::renderLightMap()
 						}
 
 					}
-					if (i > 0 && j < 499)
+					if (i > 0 && j < height-1)
 					{
 						if (LightMap[i - 1][j + 1] < x)
 						{
 							LightMap[i - 1][j + 1] = x - 1;
 						}
 					}
-					if (i < 499 && j > 0)
+					if (i < width-1 && j > 0)
 					{
 						if (LightMap[i + 1][j - 1] < x)
 						{
@@ -395,11 +401,11 @@ void WorldLayer::renderLightMap()
 	
 	m_LightLevelTexture.loadFromFile("Resources/Test/LightLevels.png");
 	m_LightLevelVertices.setPrimitiveType(sf::Quads);
-	m_LightLevelVertices.resize(500 * 500 * 4);
+	m_LightLevelVertices.resize(width * height * 4);
 
-	for (int i = 0; i < 500; ++i)
+	for (int i = 0; i < width; ++i)
 	{
-		for (int j = 0; j < 500; ++j)
+		for (int j = 0; j < height; ++j)
 		{
 			sf::Vertex* quad = &m_LightLevelVertices[(i + j * 500) * 4];
 
@@ -451,9 +457,9 @@ void WorldLayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void WorldLayer::DrawSpecial()
 {
-	for (int i = 0; i < 500; i++)
+	for (int i = 0; i < width; i++)
 	{
-		for (int j = 0; j < 500; j++)
+		for (int j = 0; j < height; j++)
 		{
 			if (SpecialTilemap[j][i] != nullptr)
 			{

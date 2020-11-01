@@ -7,3 +7,8 @@ Mineral::Mineral(MineralType _type, GameData::DataGroup _datag, sf::RenderWindow
 {
 
 }
+
+Mineral::Mineral(MineralType _type, sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name) :
+	type(_type), Resource(_wind, _pos, _name)
+{
+}

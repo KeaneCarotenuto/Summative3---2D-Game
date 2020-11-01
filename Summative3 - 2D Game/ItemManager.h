@@ -11,12 +11,14 @@
 #include "Consumables.h"
 #include "WorldLayer.h"
 #include "CEntity.h"
+#include "Globals.h"
+
 
 class ItemManager:
 	private CGameObject, Loadable
 {
 public:
-	ItemManager(std::map < std::string, sf::RenderWindow*> _allWindows);
+	ItemManager();
 	~ItemManager();
 
 	std::vector<sf::RenderWindow*> inventories;
@@ -49,6 +51,8 @@ public:
 	void LateDelete();
 
 	void TryCrafting();
+
+	void SpawnMapItems();
 
 	void RemoveOneItemFromStack(CItem* _itemStack);
 
@@ -96,7 +100,7 @@ private:
 	bool freezeCraftButton = false;
 	int currentStep = 0;
 
-	std::map <std::string, sf::RenderWindow*> mapOfWindows;
+	
 	
 
 	std::map <std::string, CItem* (*)(sf::RenderWindow* _wind, GameData::DataGroup _datag)> mapOfItems = {

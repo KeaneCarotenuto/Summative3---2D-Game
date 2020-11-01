@@ -1,7 +1,8 @@
 #include "SpecialTile.h"
 
-SpecialTile::SpecialTile(sf::Vector2f _pos, std::string _texturepath)
+SpecialTile::SpecialTile(SpecialType _type ,sf::Vector2f _pos, std::string _texturepath)
 {
+	type = _type;
 	Pos = _pos;
 	Texture.loadFromFile(_texturepath);
 	Sprite.setTexture(Texture);
@@ -13,7 +14,12 @@ SpecialTile::SpecialTile(sf::Vector2f _pos, std::string _texturepath)
 
 
 Tree::Tree(sf::Vector2f _pos) :
-	SpecialTile(_pos, "Resources/Sprites/Tree.png")
+	SpecialTile(SpecialType::Tree, _pos, "Resources/Sprites/Tree.png")
 {
 
+}
+
+Boulder::Boulder(sf::Vector2f _pos) :
+	SpecialTile(SpecialType::Boulder, _pos, "Resources/Sprites/Boulder.png")
+{
 }

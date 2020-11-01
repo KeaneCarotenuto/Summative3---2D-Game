@@ -3,15 +3,22 @@
 #include "Resource.h"
 #pragma once
 
+enum class SpecialType
+{
+	Tree,
+	Boulder
+};
+
 class SpecialTile
 	: CGameObject
 {
 public:
+	SpecialType type;
 	sf::Sprite Sprite;
 	sf::Texture Texture;
 	std::vector<Resource> Droptable;
 	sf::Vector2f Pos;
-	SpecialTile(sf::Vector2f _pos, std::string _texturepath);
+	SpecialTile(SpecialType _type, sf::Vector2f _pos, std::string _texturepath);
 	
 	
 	//Todo: Make interface class for Special tiles such as resource nodes
@@ -24,3 +31,9 @@ public:
 	Tree(sf::Vector2f _pos);
 };
 
+class Boulder
+	: public SpecialTile
+{
+public:
+	Boulder(sf::Vector2f _pos);
+};

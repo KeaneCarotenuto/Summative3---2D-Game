@@ -16,6 +16,8 @@
 #include "ItemManager.h"
 #include "Lumber.h"
 
+#include "Globals.h"
+
 void GenNewIsland(int seed, WorldLayer*& world, ItemManager* itemMngr, sf::RenderWindow* _inv);
 
 int main() {
@@ -41,12 +43,25 @@ int main() {
 		{"CraftingInv",&crafting}
 	};
 
+	Globals::mapOfWindows = windowsMap;
+
 	//Create itemmanager and hand it the map of windows
-	ItemManager* itemMngr = new ItemManager(windowsMap);
+	ItemManager* itemMngr = new ItemManager();
+	//CItem::itemManager = itemMngr;
+
 	
+
 	WorldLayer* world = new WorldLayer(seed);
 	itemMngr->world = world;
+
+	itemMngr->SpawnMapItems();
+	
+
 	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green, world);
+
+	player.rect.setPosition(world->GetFirstSandTilePos());
+	
+
 	CEntity* bird = new CEntity(EntityType::Bird, { 1000,1000 }, { 15,15 }, sf::Color::White, world);
 	bird->player = &player;
 	bird->itemManager = itemMngr;
@@ -57,7 +72,7 @@ int main() {
 	fish->itemManager = itemMngr;
 	itemMngr->entities.push_back(fish);
 
-	player.rect.setPosition(world->GetFirstSandTilePos());
+	
 
 	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));
 

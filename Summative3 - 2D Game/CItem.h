@@ -4,6 +4,7 @@
 #include <iostream>
 #include "GameData.h"
 #include "EasySFML.h"
+#include "Globals.h"
 
 
 class CItem :
@@ -15,6 +16,7 @@ public:
 	sf::Texture texture;
 	sf::Sprite sprite;
 
+	//static ItemManager* itemManager;
 	sf::RenderWindow* currentInv;
 	std::string currentInvName;
 
@@ -29,12 +31,9 @@ public:
 	virtual void FixedUpdate();
 	virtual void Update(float _fDeltaTime);
 
-
+	virtual void Draw();
+	virtual void Draw(sf::Vector2f);
 protected:
 	CItem(sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name, std::string _filepath);
-
-	
-
-	virtual void Draw();
 };
 
