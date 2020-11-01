@@ -68,12 +68,18 @@ public:
 
 	operator GameData()
 	{
+		sf::RenderWindow* playerInv = nullptr;
+		std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("PlayerInv");
+		if (invWndIt != Globals::mapOfWindows.end()) {
+			playerInv = (*invWndIt).second;
+		}
+
 		GameData dat;
 		dat.AddGroup(std::string("PlayerInv"));
 		dat.AddGroup(std::string("WorldInv"));
 		for (CItem* item : items)
 		{
-			if (!item->bIsEnabled) { continue; }
+			if (!item->bIsEnabled || item->currentInv != playerInv) { continue; }
 			//Get name of current window
 			std::string currentWindow = "PlayerInv";
 
