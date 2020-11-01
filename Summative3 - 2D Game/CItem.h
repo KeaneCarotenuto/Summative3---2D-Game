@@ -30,9 +30,11 @@ public:
 	virtual void FixedUpdate();
 	virtual void Update(float _fDeltaTime);
 
-	virtual void Draw();
-	virtual void Draw(sf::Vector2f);
+	
 protected:
 	CItem(sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name, std::string _filepath);
+
+	virtual void Draw();
+	virtual void Draw(sf::Vector2f);
 };
 

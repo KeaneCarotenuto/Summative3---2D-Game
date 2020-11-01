@@ -13,22 +13,24 @@ void CItem::FixedUpdate()
 
 void CItem::Update(float _fDeltaTime)
 {
-	sf::RenderWindow* worldInv = nullptr;
-	/*std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("WorldInv");
+	/*sf::RenderWindow* worldInv = nullptr;
+	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("WorldInv");
 	if (invWndIt != Globals::mapOfWindows.end()) {
 		worldInv = (*invWndIt).second;
 	}
 	else {
 		std::cout << "Failed to Find World Inv\n";
 		return;
-	}*/
+	}
 
 	if (currentInv == worldInv) {
 		Draw(sprite.getPosition());
 	}
 	else {
 		Draw();
-	}
+	}*/
+
+	Draw();
 	
 }
 

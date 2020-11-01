@@ -432,4 +432,6 @@ void ItemManager::StackItem(CItem* _item, CItem* _itemStack)
 void ItemManager::RegisterWindow(std::string _str, sf::RenderWindow* _wind)
 {
 	inventories.push_back(_wind);
+
+	mapOfWindows[_str] = _wind;
 }
