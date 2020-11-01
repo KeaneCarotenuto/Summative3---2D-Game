@@ -10,6 +10,8 @@ class CItem :
 	public CGameObject, public Loadable
 {
 public:
+	static std::map <std::string, sf::RenderWindow*> mapOfWindows;
+
 	std::string itemName;
 
 	sf::Texture texture;

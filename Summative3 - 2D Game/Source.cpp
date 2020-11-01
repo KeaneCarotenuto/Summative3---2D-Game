@@ -49,7 +49,7 @@ int main() {
 	ItemManager* itemMngr = new ItemManager(windowsMap);
 	//CItem::itemManager = itemMngr;
 
-	
+	CItem::mapOfWindows = itemMngr->mapOfWindows;
 
 	WorldLayer* world = new WorldLayer(seed);
 	itemMngr->world = world;
