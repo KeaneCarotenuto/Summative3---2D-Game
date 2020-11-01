@@ -50,6 +50,8 @@ public:
 
 	void TryCrafting();
 
+	void TrySpawnItem(CItem* _item);
+
 	void SpawnMapItems();
 
 	void RemoveOneItemFromStack(CItem* _itemStack);

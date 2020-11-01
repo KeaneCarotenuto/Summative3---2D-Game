@@ -24,7 +24,7 @@ ItemManager::ItemManager() :
 
 						//Create the actual item and push it to the list of items
 
-						items.push_back(itemIt->second(windIt->second, _childgroup));
+						TrySpawnItem(itemIt->second(windIt->second, _childgroup));
 						
 
 					}
@@ -179,7 +179,7 @@ void ItemManager::CheckEntities(sf::RenderWindow* worldInv)
 			if (currentlyDragging->itemName == "Stick") {
 
 				if (AddToToDeleteEnt(_ent)) {
-					items.push_back(new Consumables(ConsumableType::Meat, worldInv, _ent->rect.getPosition(), "Meat"));
+					TrySpawnItem(new Consumables(ConsumableType::Meat, worldInv, _ent->rect.getPosition(), "Meat"));
 
 					_ent = nullptr;
 				}
@@ -203,8 +203,8 @@ void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
 				if (currentlyDragging->itemName == "Stone") {
 
 					if (AddToToDeleteSpecial(world->SpecialTilemap[x][y])) {
-						items.push_back(new Lumber(LumberType::Log, worldInv, sprite.getPosition(), "Log"));
-						//items.push_back(new Lumber(LumberType::Stick, worldInv, sprite.getPosition(), "Stick"));
+						TrySpawnItem(new Lumber(LumberType::Log, worldInv, sprite.getPosition(), "Log"));
+						//TrySpawnItem(new Lumber(LumberType::Stick, worldInv, sprite.getPosition(), "Stick"));
 
 						world->SpecialTilemap[x][y] = nullptr;
 					}
@@ -329,8 +329,23 @@ void ItemManager::TryCrafting()
 		RemoveOneItemFromStack(berriesStack[0]);
 
 		CItem* craftedItem = new Consumables(ConsumableType::Water, craftingInv, { 10,10 }, "Water");
-		items.push_back(craftedItem);
+		TrySpawnItem(craftedItem);
 		craftedItem->sprite.setColor(sf::Color(255, 255, 0));
+	}
+}
+
+void ItemManager::TrySpawnItem(CItem * _item)
+{
+	if (items.size() < 100) {
+		items.push_back(_item);
+	}
+	else {
+		if (items.size() > 1) {
+			std::cout << "E\n";
+		}
+
+		std::cout << "Too many Items\n";
+		delete _item;
 	}
 }
 
@@ -349,11 +364,11 @@ void ItemManager::SpawnMapItems()
 	for (int x = 0; x < WorldLayer::width; x++) {
 		for (int y = 0; y < WorldLayer::height; y++) {
 			if (world->TerrainTilemap[x][y]->Type == TerrainType::ROCK && rand() % 500 == 0) {
-				items.push_back(new Mineral(MineralType::Stone, worldInv, sf::Vector2f(x*20, y*20), "Stone"));
+				TrySpawnItem(new Mineral(MineralType::Stone, worldInv, sf::Vector2f(x*20, y*20), "Stone"));
 			}
 
 			if (world->TerrainTilemap[x][y]->Type == TerrainType::GRASS && rand() % 500 == 0) {
-				items.push_back(new Lumber(LumberType::Stick, worldInv, sf::Vector2f(x * 20, y * 20), "Stick"));
+				TrySpawnItem(new Lumber(LumberType::Stick, worldInv, sf::Vector2f(x * 20, y * 20), "Stick"));
 			}
 		}
 	}
@@ -403,7 +418,7 @@ CItem* ItemManager::SplitOneItem(CItem* _itemStack)
 	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->initialWindow = _itemStack->currentInv;
 	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->currentInv = _itemStack->currentInv;
 	
-	items.push_back(dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top());
+	TrySpawnItem(dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top());
 
 
 	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.pop();
