@@ -1,24 +1,24 @@
-#pragma warning(disable : 6011)
-#include "ItemManager.h"
+#include "ItemManager.h" 
+#pragma warning(disable : 6011) 
 
 
 
-ItemManager::ItemManager():
+ItemManager::ItemManager(std::map < std::string, sf::RenderWindow*> _allWindows) :
 	Loadable("Items/", "Manager")
 {
-	//Registers All Windows handed to it under map with name and pointer
-	for (std::map < std::string, sf::RenderWindow*>::iterator it = Globals::mapOfWindows.begin(); it != Globals::mapOfWindows.end(); it++) {
+	//Registers All Windows handed to it under map with name and pointer 
+	for (std::map < std::string, sf::RenderWindow*>::iterator it = _allWindows.begin(); it != _allWindows.end(); it++) {
 		RegisterWindow(it->first, it->second);
 	}
 
-	//For every inventory Group (e.g, PlayerInv or WorldInv), get the data in the group
+	//For every inventory Group (e.g, PlayerInv or WorldInv), get the data in the group 
 	for (GameData::DataGroup _group : Data->FileData.m_Groups) {
-		//For all of the data in that group (e.g. {"Stick","10"}), get that data
+		//For all of the data in that group (e.g. {"Stick","10"}), get that data 
 		for (GameData::DataGroup& _childgroup : _group.m_Groups) {
 
-			//Find the window that the group is a part of, from the map of windows, using the Group ID
-			std::map < std::string, sf::RenderWindow*>::iterator windIt = Globals::mapOfWindows.find(_group.GroupID);
-			if (windIt != Globals::mapOfWindows.end()) {
+			//Find the window that the group is a part of, from the map of windows, using the Group ID 
+			std::map < std::string, sf::RenderWindow*>::iterator windIt = mapOfWindows.find(_group.GroupID);
+			if (windIt != mapOfWindows.end()) {
 
 				
 
@@ -93,8 +93,8 @@ void ItemManager::FixedUpdate()
 													currentlyDragging->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*currentlyDragging->currentInv)).y - currentlyDragging->sprite.getGlobalBounds().height / 2);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && currentStep % 5 == 0) {
 				sf::RenderWindow* worldInv = nullptr;
-				std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("WorldInv");
-				if (invWndIt != Globals::mapOfWindows.end()) {
+				std::map < std::string, sf::RenderWindow*>::iterator invWndIt = mapOfWindows.find("WorldInv");
+				if (invWndIt != mapOfWindows.end()) {
 					worldInv = (*invWndIt).second;
 				}
 
@@ -275,8 +275,8 @@ void ItemManager::LateDelete()
 void ItemManager::TryCrafting()
 {
 	sf::RenderWindow* craftingInv = nullptr;
-	std::map < std::string, sf::RenderWindow*>::iterator craftWndIt = Globals::mapOfWindows.find("CraftingInv");
-	if (craftWndIt != Globals::mapOfWindows.end()) {
+	std::map < std::string, sf::RenderWindow*>::iterator craftWndIt = mapOfWindows.find("CraftingInv");
+	if (craftWndIt != mapOfWindows.end()) {
 		craftingInv = (*craftWndIt).second;
 	}
 	else {
@@ -284,8 +284,8 @@ void ItemManager::TryCrafting()
 	}
 
 	sf::RenderWindow* playerInv = nullptr;
-	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("PlayerInv");
-	if (invWndIt != Globals::mapOfWindows.end()) {
+	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = mapOfWindows.find("PlayerInv");
+	if (invWndIt != mapOfWindows.end()) {
 		playerInv = (*invWndIt).second;
 	}
 	else {
@@ -340,8 +340,8 @@ void ItemManager::TryCrafting()
 void ItemManager::SpawnMapItems()
 {
 	sf::RenderWindow* worldInv = nullptr;
-	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("WorldInv");
-	if (invWndIt != Globals::mapOfWindows.end()) {
+	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = mapOfWindows.find("WorldInv");
+	if (invWndIt != mapOfWindows.end()) {
 		worldInv = (*invWndIt).second;
 	}
 	else {

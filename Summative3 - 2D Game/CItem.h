@@ -4,7 +4,6 @@
 #include <iostream>
 #include "GameData.h"
 #include "EasySFML.h"
-#include "Globals.h"
 
 
 class CItem :

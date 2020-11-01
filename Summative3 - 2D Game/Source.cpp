@@ -16,8 +16,6 @@
 #include "ItemManager.h"
 #include "Lumber.h"
 
-#include "Globals.h"
-
 void GenNewIsland(int seed, WorldLayer*& world, ItemManager* itemMngr, sf::RenderWindow* _inv);
 
 int main() {
@@ -43,10 +41,12 @@ int main() {
 		{"CraftingInv",&crafting}
 	};
 
-	Globals::mapOfWindows = windowsMap;
+	/*for (std::map < std::string, sf::RenderWindow*>::iterator it = windowsMap.begin(); it != windowsMap.end(); it++) {
+		Globals::RegisterWindow(it->first, it->second);
+	}*/
 
 	//Create itemmanager and hand it the map of windows
-	ItemManager* itemMngr = new ItemManager();
+	ItemManager* itemMngr = new ItemManager(windowsMap);
 	//CItem::itemManager = itemMngr;
 
 	
