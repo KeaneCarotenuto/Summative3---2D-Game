@@ -89,6 +89,7 @@ int main() {
 			{
 				delete itemMngr;
 				window.close();
+				return 0;
 			}
 
 			if (newEvent.type == sf::Event::MouseWheelMoved)
@@ -143,8 +144,7 @@ int main() {
 		window.display();
 		CWindowUtilities::ToDrawList.clear(); //Then empty it so its ready for the next frame
 		//<end>
-
-		itemMngr->LateDelete();
+		
 		
 		bool changedWorld = false;
 		if (player.rect.getPosition().x < 0) {
@@ -188,6 +188,8 @@ int main() {
 			}
 		}
 	}
+
+	return 0;
 }
 
 void GenNewIsland(int seed, WorldLayer*& world, ItemManager* itemMngr, sf::RenderWindow* _inv)
