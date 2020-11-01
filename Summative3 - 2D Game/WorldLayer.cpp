@@ -138,7 +138,7 @@ void WorldLayer::populateTileMaps()
 			{
 				SpecialTilemap[i][j] = new Boulder(sf::Vector2f(i * 20, j * 20));
 			}
-			else if ( map[i][j] == 3 && rand() % 6 == 1)
+			else if ( map[i][j] == 3 && rand() % 50 == 0)
 			{
 				SpecialTilemap[i][j] = new Tree(sf::Vector2f(i * 20, j * 20));
 			}

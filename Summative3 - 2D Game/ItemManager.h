@@ -42,7 +42,7 @@ public:
 
 	void CheckSpecialTiles(sf::RenderWindow* worldInv);
 
-	bool AddToToDeleteSpecial(SpecialTile* _tile);
+	bool DamageSpecialTile(int x, int y, int _damage);
 
 	bool AddToToDeleteEnt(CEntity* _ent);
 
@@ -50,7 +50,7 @@ public:
 
 	void TryCrafting();
 
-	void TrySpawnItem(CItem* _item);
+	void TrySpawnItem(CItem* _item, bool tryStack = true);
 
 	void SpawnMapItems();
 

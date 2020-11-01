@@ -13,6 +13,7 @@ class SpecialTile
 	: CGameObject
 {
 public:
+	int health;
 	SpecialType type;
 	sf::Sprite Sprite;
 	sf::Texture Texture;

@@ -2,6 +2,7 @@
 
 SpecialTile::SpecialTile(SpecialType _type ,sf::Vector2f _pos, std::string _texturepath)
 {
+	health = 100;
 	type = _type;
 	Pos = _pos;
 	Texture.loadFromFile(_texturepath);

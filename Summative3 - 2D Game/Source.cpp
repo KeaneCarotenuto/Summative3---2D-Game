@@ -100,7 +100,8 @@ int main() {
 				else {
 					view.zoom(1/0.75f);
 				}
-				view.setSize(std::ceil(view.getSize().x / 100) * 100, std::ceil(view.getSize().y/ 100) * 100);
+				
+				view.setSize(std::clamp(std::ceil(view.getSize().x / 100) * 100, 100.0f, 1500.0f), std::clamp(std::ceil(view.getSize().y/ 100) * 100, 100.0f, 1500.0f));
 				std::cout << view.getSize().x << std::endl;
 			}
 			

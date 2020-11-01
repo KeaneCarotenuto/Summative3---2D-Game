@@ -132,6 +132,9 @@ void ItemManager::FixedUpdate()
 		//Stack Items
 		
 		if (currentlyDragging != nullptr && currentMouseWindow != nullptr) {
+			currentlyDragging->initialPos = currentlyDragging->sprite.getPosition();
+			currentlyDragging->initialWindow = currentlyDragging->currentInv;
+
 			for (CItem* _item : items)
 			{
 				if (!_item->bIsEnabled || !dynamic_cast<ItemAttributes::Stackable*>(_item)) continue;
@@ -200,29 +203,39 @@ void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
 			if (sprite.getGlobalBounds().contains(worldInv->mapPixelToCoords(sf::Mouse::getPosition(*worldInv)))) {
 
 
-				if (currentlyDragging->itemName == "Stone") {
-
-					if (AddToToDeleteSpecial(world->SpecialTilemap[x][y])) {
+				if (currentlyDragging->itemName == "Stone" && world->SpecialTilemap[x][y]->type == SpecialType::Tree) {
+					if (DamageSpecialTile(x, y, 20)) {
 						TrySpawnItem(new Lumber(LumberType::Log, worldInv, sprite.getPosition(), "Log"));
 						//TrySpawnItem(new Lumber(LumberType::Stick, worldInv, sprite.getPosition(), "Stick"));
-
-						world->SpecialTilemap[x][y] = nullptr;
 					}
-
+				}
+				if (currentlyDragging->itemName == "Stone" && world->SpecialTilemap[x][y]->type == SpecialType::Boulder) {
+					if (DamageSpecialTile(x, y, 20)) {
+						TrySpawnItem(new Mineral(MineralType::Stone, worldInv, sprite.getPosition(), "Stone"));
+						//TrySpawnItem(new Lumber(LumberType::Stick, worldInv, sprite.getPosition(), "Stick"));
+					}
 				}
 			}
 		}
 	}
 }
 
-bool ItemManager::AddToToDeleteSpecial(SpecialTile* _tile)
+bool ItemManager::DamageSpecialTile(int x, int y, int _damage)
 {
-	std::vector<SpecialTile*>::iterator pos = std::find(toDeleteSpecial.begin(), toDeleteSpecial.end(), _tile);
-	if (pos != toDeleteSpecial.end()) {
-		return false;
+	world->SpecialTilemap[x][y]->health -= _damage;
+
+	if (world->SpecialTilemap[x][y]->health <= 0) {
+		std::vector<SpecialTile*>::iterator pos = std::find(toDeleteSpecial.begin(), toDeleteSpecial.end(), world->SpecialTilemap[x][y]);
+		if (pos != toDeleteSpecial.end()) {
+			return false;
+		}
+		else {
+			toDeleteSpecial.push_back(world->SpecialTilemap[x][y]);
+			world->SpecialTilemap[x][y] = nullptr;
+			return true;
+		}
 	}
 	else {
-		toDeleteSpecial.push_back(_tile);
 		return true;
 	}
 }
@@ -298,46 +311,99 @@ void ItemManager::TryCrafting()
 		}
 	}
 
-	std::vector<CItem*> stickStack;
-	std::vector<CItem*> logStack;
-	std::vector<CItem*> meatStack;
-	std::vector<CItem*> berriesStack;
+	std::vector<CItem*> stickStacks;
+	std::vector<CItem*> logStacks;
+	std::vector<CItem*> stoneStacks;
+	std::vector<CItem*> ironOreStacks;
+	std::vector<CItem*> copperOreStacks;
+	std::vector<CItem*> meatStacks;
+	std::vector<CItem*> berriesStacks;
 
 	for (CItem* _item : inCrafting)
 	{
 		if (dynamic_cast<Lumber*>(_item)) {
 			if (dynamic_cast<Lumber*>(_item)->type == LumberType::Stick) {
-				stickStack.push_back(_item);
+				stickStacks.push_back(_item);
 			}
 			if (dynamic_cast<Lumber*>(_item)->type == LumberType::Log) {
-				logStack.push_back(_item);
+				logStacks.push_back(_item);
 			}
 		}
 		if (dynamic_cast<Consumables*>(_item)) {
 			if (dynamic_cast<Consumables*>(_item)->type == ConsumableType::Meat) {
-				meatStack.push_back(_item);
+				meatStacks.push_back(_item);
 			}
 			if (dynamic_cast<Consumables*>(_item)->type == ConsumableType::Berries) {
-				berriesStack.push_back(_item);
+				berriesStacks.push_back(_item);
+			}
+		}
+		if (dynamic_cast<Mineral*>(_item)) {
+			if (dynamic_cast<Mineral*>(_item)->type == MineralType::Stone) {
+				stoneStacks.push_back(_item);
+			}
+			if (dynamic_cast<Mineral*>(_item)->type == MineralType::IronOre) {
+				ironOreStacks.push_back(_item);
+			}
+			if (dynamic_cast<Mineral*>(_item)->type == MineralType::CopperOre) {
+				copperOreStacks.push_back(_item);
 			}
 		}
 	}
 
-	if (!stickStack.empty() && !berriesStack.empty()) {
-		RemoveOneItemFromStack(stickStack[0]);
-		
-		RemoveOneItemFromStack(berriesStack[0]);
+	if (stickStacks.size()		== 1 && 
+		logStacks.size()		== 0 &&
+		stoneStacks.size()		== 0 &&
+		ironOreStacks.size()	== 0 &&
+		copperOreStacks.size()	== 0 &&
+		meatStacks.size()		== 0 &&
+		berriesStacks.size()	== 1 ) 
+	{
+		//Specific To Crafting Recipie
+		RemoveOneItemFromStack(stickStacks[0]);
+		RemoveOneItemFromStack(berriesStacks[0]);
 
-		CItem* craftedItem = new Consumables(ConsumableType::Water, craftingInv, { 10,10 }, "Water");
-		TrySpawnItem(craftedItem);
+		CItem* craftedItem = new Consumables(ConsumableType::Water, playerInv, { 10,10 }, "Water");
+		
+		//Same for all Recipies
 		craftedItem->sprite.setColor(sf::Color(255, 255, 0));
+		TrySpawnItem(craftedItem);
+	}
+
+	if (stickStacks.size() == 0 &&
+		logStacks.size() == 1 &&
+		stoneStacks.size() == 1 &&
+		ironOreStacks.size() == 0 &&
+		copperOreStacks.size() == 0 &&
+		meatStacks.size() == 0 &&
+		berriesStacks.size() == 0)
+	{
+		//Specific To Crafting Recipie
+		RemoveOneItemFromStack(logStacks[0]);
+
+		CItem* craftedItem = new Lumber(LumberType::Stick, playerInv, { 10,10 }, "Stick");
+
+		//Same for all Recipies
+		craftedItem->sprite.setColor(sf::Color(255, 255, 0));
+		TrySpawnItem(craftedItem);
 	}
 }
 
-void ItemManager::TrySpawnItem(CItem * _item)
+void ItemManager::TrySpawnItem(CItem * _item, bool tryStack)
 {
 	if (items.size() < 100) {
 		items.push_back(_item);
+
+		if (tryStack) {
+			for (CItem* tempItem : items) {
+				if (tempItem == _item) continue;
+
+				if (tempItem->sprite.getGlobalBounds().intersects(_item->sprite.getGlobalBounds()) && tempItem->itemName == _item->itemName) {
+					StackItem(_item, tempItem);
+					break;
+				}
+			}
+		}
+		
 	}
 	else {
 		if (items.size() > 1) {
@@ -418,7 +484,7 @@ CItem* ItemManager::SplitOneItem(CItem* _itemStack)
 	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->initialWindow = _itemStack->currentInv;
 	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top()->currentInv = _itemStack->currentInv;
 	
-	TrySpawnItem(dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top());
+	TrySpawnItem(dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top(), false);
 
 
 	dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.pop();
