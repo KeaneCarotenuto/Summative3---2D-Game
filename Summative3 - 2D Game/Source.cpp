@@ -9,7 +9,7 @@
 
 #include "EasySFML.h"
 #include "WorldLayer.h"
-
+#include "CButton.h"
 #include "CPlayer.h"
 #include "CEntity.h"
 #include "CItem.h"
@@ -21,6 +21,8 @@ void GenNewIsland(ItemManager* itemMngr);
 
 void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr);
 
+void CheckButtonsPressed();
+
 void Drawing(sf::View& view, CPlayer& player);
 
 void CreateEntities(CPlayer& player, ItemManager* itemMngr);
@@ -30,6 +32,17 @@ void CreateWindows();
 int StartGame();
 
 int GameLoop(ItemManager* itemMngr, CPlayer& player);
+
+struct CButtonManager {
+	std::vector<CButton*> buttons;
+	sf::Font buttonFont;
+	ItemManager* m_itemManager;
+	bool frozenClick = false;
+	
+	int currentChoice = 0;
+
+	CButtonManager();
+}buttonManager;
 
 int main() {
 	StartGame();
@@ -63,8 +76,9 @@ int StartGame()
 
 	WorldLayer::currentWorld = new WorldLayer(Globals::seed);
 
-	//Create itemmanager and hand it the map of windows
+	//Create itemmanager 
 	ItemManager* itemMngr = new ItemManager();
+	buttonManager.m_itemManager = itemMngr;
 
 	//Create Player
 	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green);
@@ -130,6 +144,8 @@ int GameLoop(ItemManager* itemMngr, CPlayer& player)
 
 		}
 
+		CheckButtonsPressed();
+
 		//Keeps Invntory on Top
 		HWND hwnd = playerInv->getSystemHandle();
 		SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
@@ -147,6 +163,86 @@ int GameLoop(ItemManager* itemMngr, CPlayer& player)
 	}
 
 	return 1;
+}
+
+//ButtonFunctions
+void CheckButtonsPressed()
+{
+	//Check Mouse lick
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+
+		//Prevents multiple clicks if holding down
+		if (!buttonManager.frozenClick) {
+
+			//Loops through all buttons
+			for (CButton* _button : buttonManager.buttons)
+			{
+
+				//If click, do func
+				if (_button->rect->getGlobalBounds().contains((sf::Vector2f)sf::Mouse::getPosition(*_button->targetWindow))) {
+					if (_button->function != nullptr) _button->function();
+				}
+			}
+		}
+		buttonManager.frozenClick = true;
+	}
+	else {
+		buttonManager.frozenClick = false;
+	}
+}
+
+void GiveItem() {
+	sf::RenderWindow* playerInv = nullptr;
+	std::map < std::string, sf::RenderWindow*>::iterator playerInvIt = Globals::mapOfWindows.find("PlayerInv");
+	if (playerInvIt != Globals::mapOfWindows.end()) {
+		playerInv = (*playerInvIt).second;
+	}
+	else {
+		std::cout << "ERROR: Cannot Find PlayerInv Window";
+	}
+
+	switch (buttonManager.currentChoice)
+	{
+	case 0:
+		buttonManager.m_itemManager->items.push_back(new Lumber(LumberType::Stick, playerInv, sf::Vector2f(10, 10), "Stick"));
+		break;
+
+	case 1:
+		buttonManager.m_itemManager->items.push_back(new Lumber(LumberType::Log, playerInv, sf::Vector2f(10, 10), "Log"));
+		break;
+
+	case 2:
+		buttonManager.m_itemManager->items.push_back(new Mineral(MineralType::Stone, playerInv, sf::Vector2f(10, 10), "Stone"));
+		break;
+
+	default:
+		break;
+	}
+	
+}
+
+void NextItem() {
+	buttonManager.currentChoice++;
+	if (buttonManager.currentChoice > 2) buttonManager.currentChoice = 0;
+
+	switch (buttonManager.currentChoice)
+	{
+	case 0:
+		buttonManager.buttons[0]->text->setString("Stick");
+		break;
+
+	case 1:
+		buttonManager.buttons[0]->text->setString("Log");
+		break;
+
+	case 2:
+		buttonManager.buttons[0]->text->setString("Stone");
+		break;
+
+	default:
+		break;
+	}
+	
 }
 
 void CreateWindows()
@@ -176,6 +272,9 @@ void CreateWindows()
 	for (std::map < std::string, sf::RenderWindow*>::iterator it = windowsMap.begin(); it != windowsMap.end(); it++) {
 		Globals::RegisterWindow(it->first, it->second);
 	}
+	
+	buttonManager.buttons.push_back(new CButton(&GiveItem, "Log", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 0, sf::Color::Color(0, 150, 0), 5, debugWindow));
+	buttonManager.buttons.push_back(new CButton(&NextItem, "Next", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 35, sf::Color::Color(0, 150, 0), 5, debugWindow));
 }
 
 void CreateEntities(CPlayer& player, ItemManager* itemMngr)
@@ -244,10 +343,17 @@ void Drawing(sf::View& view, CPlayer& player)
 	view.setCenter(player.rect.getPosition() + sf::Vector2f(player.rect.getSize().x / 2, player.rect.getSize().y / 2));
 	worldInv->setView(view);
 	
-
+	//Draw Everything in Todraw List
 	for (sf::Drawable* Draw : CWindowUtilities::ToDrawList) //Draw every object on the draw list
 	{
 		worldInv->draw(*Draw);
+	}
+
+	//Draw Buttons
+	for (CButton* button : buttonManager.buttons) {
+		button->targetWindow->draw(*button->rect);
+		button->text->setFont(buttonManager.buttonFont);
+		button->targetWindow->draw(*button->text);
 	}
 
 	//Dispplay all windows
@@ -322,3 +428,7 @@ void GenNewIsland(ItemManager* itemMngr)
 	}
 }
 
+CButtonManager::CButtonManager()
+{
+	if (!buttonFont.loadFromFile("Resources/Fonts/uni.ttf")) std::cout << "Failed to load uni Font\n";
+}

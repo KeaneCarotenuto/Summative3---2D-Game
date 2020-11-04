@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CEntinty.cpp" />
     <ClCompile Include="CItem.cpp" />
     <ClCompile Include="Consumables.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="WorldLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CButton.h" />
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="Consumables.h" />
     <ClInclude Include="GameData.h" />
