@@ -37,6 +37,8 @@ struct CButtonManager {
 	std::vector<CButton*> buttons;
 	sf::Font buttonFont;
 	ItemManager* m_itemManager;
+	CPlayer* player;
+
 	bool frozenClick = false;
 	
 	int currentChoice = 0;
@@ -83,6 +85,7 @@ int StartGame()
 	//Create Player
 	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green);
 	player.rect.setPosition(WorldLayer::currentWorld->GetFirstSandTilePos());
+	buttonManager.player = &player;
 
 	CreateEntities(player, itemMngr);
 
@@ -243,6 +246,10 @@ void NextItem() {
 		break;
 	}
 	
+}
+
+void HealPlayer() {
+	buttonManager.player->Health = 100;
 }
 
 void CreateWindows()
