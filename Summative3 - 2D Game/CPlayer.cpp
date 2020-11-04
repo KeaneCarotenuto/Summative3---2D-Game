@@ -1,7 +1,7 @@
 #include "CPlayer.h"
 
-CPlayer::CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer*&_world)
-	: currentWorld(_world), Loadable("Player/", "PlayerData")
+CPlayer::CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col)
+	: Loadable("Player/", "PlayerData")
 {
 	rect.setPosition(_pos);
 	rect.setSize(_size);
@@ -44,7 +44,7 @@ void CPlayer::Movement()
 		{
 			
 			rect.move(-moveSpeed, 0);
-			if (currentWorld->CheckCollision(rect.getPosition()))
+			if (Globals::currentWorld->CheckCollision(rect.getPosition()))
 			{
 				rect.move(moveSpeed, 0);
 			}
@@ -52,7 +52,7 @@ void CPlayer::Movement()
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
 			rect.move(moveSpeed, 0);
-			if (currentWorld->CheckCollision(rect.getPosition()))
+			if (Globals::currentWorld->CheckCollision(rect.getPosition()))
 			{
 				rect.move(-moveSpeed, 0);
 			}
@@ -62,7 +62,7 @@ void CPlayer::Movement()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
 			rect.move(0, -moveSpeed);
-			if (currentWorld->CheckCollision(rect.getPosition()))
+			if (Globals::currentWorld->CheckCollision(rect.getPosition()))
 			{
 				rect.move(0, moveSpeed);
 			}
@@ -70,7 +70,7 @@ void CPlayer::Movement()
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
 			rect.move(0, moveSpeed);
-			if (currentWorld->CheckCollision(rect.getPosition()))
+			if (Globals::currentWorld->CheckCollision(rect.getPosition()))
 			{
 				rect.move(0, -moveSpeed);
 			}

@@ -48,7 +48,7 @@ public:
 		return dat;
 	}
 
-	CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer*&_world);
+	CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col);
 	~CPlayer();
 
 	void Movement();

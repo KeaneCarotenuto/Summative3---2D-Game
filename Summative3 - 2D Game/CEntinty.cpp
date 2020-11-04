@@ -14,7 +14,7 @@ void CEntity::Movement()
 	int y = floor((rect.getPosition() + velocity).y / 20);
 
 	if (x > 0 && y > 0 && x < 500 && y < 500) {
-		if (type != EntityType::Fish || currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
+		if (type != EntityType::Fish || Globals::currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
 			rect.move(velocity);
 		}
 	}
@@ -105,8 +105,7 @@ void CEntity::FixedUpdate()
 	currentStep++;
 }
 
-CEntity::CEntity(EntityType _type, sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer*&_world):
-	currentWorld(_world)
+CEntity::CEntity(EntityType _type, sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col)
 {
 	rect.setPosition(_pos);
 	rect.setSize(_size);

@@ -19,7 +19,7 @@
 
 void GenNewIsland(ItemManager* itemMngr);
 
-void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr, WorldLayer*& world);
+void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr);
 
 void Drawing(sf::View& view, CPlayer& player);
 
@@ -67,7 +67,7 @@ int StartGame()
 	ItemManager* itemMngr = new ItemManager();
 
 	//Create Player
-	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green, Globals::currentWorld);
+	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green);
 	player.rect.setPosition(Globals::currentWorld->GetFirstSandTilePos());
 
 	CreateEntities(player, itemMngr);
@@ -80,7 +80,7 @@ int StartGame()
 	if (gameLoopReturn == 0) return 0;
 }
 
-int GameLoop(ItemManager* itemMngr, WorldLayer*& world, CPlayer& player)
+int GameLoop(ItemManager* itemMngr, CPlayer& player)
 {
 	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));
 
@@ -140,10 +140,10 @@ int GameLoop(ItemManager* itemMngr, WorldLayer*& world, CPlayer& player)
 		world->addPointLight((int)(temp.x/20), (int)(temp.y / 20), 9);*/
 
 
-		Drawing(world, view, player);
+		Drawing(view, player);
 
 
-		CheckPlayerHitsEdge(player, itemMngr, world);
+		CheckPlayerHitsEdge(player, itemMngr);
 	}
 
 	return 1;
@@ -177,18 +177,18 @@ void CreateWindows()
 
 void CreateEntities(CPlayer& player, ItemManager* itemMngr)
 {
-	CEntity* bird = new CEntity(EntityType::Bird, { 1000,1000 }, { 15,15 }, sf::Color::White, world);
+	CEntity* bird = new CEntity(EntityType::Bird, { 1000,1000 }, { 15,15 }, sf::Color::White);
 	bird->player = &player;
 	bird->itemManager = itemMngr;
 	itemMngr->entities.push_back(bird);
 
-	CEntity* fish = new CEntity(EntityType::Fish, { 100,100 }, { 15,15 }, sf::Color::Red, world);
+	CEntity* fish = new CEntity(EntityType::Fish, { 100,100 }, { 15,15 }, sf::Color::Red);
 	fish->player = &player;
 	fish->itemManager = itemMngr;
 	itemMngr->entities.push_back(fish);
 }
 
-void Drawing(WorldLayer*& world, sf::View& view, CPlayer& player)
+void Drawing(sf::View& view, CPlayer& player)
 {
 	sf::RenderWindow* worldInv = nullptr;
 	std::map < std::string, sf::RenderWindow*>::iterator worldInvIt = Globals::mapOfWindows.find("WorldInv");
@@ -221,7 +221,7 @@ void Drawing(WorldLayer*& world, sf::View& view, CPlayer& player)
 	worldInv->clear();
 	craftingInv->clear();
 
-	worldInv->draw(*world);
+	worldInv->draw(*Globals::currentWorld);
 
 	CObjectController::UpdateObjects();
 
@@ -232,10 +232,10 @@ void Drawing(WorldLayer*& world, sf::View& view, CPlayer& player)
 
 	worldInv->setView(view);
 
-	world->renderTileMaps();
+	Globals::currentWorld->renderTileMaps();
 	//world->renderLightMap();
 
-	world->DrawSpecial();
+	Globals::currentWorld->DrawSpecial();
 
 	for (sf::Drawable* Draw : CWindowUtilities::ToDrawList) //Draw every object on the draw list
 	{
@@ -245,7 +245,7 @@ void Drawing(WorldLayer*& world, sf::View& view, CPlayer& player)
 	CWindowUtilities::ToDrawList.clear(); //Then empty it so its ready for the next frame
 }
 
-void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr, WorldLayer*& world)
+void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr)
 {
 	bool changedWorld = false;
 	if (player.rect.getPosition().x < 0) {
@@ -279,19 +279,10 @@ void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr, WorldLayer*& wo
 		GenNewIsland(itemMngr);
 		changedWorld = true;
 	}
-
-	if (changedWorld) {
-		player.currentWorld = world;
-
-		for (CEntity* _ent : itemMngr->entities) {
-			_ent->currentWorld = world;
-		}
-	}
 }
 
 void GenNewIsland(ItemManager* itemMngr)
 {
-
 	sf::RenderWindow* playerInv = nullptr;
 	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("PlayerInv");
 	if (invWndIt != Globals::mapOfWindows.end()) {

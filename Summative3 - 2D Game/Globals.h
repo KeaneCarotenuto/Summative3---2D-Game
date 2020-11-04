@@ -13,4 +13,3 @@ public:
 
 	static void RegisterWindow(std::string _str, sf::RenderWindow* _wind);
 };
-
