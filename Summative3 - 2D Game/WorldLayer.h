@@ -44,6 +44,8 @@ class WorldLayer
 	: public sf::Drawable, public sf::Transformable
 {
 public:
+	static WorldLayer* currentWorld;
+
 	static const int width = 500;
 	static const int height = 500;
 

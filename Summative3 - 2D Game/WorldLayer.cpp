@@ -1,5 +1,7 @@
 #include "WorldLayer.h"
 
+WorldLayer* WorldLayer::currentWorld;
+
 TerrainTile::TerrainTile(TerrainType _type, int _Xpos, int _Ypos)
 {
 	Type = _type;

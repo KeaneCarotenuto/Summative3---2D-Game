@@ -61,14 +61,14 @@ int StartGame()
 		std::cout << "ERROR: Cannot Find PlayerInv Window";
 	}
 
-	Globals::currentWorld = new WorldLayer(Globals::seed);
+	WorldLayer::currentWorld = new WorldLayer(Globals::seed);
 
 	//Create itemmanager and hand it the map of windows
 	ItemManager* itemMngr = new ItemManager();
 
 	//Create Player
 	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green);
-	player.rect.setPosition(Globals::currentWorld->GetFirstSandTilePos());
+	player.rect.setPosition(WorldLayer::currentWorld->GetFirstSandTilePos());
 
 	CreateEntities(player, itemMngr);
 
@@ -221,7 +221,7 @@ void Drawing(sf::View& view, CPlayer& player)
 	worldInv->clear();
 	craftingInv->clear();
 
-	worldInv->draw(*Globals::currentWorld);
+	worldInv->draw(*WorldLayer::currentWorld);
 
 	CObjectController::UpdateObjects();
 
@@ -232,10 +232,10 @@ void Drawing(sf::View& view, CPlayer& player)
 
 	worldInv->setView(view);
 
-	Globals::currentWorld->renderTileMaps();
+	WorldLayer::currentWorld->renderTileMaps();
 	//world->renderLightMap();
 
-	Globals::currentWorld->DrawSpecial();
+	WorldLayer::currentWorld->DrawSpecial();
 
 	for (sf::Drawable* Draw : CWindowUtilities::ToDrawList) //Draw every object on the draw list
 	{
@@ -293,8 +293,8 @@ void GenNewIsland(ItemManager* itemMngr)
 	}
 
 	srand(Globals::seed);
-	delete Globals::currentWorld;
-	Globals::currentWorld = new WorldLayer(Globals::seed);
+	delete WorldLayer::currentWorld;
+	WorldLayer::currentWorld = new WorldLayer(Globals::seed);
 
 	for (CItem* _item : itemMngr->items) {
 		if (_item->currentInv != playerInv) {

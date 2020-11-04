@@ -14,7 +14,7 @@ void CEntity::Movement()
 	int y = floor((rect.getPosition() + velocity).y / 20);
 
 	if (x > 0 && y > 0 && x < 500 && y < 500) {
-		if (type != EntityType::Fish || Globals::currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
+		if (type != EntityType::Fish || WorldLayer::currentWorld->TerrainTilemap[x][y]->Type == TerrainType::WATER) {
 			rect.move(velocity);
 		}
 	}

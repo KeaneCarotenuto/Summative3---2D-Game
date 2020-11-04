@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "EasySFML.h"
-#include "WorldLayer.h"
 #include "CPlayer.h"
 
 class ItemManager;
