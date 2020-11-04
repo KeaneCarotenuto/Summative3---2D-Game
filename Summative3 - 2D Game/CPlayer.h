@@ -13,7 +13,6 @@ class CPlayer:
 public:
 	sf::RectangleShape rect;
 	float moveSpeed = 5;
-	WorldLayer*&currentWorld;
 
 	int Health;
 	float Hunger;

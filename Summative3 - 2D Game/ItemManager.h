@@ -18,7 +18,7 @@ class ItemManager:
 	private CGameObject, Loadable
 {
 public:
-	ItemManager(WorldLayer*& _world);
+	ItemManager();
 	~ItemManager();
 
 	std::vector<CItem*> items;
@@ -29,8 +29,6 @@ public:
 	std::vector<CEntity*> toDeleteEnt;
 
 	sf::RenderWindow* currentMouseWindow = nullptr;
-
-	WorldLayer*&world;
 
 	CItem* currentlyDragging = nullptr;
 	

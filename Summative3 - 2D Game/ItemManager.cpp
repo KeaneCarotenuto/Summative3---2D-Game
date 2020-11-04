@@ -3,8 +3,8 @@
 
 
 
-ItemManager::ItemManager(WorldLayer*& _world) :
-	world(_world), Loadable("Items/", "Manager")
+ItemManager::ItemManager() :
+	Loadable("Items/", "Manager")
 {
 
 	//For every inventory Group (e.g, PlayerInv or WorldInv), get the data in the group 
@@ -197,19 +197,19 @@ void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
 	{
 		for (int x = 0; x < WorldLayer::width; x++)
 		{
-			if (world->SpecialTilemap[x][y] == nullptr) continue;
+			if (Globals::currentWorld->SpecialTilemap[x][y] == nullptr) continue;
 
-			sf::Sprite sprite = world->SpecialTilemap[x][y]->Sprite;
+			sf::Sprite sprite = Globals::currentWorld->SpecialTilemap[x][y]->Sprite;
 			if (sprite.getGlobalBounds().contains(worldInv->mapPixelToCoords(sf::Mouse::getPosition(*worldInv)))) {
 
 
-				if (currentlyDragging->itemName == "Stone" && world->SpecialTilemap[x][y]->type == SpecialType::Tree) {
+				if (currentlyDragging->itemName == "Stone" && Globals::currentWorld->SpecialTilemap[x][y]->type == SpecialType::Tree) {
 					if (DamageSpecialTile(x, y, 20)) {
 						TrySpawnItem(new Lumber(LumberType::Log, worldInv, sprite.getPosition(), "Log"));
 						//TrySpawnItem(new Lumber(LumberType::Stick, worldInv, sprite.getPosition(), "Stick"));
 					}
 				}
-				if (currentlyDragging->itemName == "Stone" && world->SpecialTilemap[x][y]->type == SpecialType::Boulder) {
+				if (currentlyDragging->itemName == "Stone" && Globals::currentWorld->SpecialTilemap[x][y]->type == SpecialType::Boulder) {
 					if (DamageSpecialTile(x, y, 20)) {
 						TrySpawnItem(new Mineral(MineralType::Stone, worldInv, sprite.getPosition(), "Stone"));
 						//TrySpawnItem(new Lumber(LumberType::Stick, worldInv, sprite.getPosition(), "Stick"));
@@ -222,16 +222,16 @@ void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
 
 bool ItemManager::DamageSpecialTile(int x, int y, int _damage)
 {
-	world->SpecialTilemap[x][y]->health -= _damage;
+	Globals::currentWorld->SpecialTilemap[x][y]->health -= _damage;
 
-	if (world->SpecialTilemap[x][y]->health <= 0) {
-		std::vector<SpecialTile*>::iterator pos = std::find(toDeleteSpecial.begin(), toDeleteSpecial.end(), world->SpecialTilemap[x][y]);
+	if (Globals::currentWorld->SpecialTilemap[x][y]->health <= 0) {
+		std::vector<SpecialTile*>::iterator pos = std::find(toDeleteSpecial.begin(), toDeleteSpecial.end(), Globals::currentWorld->SpecialTilemap[x][y]);
 		if (pos != toDeleteSpecial.end()) {
 			return false;
 		}
 		else {
-			toDeleteSpecial.push_back(world->SpecialTilemap[x][y]);
-			world->SpecialTilemap[x][y] = nullptr;
+			toDeleteSpecial.push_back(Globals::currentWorld->SpecialTilemap[x][y]);
+			Globals::currentWorld->SpecialTilemap[x][y] = nullptr;
 			return true;
 		}
 	}
@@ -429,11 +429,11 @@ void ItemManager::SpawnMapItems()
 
 	for (int x = 0; x < WorldLayer::width; x++) {
 		for (int y = 0; y < WorldLayer::height; y++) {
-			if (world->TerrainTilemap[x][y]->Type == TerrainType::ROCK && rand() % 500 == 0) {
+			if (Globals::currentWorld->TerrainTilemap[x][y]->Type == TerrainType::ROCK && rand() % 500 == 0) {
 				TrySpawnItem(new Mineral(MineralType::Stone, worldInv, sf::Vector2f(x*20, y*20), "Stone"));
 			}
 
-			if (world->TerrainTilemap[x][y]->Type == TerrainType::GRASS && rand() % 500 == 0) {
+			if (Globals::currentWorld->TerrainTilemap[x][y]->Type == TerrainType::GRASS && rand() % 500 == 0) {
 				TrySpawnItem(new Lumber(LumberType::Stick, worldInv, sf::Vector2f(x * 20, y * 20), "Stick"));
 			}
 		}

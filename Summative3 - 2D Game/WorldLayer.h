@@ -1,6 +1,5 @@
 #pragma once
 #include "SpecialTile.h"
-#include "GameEntity.h"
 #include "EasySFML.h"
 #include <vector>
 #include <SFML/Graphics.hpp>
@@ -68,7 +67,6 @@ public:
 	void DrawSpecial();
 	
 private:
-	std::vector<GameEntity> Entities;
 	void populateTileMaps();
 	
 	

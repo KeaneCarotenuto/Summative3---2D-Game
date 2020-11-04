@@ -21,15 +21,15 @@ void GenNewIsland(ItemManager* itemMngr);
 
 void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr, WorldLayer*& world);
 
-void Drawing(WorldLayer*& world, sf::View& view, CPlayer& player);
+void Drawing(sf::View& view, CPlayer& player);
 
-void CreateEntities(WorldLayer*& world, CPlayer& player, ItemManager* itemMngr);
+void CreateEntities(CPlayer& player, ItemManager* itemMngr);
 
 void CreateWindows();
 
 int StartGame();
 
-int GameLoop(ItemManager* itemMngr, WorldLayer*& world, CPlayer& player);
+int GameLoop(ItemManager* itemMngr, CPlayer& player);
 
 int main() {
 	StartGame();
@@ -61,23 +61,22 @@ int StartGame()
 		std::cout << "ERROR: Cannot Find PlayerInv Window";
 	}
 
-
-	WorldLayer* world = new WorldLayer(Globals::seed);
+	Globals::currentWorld = new WorldLayer(Globals::seed);
 
 	//Create itemmanager and hand it the map of windows
-	ItemManager* itemMngr = new ItemManager(world);
+	ItemManager* itemMngr = new ItemManager();
 
 	//Create Player
-	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green, world);
-	player.rect.setPosition(world->GetFirstSandTilePos());
+	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green, Globals::currentWorld);
+	player.rect.setPosition(Globals::currentWorld->GetFirstSandTilePos());
 
-	CreateEntities(world, player, itemMngr);
+	CreateEntities(player, itemMngr);
 
 	float spotlightX = 25, spotlightY = 25;
 
 	
 
-	int gameLoopReturn = GameLoop(itemMngr, world, player);
+	int gameLoopReturn = GameLoop(itemMngr, player);
 	if (gameLoopReturn == 0) return 0;
 }
 
@@ -176,7 +175,7 @@ void CreateWindows()
 	}
 }
 
-void CreateEntities(WorldLayer*& world, CPlayer& player, ItemManager* itemMngr)
+void CreateEntities(CPlayer& player, ItemManager* itemMngr)
 {
 	CEntity* bird = new CEntity(EntityType::Bird, { 1000,1000 }, { 15,15 }, sf::Color::White, world);
 	bird->player = &player;
@@ -282,7 +281,6 @@ void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr, WorldLayer*& wo
 	}
 
 	if (changedWorld) {
-		itemMngr->world = world;
 		player.currentWorld = world;
 
 		for (CEntity* _ent : itemMngr->entities) {
@@ -293,7 +291,6 @@ void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr, WorldLayer*& wo
 
 void GenNewIsland(ItemManager* itemMngr)
 {
-	WorldLayer*& world = itemMngr->world;
 
 	sf::RenderWindow* playerInv = nullptr;
 	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("PlayerInv");
@@ -305,8 +302,8 @@ void GenNewIsland(ItemManager* itemMngr)
 	}
 
 	srand(Globals::seed);
-	delete world;
-	world = new WorldLayer(Globals::seed);
+	delete Globals::currentWorld;
+	Globals::currentWorld = new WorldLayer(Globals::seed);
 
 	for (CItem* _item : itemMngr->items) {
 		if (_item->currentInv != playerInv) {
