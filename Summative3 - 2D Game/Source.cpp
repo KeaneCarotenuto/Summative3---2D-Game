@@ -154,9 +154,11 @@ void CreateWindows()
 	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(1000, 1000), "2D Game");
 	sf::RenderWindow* inventory = new sf::RenderWindow(sf::VideoMode(200, 500), "Inventory");
 	sf::RenderWindow* crafting = new sf::RenderWindow(sf::VideoMode(200, 200), "Crafting");
+	sf::RenderWindow* debugWindow = new sf::RenderWindow(sf::VideoMode(200, 200), "Debug");
 
 	inventory->setPosition(sf::Vector2i(window->getPosition().x - inventory->getSize().x, window->getPosition().y));
 	crafting->setPosition(sf::Vector2i(inventory->getPosition().x, inventory->getPosition().y + inventory->getSize().y));
+	debugWindow->setPosition(sf::Vector2i(window->getPosition().x + window->getSize().x, window->getPosition().y));
 
 	//window.setVerticalSyncEnabled(true);
 	window->setFramerateLimit(60);
@@ -165,10 +167,11 @@ void CreateWindows()
 	std::map <std::string, sf::RenderWindow*> windowsMap{
 		{ "PlayerInv",inventory },
 		{ "WorldInv",window },
-		{ "CraftingInv",crafting }
+		{ "CraftingInv",crafting },
+		{ "DebugInv",debugWindow }
 	};
 
-	Globals::mapOfWindows = windowsMap;
+	//Globals::mapOfWindows = windowsMap;
 
 	for (std::map < std::string, sf::RenderWindow*>::iterator it = windowsMap.begin(); it != windowsMap.end(); it++) {
 		Globals::RegisterWindow(it->first, it->second);
@@ -217,32 +220,44 @@ void Drawing(sf::View& view, CPlayer& player)
 		std::cout << "ERROR: Cannot Find CraftingInv Window";
 	}
 
-	playerInv->clear();
-	worldInv->clear();
-	craftingInv->clear();
+	//Clear all windows
+	std::map < std::string, sf::RenderWindow*>::iterator windIt;
+	for (windIt = Globals::mapOfWindows.begin(); windIt != Globals::mapOfWindows.end(); windIt++)
+	{
+		windIt->second->clear();
+	}
 
+	//Render Tiles
+	WorldLayer::currentWorld->renderTileMaps();
+	//Draw Tiles
 	worldInv->draw(*WorldLayer::currentWorld);
 
+	//Add Special Tiles to Draw List
+	WorldLayer::currentWorld->DrawSpecial();
+
+	//Update all Objects
 	CObjectController::UpdateObjects();
 
-	playerInv->display();
-	craftingInv->display();
+	
 
+	//Center View
 	view.setCenter(player.rect.getPosition() + sf::Vector2f(player.rect.getSize().x / 2, player.rect.getSize().y / 2));
-
 	worldInv->setView(view);
-
-	WorldLayer::currentWorld->renderTileMaps();
-	//world->renderLightMap();
-
-	WorldLayer::currentWorld->DrawSpecial();
+	
 
 	for (sf::Drawable* Draw : CWindowUtilities::ToDrawList) //Draw every object on the draw list
 	{
 		worldInv->draw(*Draw);
 	}
-	worldInv->display();
-	CWindowUtilities::ToDrawList.clear(); //Then empty it so its ready for the next frame
+
+	//Dispplay all windows
+	for (windIt = Globals::mapOfWindows.begin(); windIt != Globals::mapOfWindows.end(); windIt++)
+	{
+		windIt->second->display();
+	}
+
+	//Clear ToDrawList for next frame
+	CWindowUtilities::ToDrawList.clear(); 
 }
 
 void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr)
