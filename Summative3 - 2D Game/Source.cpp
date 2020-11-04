@@ -17,29 +17,26 @@
 #include "Lumber.h"
 #include "Globals.h"
 
-void GenNewIsland(int seed, WorldLayer*& world, ItemManager* itemMngr, sf::RenderWindow* _inv);
+void GenNewIsland(ItemManager* itemMngr);
 
 int main() {
-	int seed = 1234;
-	srand(seed);
+	srand(Globals::seed);
 
-	sf::RenderWindow window(sf::VideoMode(1000, 1000), "2D Game");
-	sf::RenderWindow inventory(sf::VideoMode(200, 500), "Inventory");
-	sf::RenderWindow crafting(sf::VideoMode(200, 200), "Crafting");
+	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(1000, 1000), "2D Game");
+	sf::RenderWindow* inventory = new sf::RenderWindow(sf::VideoMode(200, 500), "Inventory");
+	sf::RenderWindow* crafting = new sf::RenderWindow(sf::VideoMode(200, 200), "Crafting");
 
-	inventory.setPosition(sf::Vector2i(window.getPosition().x - inventory.getSize().x, window.getPosition().y));
-	crafting.setPosition(sf::Vector2i(inventory.getPosition().x, inventory.getPosition().y + inventory.getSize().y));
+	inventory->setPosition(sf::Vector2i(window->getPosition().x - inventory->getSize().x, window->getPosition().y));
+	crafting->setPosition(sf::Vector2i(inventory->getPosition().x, inventory->getPosition().y + inventory->getSize().y));
 
-	window.setVerticalSyncEnabled(true);
-	//window.setFramerateLimit(60);
-	float spotlightX = 25, spotlightY = 25;
-
+	//window.setVerticalSyncEnabled(true);
+	window->setFramerateLimit(60);
 
 	//Create Map of Widows and thier ID's
 	std::map <std::string, sf::RenderWindow*> windowsMap{
-		{"PlayerInv",&inventory},
-		{"WorldInv",&window},
-		{"CraftingInv",&crafting}
+		{"PlayerInv",inventory},
+		{"WorldInv",window},
+		{"CraftingInv",crafting}
 	};
 
 	Globals::mapOfWindows = windowsMap;
@@ -48,13 +45,38 @@ int main() {
 		Globals::RegisterWindow(it->first, it->second);
 	}
 
+	sf::RenderWindow* worldInv = nullptr;
+	std::map < std::string, sf::RenderWindow*>::iterator worldInvIt = Globals::mapOfWindows.find("WorldInv");
+	if (worldInvIt != Globals::mapOfWindows.end()) {
+		worldInv = (*worldInvIt).second;
+	}
+	else {
+		std::cout << "ERROR: Cannot Find WorldInv Window";
+	}
+
+	sf::RenderWindow* playerInv = nullptr;
+	std::map < std::string, sf::RenderWindow*>::iterator playerInvIt = Globals::mapOfWindows.find("PlayerInv");
+	if (playerInvIt != Globals::mapOfWindows.end()) {
+		playerInv = (*playerInvIt).second;
+	}
+	else {
+		std::cout << "ERROR: Cannot Find PlayerInv Window";
+	}
+
+	sf::RenderWindow* craftingInv = nullptr;
+	std::map < std::string, sf::RenderWindow*>::iterator craftingInvIt = Globals::mapOfWindows.find("CraftingInv");
+	if (craftingInvIt != Globals::mapOfWindows.end()) {
+		craftingInv = (*craftingInvIt).second;
+	}
+	else {
+		std::cout << "ERROR: Cannot Find CraftingInv Window";
+	}
+
 	//Create itemmanager and hand it the map of windows
 	ItemManager* itemMngr = new ItemManager();
 	//CItem::itemManager = itemMngr;
 
-	
-
-	WorldLayer* world = new WorldLayer(seed);
+	WorldLayer* world = new WorldLayer(Globals::seed);
 	itemMngr->world = world;
 
 	//itemMngr->SpawnMapItems();
@@ -63,7 +85,6 @@ int main() {
 	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green, world);
 
 	player.rect.setPosition(world->GetFirstSandTilePos());
-	
 
 	CEntity* bird = new CEntity(EntityType::Bird, { 1000,1000 }, { 15,15 }, sf::Color::White, world);
 	bird->player = &player;
@@ -75,20 +96,20 @@ int main() {
 	fish->itemManager = itemMngr;
 	itemMngr->entities.push_back(fish);
 
-	
+	float spotlightX = 25, spotlightY = 25;
 
 	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));
 
-	while (window.isOpen() == true)
+	while (worldInv->isOpen() == true)
 	{
 		sf::Event newEvent;
 
-		while (window.pollEvent(newEvent))
+		while (worldInv->pollEvent(newEvent))
 		{
 			if (newEvent.type == sf::Event::Closed)
 			{
 				delete itemMngr;
-				window.close();
+				worldInv->close();
 				return 0;
 			}
 
@@ -108,7 +129,7 @@ int main() {
 		}
 
 		//Keeps Invntory on Top
-		HWND hwnd = inventory.getSystemHandle();
+		HWND hwnd = playerInv->getSystemHandle();
 		SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 
 
@@ -117,21 +138,21 @@ int main() {
 		world->addPointLight((int)(temp.x/20), (int)(temp.y / 20), 9);*/
 		
 		
-		inventory.clear();
-		window.clear();
-		crafting.clear();
+		playerInv->clear();
+		worldInv->clear();
+		craftingInv->clear();
 		//<start>Stuff needed for EasySFML
 
-		window.draw(*world);
+		worldInv->draw(*world);
 
 		CObjectController::UpdateObjects();
 
-		inventory.display();
-		crafting.display();
+		playerInv->display();
+		craftingInv->display();
 
 		view.setCenter(player.rect.getPosition() + sf::Vector2f(player.rect.getSize().x / 2, player.rect.getSize().y / 2));
 		
-		window.setView(view);
+		worldInv->setView(view);
 		
 		world->renderTileMaps();
 		//world->renderLightMap();
@@ -140,43 +161,43 @@ int main() {
 		
 		for (sf::Drawable * Draw : CWindowUtilities::ToDrawList) //Draw every object on the draw list
 		{
-			window.draw(*Draw);
+			worldInv->draw(*Draw);
 		}		
-		window.display();
+		worldInv->display();
 		CWindowUtilities::ToDrawList.clear(); //Then empty it so its ready for the next frame
 		//<end>
 		
 		
 		bool changedWorld = false;
 		if (player.rect.getPosition().x < 0) {
-			seed -= 1;
+			Globals::seed -= 1;
 			player.rect.setPosition(10000 - 50, player.rect.getPosition().y);
 
-			GenNewIsland(seed, world, itemMngr, &inventory);
+			GenNewIsland(itemMngr);
 			changedWorld = true;
 		}
 
 		if (player.rect.getPosition().x > 10000) {
-			seed += 1;
+			Globals::seed += 1;
 			player.rect.setPosition(50, player.rect.getPosition().y);
 
-			GenNewIsland(seed, world, itemMngr, &inventory);
+			GenNewIsland(itemMngr);
 			changedWorld = true;
 		}
 
 		if (player.rect.getPosition().y < 0) {
-			seed -= 10000;
+			Globals::seed -= 10000;
 			player.rect.setPosition(player.rect.getPosition().x, 10000 - 50);
 
-			GenNewIsland(seed, world, itemMngr, &inventory);
+			GenNewIsland(itemMngr);
 			changedWorld = true;
 		}
 
 		if (player.rect.getPosition().y > 10000) {
-			seed += 10000;
+			Globals::seed += 10000;
 			player.rect.setPosition(player.rect.getPosition().x, 50);
 
-			GenNewIsland(seed, world, itemMngr, &inventory);
+			GenNewIsland(itemMngr);
 			changedWorld = true;
 		}
 
@@ -193,14 +214,25 @@ int main() {
 	return 0;
 }
 
-void GenNewIsland(int seed, WorldLayer*& world, ItemManager* itemMngr, sf::RenderWindow* _inv)
+void GenNewIsland(ItemManager* itemMngr)
 {
-	srand(seed);
+	WorldLayer*& world = itemMngr->world;
+
+	sf::RenderWindow* playerInv = nullptr;
+	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("PlayerInv");
+	if (invWndIt != Globals::mapOfWindows.end()) {
+		playerInv = (*invWndIt).second;
+	}
+	else {
+		std::cout << "ERROR: Cannot Find PlayerInv Window";
+	}
+
+	srand(Globals::seed);
 	delete world;
-	world = new WorldLayer(seed);
+	world = new WorldLayer(Globals::seed);
 
 	for (CItem* _item : itemMngr->items) {
-		if (_item->currentInv != _inv) {
+		if (_item->currentInv != playerInv) {
 			std::vector<CItem*>::iterator pos = std::find(itemMngr->items.begin(), itemMngr->items.end(), _item);
 			if (pos != itemMngr->items.end()) {
 				delete _item;
