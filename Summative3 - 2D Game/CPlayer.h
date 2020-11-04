@@ -13,7 +13,7 @@ class CPlayer:
 public:
 	sf::RectangleShape rect;
 	float moveSpeed = 5;
-	WorldLayer* currentWorld;
+	WorldLayer*&currentWorld;
 
 	int Health;
 	float Hunger;
@@ -49,7 +49,7 @@ public:
 		return dat;
 	}
 
-	CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer* _world);
+	CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer*&_world);
 	~CPlayer();
 
 	void Movement();

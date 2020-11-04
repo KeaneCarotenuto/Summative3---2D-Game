@@ -105,12 +105,12 @@ void CEntity::FixedUpdate()
 	currentStep++;
 }
 
-CEntity::CEntity(EntityType _type, sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer* _world)
+CEntity::CEntity(EntityType _type, sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer*&_world):
+	currentWorld(_world)
 {
 	rect.setPosition(_pos);
 	rect.setSize(_size);
 	rect.setFillColor(_col);
-	currentWorld = _world;
 	type = _type;
 
 	switch (type)

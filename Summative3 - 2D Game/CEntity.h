@@ -18,7 +18,7 @@ class CEntity :
 public:
 	sf::RectangleShape rect;
 	float moveSpeed;
-	WorldLayer* currentWorld;
+	WorldLayer*&currentWorld;
 	int currentStep = 0;
 	EntityType type;
 
@@ -33,7 +33,7 @@ public:
 	virtual void Update(float _fDeltaTime);
 	virtual void FixedUpdate();
 
-	CEntity(EntityType _type ,sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer* _world);
+	CEntity(EntityType _type ,sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer*&_world);
 
 };
 

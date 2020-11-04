@@ -99,118 +99,6 @@
 			</Group>
 		</Group>
 	</Group>
-	<Group:Log>
-		<Bool:bIsEnabled:True>
-		<Group:initialPos>
-			<Float:x:101.000000>
-			<Float:y:90.000000>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-		<Group:Log>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:101.000000>
-				<Float:y:90.000000>
-			</Group>
-		</Group>
-	</Group>
 	<Group:Stone>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
@@ -571,28 +459,28 @@
 	<Group:Stick>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:0.000000>
-			<Float:y:86.000000>
+			<Float:x:6.000000>
+			<Float:y:78.999985>
 		</Group>
 		<Group:Stick>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:0.000000>
-				<Float:y:86.000000>
+				<Float:x:6.000000>
+				<Float:y:78.999985>
 			</Group>
 		</Group>
 		<Group:Stick>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:0.000000>
-				<Float:y:86.000000>
+				<Float:x:6.000000>
+				<Float:y:78.999985>
 			</Group>
 		</Group>
 		<Group:Stick>
 			<Bool:bIsEnabled:False>
 			<Group:initialPos>
-				<Float:x:0.000000>
-				<Float:y:86.000000>
+				<Float:x:6.000000>
+				<Float:y:78.999985>
 			</Group>
 		</Group>
 	</Group>
@@ -601,6 +489,97 @@
 		<Group:initialPos>
 			<Float:x:94.000000>
 			<Float:y:396.000000>
+		</Group>
+	</Group>
+	<Group:Log>
+		<Bool:bIsEnabled:True>
+		<Group:initialPos>
+			<Float:x:93.000000>
+			<Float:y:77.000000>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:93.000000>
+				<Float:y:77.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:93.000000>
+				<Float:y:77.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:93.000000>
+				<Float:y:77.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:93.000000>
+				<Float:y:77.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:93.000000>
+				<Float:y:77.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:93.000000>
+				<Float:y:77.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:93.000000>
+				<Float:y:77.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:93.000000>
+				<Float:y:77.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:93.000000>
+				<Float:y:77.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:93.000000>
+				<Float:y:77.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:93.000000>
+				<Float:y:77.000000>
+			</Group>
+		</Group>
+		<Group:Log>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:93.000000>
+				<Float:y:77.000000>
+			</Group>
 		</Group>
 	</Group>
 </Group>

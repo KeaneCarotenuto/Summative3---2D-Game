@@ -58,9 +58,7 @@ public:
 	int Altitude;
 	
 	WorldLayer(int _seed);
-	WorldLayer(int _seed, WorldLayer* _Above, WorldLayer* _Below, int _altitude);
-	WorldLayer* loadAboveLayer();
-	WorldLayer* loadBelowLayer();
+	WorldLayer(int _seed, WorldLayer*&_Above, WorldLayer*&_Below, int _altitude);
 	void resetLightMap();
 	void renderLightMap();
 	void addPointLight(int _X, int _Y, int _intensity);
@@ -70,8 +68,6 @@ public:
 	void DrawSpecial();
 	
 private:
-	WorldLayer* m_pAboveLayer;
-	WorldLayer* m_pBelowLayer;
 	std::vector<GameEntity> Entities;
 	void populateTileMaps();
 	

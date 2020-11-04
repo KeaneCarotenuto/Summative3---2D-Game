@@ -18,7 +18,7 @@ class ItemManager:
 	private CGameObject, Loadable
 {
 public:
-	ItemManager();
+	ItemManager(WorldLayer*& _world);
 	~ItemManager();
 
 	std::vector<CItem*> items;
@@ -30,7 +30,7 @@ public:
 
 	sf::RenderWindow* currentMouseWindow = nullptr;
 
-	WorldLayer* world;
+	WorldLayer*&world;
 
 	CItem* currentlyDragging = nullptr;
 	

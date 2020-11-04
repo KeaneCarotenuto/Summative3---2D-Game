@@ -1,12 +1,11 @@
 #include "CPlayer.h"
 
-CPlayer::CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer* _world)
-	: Loadable("Player/", "PlayerData")
+CPlayer::CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col, WorldLayer*&_world)
+	: currentWorld(_world), Loadable("Player/", "PlayerData")
 {
 	rect.setPosition(_pos);
 	rect.setSize(_size);
 	rect.setFillColor(_col);
-	currentWorld = _world;
 
 }
 

@@ -3,8 +3,8 @@
 
 
 
-ItemManager::ItemManager() :
-	Loadable("Items/", "Manager")
+ItemManager::ItemManager(WorldLayer*& _world) :
+	world(_world), Loadable("Items/", "Manager")
 {
 
 	//For every inventory Group (e.g, PlayerInv or WorldInv), get the data in the group 

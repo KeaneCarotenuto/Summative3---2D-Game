@@ -31,38 +31,16 @@ WorldLayer::WorldLayer(int _seed)
 	Altitude = 1;
 	//Todo: Generate TileMaps
 	populateTileMaps();
-	m_pAboveLayer = nullptr;
-	m_pBelowLayer = nullptr;
 	//Todo: Spawn entities
 }
 
-WorldLayer::WorldLayer(int _seed, WorldLayer* _Above, WorldLayer* _Below, int _altitude)
+WorldLayer::WorldLayer(int _seed, WorldLayer*&_Above, WorldLayer*&_Below, int _altitude)
 {
 	seed = _seed;
 	Altitude = _altitude;
 	//Todo: Generate TileMaps
 	populateTileMaps();
-	m_pAboveLayer = _Above;
-	m_pBelowLayer = _Below;
 	//Todo: Spawn entities
-}
-
-WorldLayer* WorldLayer::loadAboveLayer()
-{
-	if (m_pAboveLayer == nullptr)
-	{
-		m_pAboveLayer = new WorldLayer(seed, nullptr, this, Altitude + 1);
-	}
-	return m_pAboveLayer;
-}
-
-WorldLayer* WorldLayer::loadBelowLayer()
-{
-	if (m_pBelowLayer == nullptr)
-	{
-		m_pBelowLayer = new WorldLayer(seed, this, nullptr, Altitude - 1);
-	}
-	return m_pBelowLayer;
 }
 
 
