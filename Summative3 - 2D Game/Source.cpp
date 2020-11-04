@@ -47,7 +47,7 @@ struct CButtonManager {
 }buttonManager;
 
 int main() {
-	StartGame();
+	//StartGame();
 
 	return 0;
 }
