@@ -97,6 +97,7 @@ void ItemManager::FixedUpdate()
 
 					if (currentlyDragging != nullptr) {
 						if (currentlyDragging->itemName == "Meat") {
+
 							Player->Health += 30;
 							Player->Hunger -= 60;
 
@@ -193,6 +194,11 @@ void ItemManager::CheckEntities(sf::RenderWindow* worldInv)
 			if (currentlyDragging->itemName == "Sword") {
 
 				if (AddToToDeleteEnt(_ent)) {
+
+					if (dynamic_cast<Tool*>(currentlyDragging)) {
+						dynamic_cast<Tool*>(currentlyDragging)->Durability -= 10;
+					}
+
 					TrySpawnItem(new Consumables(ConsumableType::Meat, worldInv, _ent->rect.getPosition(), "Meat"));
 				}
 			}
