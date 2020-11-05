@@ -223,6 +223,7 @@ void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 				else std::cout << "Failed to Create Seed";
 
 				player->Health = 100;
+				player->Hunger = 0;
 				player->dead = false;
 			}
 		}
