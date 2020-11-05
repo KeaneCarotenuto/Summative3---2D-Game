@@ -4,8 +4,8 @@
 	<Group:Stick>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:37.000000>
-			<Float:y:16.000000>
+			<Float:x:52.000000>
+			<Float:y:246.999969>
 		</Group>
 	</Group>
 </Group>

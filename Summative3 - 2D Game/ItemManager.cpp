@@ -515,7 +515,7 @@ void ItemManager::TryCrafting()
 
 void ItemManager::TrySpawnItem(CItem * _item, bool tryStack)
 {
-	if (items.size() < 100) {
+	if (items.size() < 1000) {
 		items.push_back(_item);
 
 		if (tryStack) {
