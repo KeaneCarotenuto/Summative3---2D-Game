@@ -169,7 +169,7 @@ void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 					view.zoom(1 / 0.75f);
 				}
 
-				view.setSize(std::clamp(std::ceil(view.getSize().x / 100) * 100, 100.0f, 150000.0f), std::clamp(std::ceil(view.getSize().y / 100) * 100, 100.0f, 150000.0f));
+				view.setSize(std::clamp(std::ceil(view.getSize().x / 100) * 100, 100.0f, 1500.0f), std::clamp(std::ceil(view.getSize().y / 100) * 100, 100.0f, 1500.0f));
 				std::cout << view.getSize().x << std::endl;
 			}
 
@@ -193,6 +193,10 @@ void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 		CheckPlayerHitsEdge(player, itemMngr);
 
 		itemMngr->LateDelete();
+
+		if (itemMngr->entities.size() < 20) {
+			CreateEntities(player, itemMngr);
+		}
 	}
 }
 
@@ -250,6 +254,10 @@ void GiveItem() {
 		buttonManager.m_itemManager->items.push_back( Tool::Axe(playerInv, sf::Vector2f(10, 10)));
 		break;
 
+	case 4:
+		buttonManager.m_itemManager->items.push_back(Tool::Pickaxe(playerInv, sf::Vector2f(10, 10)));
+		break;
+
 	default:
 		break;
 	}
@@ -258,7 +266,7 @@ void GiveItem() {
 
 void NextItem() {
 	buttonManager.currentChoice++;
-	if (buttonManager.currentChoice > 3) buttonManager.currentChoice = 0;
+	if (buttonManager.currentChoice > 4) buttonManager.currentChoice = 0;
 
 	switch (buttonManager.currentChoice)
 	{
@@ -276,6 +284,10 @@ void NextItem() {
 
 	case 3:
 		buttonManager.buttons[0]->text->setString("Axe");
+		break;
+
+	case 4:
+		buttonManager.buttons[0]->text->setString("Pickaxe");
 		break;
 
 	default:

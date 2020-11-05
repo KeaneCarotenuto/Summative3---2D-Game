@@ -203,16 +203,19 @@ void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
 			if (sprite.getGlobalBounds().contains(worldInv->mapPixelToCoords(sf::Mouse::getPosition(*worldInv)))) {
 
 
-				if (currentlyDragging->itemName == "Stone" && WorldLayer::currentWorld->SpecialTilemap[x][y]->type == SpecialType::Tree) {
+				if (currentlyDragging->itemName == "Axe" && WorldLayer::currentWorld->SpecialTilemap[x][y]->type == SpecialType::Tree) {
 					if (DamageSpecialTile(x, y, 20)) {
 						TrySpawnItem(new Lumber(LumberType::Log, worldInv, sprite.getPosition(), "Log"));
-						//TrySpawnItem(new Lumber(LumberType::Stick, worldInv, sprite.getPosition(), "Stick"));
+
+						if (rand() % 2 == 0) {
+							TrySpawnItem(new Lumber(LumberType::Stick, worldInv, sprite.getPosition(), "Stick"));
+						}
+						
 					}
 				}
-				else if (currentlyDragging->itemName == "Stone" && WorldLayer::currentWorld->SpecialTilemap[x][y]->type == SpecialType::Boulder) {
+				else if (currentlyDragging->itemName == "Pickaxe" && WorldLayer::currentWorld->SpecialTilemap[x][y]->type == SpecialType::Boulder) {
 					if (DamageSpecialTile(x, y, 20)) {
 						TrySpawnItem(new Mineral(MineralType::Stone, worldInv, sprite.getPosition(), "Stone"));
-						//TrySpawnItem(new Lumber(LumberType::Stick, worldInv, sprite.getPosition(), "Stick"));
 					}
 				}
 			}
@@ -259,10 +262,6 @@ bool ItemManager::AddToToDeleteEnt(CEntity* _ent)
 
 		
 	}
-
-	
-
-	
 }
 
 void ItemManager::LateDelete()
@@ -280,6 +279,7 @@ void ItemManager::LateDelete()
 		_ent = nullptr;
 
 	}
+
 
 	toDeleteSpecial.clear();
 	toDeleteEnt.clear();
@@ -321,6 +321,8 @@ void ItemManager::TryCrafting()
 	std::vector<CItem*> copperOreStacks;
 	std::vector<CItem*> meatStacks;
 	std::vector<CItem*> berriesStacks;
+	std::vector<CItem*> axeStacks;
+	std::vector<CItem*> pickaxeStacks;
 
 	for (CItem* _item : inCrafting)
 	{
@@ -351,10 +353,21 @@ void ItemManager::TryCrafting()
 				copperOreStacks.push_back(_item);
 			}
 		}
+		if (dynamic_cast<Tool*>(_item)) {
+			if (dynamic_cast<Tool*>(_item)->type == ToolType::Axe) {
+				axeStacks.push_back(_item);
+			}
+			if (dynamic_cast<Tool*>(_item)->type == ToolType::Pickaxe) {
+				pickaxeStacks.push_back(_item);
+			}
+		}
+
 	}
 
 	if (stickStacks.size()		== 1 && 
 		logStacks.size()		== 0 &&
+		axeStacks.size()		== 0 &&
+		pickaxeStacks.size()	== 0 &&
 		stoneStacks.size()		== 0 &&
 		ironOreStacks.size()	== 0 &&
 		copperOreStacks.size()	== 0 &&
@@ -374,7 +387,9 @@ void ItemManager::TryCrafting()
 
 	if (stickStacks.size() == 0 &&
 		logStacks.size() == 1 &&
-		stoneStacks.size() == 1 &&
+		stoneStacks.size() == 0 &&
+		axeStacks.size() == 1 &&
+		pickaxeStacks.size() == 0 &&
 		ironOreStacks.size() == 0 &&
 		copperOreStacks.size() == 0 &&
 		meatStacks.size() == 0 &&
@@ -389,6 +404,56 @@ void ItemManager::TryCrafting()
 		craftedItem->sprite.setColor(sf::Color(255, 255, 0));
 		TrySpawnItem(craftedItem);
 	}
+
+	if (stickStacks.size() == 3 &&
+		logStacks.size() == 0 &&
+		stoneStacks.size() == 2 &&
+		axeStacks.size() == 0 &&
+		pickaxeStacks.size() == 0 &&
+		ironOreStacks.size() == 0 &&
+		copperOreStacks.size() == 0 &&
+		meatStacks.size() == 0 &&
+		berriesStacks.size() == 0)
+	{
+		//Specific To Crafting Recipie
+		RemoveOneItemFromStack(stickStacks[0]);
+		RemoveOneItemFromStack(stickStacks[1]);
+		RemoveOneItemFromStack(stickStacks[2]);
+
+		RemoveOneItemFromStack(stoneStacks[0]);
+		RemoveOneItemFromStack(stoneStacks[1]);
+
+		CItem* craftedItem = Tool::Axe(playerInv, { 10,10 });
+
+		//Same for all Recipies
+		craftedItem->sprite.setColor(sf::Color(255, 255, 0));
+		TrySpawnItem(craftedItem);
+	}
+
+	if (stickStacks.size() == 2 &&
+		logStacks.size() == 0 &&
+		stoneStacks.size() == 3 &&
+		axeStacks.size() == 0 &&
+		pickaxeStacks.size() == 0 &&
+		ironOreStacks.size() == 0 &&
+		copperOreStacks.size() == 0 &&
+		meatStacks.size() == 0 &&
+		berriesStacks.size() == 0)
+	{
+		//Specific To Crafting Recipie
+		RemoveOneItemFromStack(stickStacks[0]);
+		RemoveOneItemFromStack(stickStacks[1]);
+
+		RemoveOneItemFromStack(stoneStacks[0]);
+		RemoveOneItemFromStack(stoneStacks[1]);
+		RemoveOneItemFromStack(stoneStacks[2]);
+
+		CItem* craftedItem = Tool::Pickaxe(playerInv, { 10,10 });
+
+		//Same for all Recipies
+		craftedItem->sprite.setColor(sf::Color(255, 255, 0));
+		TrySpawnItem(craftedItem);
+	}
 }
 
 void ItemManager::TrySpawnItem(CItem * _item, bool tryStack)
@@ -397,12 +462,14 @@ void ItemManager::TrySpawnItem(CItem * _item, bool tryStack)
 		items.push_back(_item);
 
 		if (tryStack) {
-			for (CItem* tempItem : items) {
-				if (tempItem == _item) continue;
+			if (dynamic_cast<ItemAttributes::Stackable*>(_item)) {
+				for (CItem* tempItem : items) {
+					if (tempItem == _item) continue;
 
-				if (tempItem->sprite.getGlobalBounds().intersects(_item->sprite.getGlobalBounds()) && tempItem->itemName == _item->itemName) {
-					StackItem(tempItem,_item);
-					break;
+					if (tempItem->sprite.getGlobalBounds().intersects(_item->sprite.getGlobalBounds()) && tempItem->itemName == _item->itemName) {
+						StackItem(tempItem, _item);
+						break;
+					}
 				}
 			}
 		}
@@ -446,6 +513,7 @@ void ItemManager::SpawnMapItems()
 void ItemManager::RemoveOneItemFromStack(CItem* _itemStack)
 {
 	if (dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.empty()) {
+		
 		RemoveItem(_itemStack);
 	}
 	else {

@@ -22,17 +22,9 @@ void CEntity::Movement()
 		}
 		else if (toPlayerMag < 500) {
 
-			if (itemManager->currentlyDragging != nullptr) {
-				if (itemManager->currentlyDragging->itemName == "Stick") {
-					velocity = -toPlayerNormed;
-				}
-			}
-			else {
-				sf::Vector2f randDir = Norm(sf::Vector2f(rand() % 100 - 50, rand() % 100 - 50)) * moveSpeed;
+			sf::Vector2f randDir = Norm(sf::Vector2f(rand() % 100 - 50, rand() % 100 - 50)) * moveSpeed;
 
-				velocity = -randDir;
-			}
-
+			velocity = -randDir;
 			
 		}
 		else if (currentStep % 2 == 0) {
@@ -40,7 +32,15 @@ void CEntity::Movement()
 
 			velocity = -randDir;
 		}
+
+		if (itemManager->currentlyDragging != nullptr) {
+			if (itemManager->currentlyDragging->itemName == "Stick" && toPlayerMag <= 2000) {
+				velocity = -toPlayerNormed;
+			}
+		}
 	}
+
+
 	
 
 	int x = floor((rect.getPosition() + velocity).x / 20);

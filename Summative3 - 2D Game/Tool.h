@@ -11,10 +11,10 @@ class Tool :
     public CItem
 {
 public:
-    Tool(sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name, float _durability, ToolType _type);
+    Tool(ToolType _type, sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name, float _durability);
 	Tool(sf::RenderWindow* _wind, GameData::DataGroup datg, ToolType _type);
     float Durability;
-	ToolType Type;
+	ToolType type;
 	operator GameData::DataGroup()
 	{
 		GameData::DataGroup datg;
@@ -29,8 +29,8 @@ public:
 
 	static CItem* Axe(sf::RenderWindow* _wind, GameData::DataGroup _datag) { return new Tool(_wind, _datag, ToolType::Axe); }
 	static CItem* Pickaxe(sf::RenderWindow* _wind, GameData::DataGroup _datag) { return new Tool(_wind, _datag, ToolType::Pickaxe); }
-	static CItem* Axe(sf::RenderWindow* _wind, sf::Vector2f _pos) { return new Tool(_wind, _pos, "Axe", 100, ToolType::Axe); }
-	static CItem* Pickaxe(sf::RenderWindow* _wind, sf::Vector2f _pos) { return new Tool(_wind, _pos, "Pickaxe", 100, ToolType::Pickaxe); }
+	static CItem* Axe(sf::RenderWindow* _wind, sf::Vector2f _pos) { return new Tool(ToolType::Axe, _wind, _pos, "Axe", 100); }
+	static CItem* Pickaxe(sf::RenderWindow* _wind, sf::Vector2f _pos) { return new Tool(ToolType::Pickaxe, _wind, _pos, "Pickaxe", 100 ); }
 };
 
 
