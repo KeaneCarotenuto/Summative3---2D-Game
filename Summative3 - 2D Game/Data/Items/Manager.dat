@@ -1,13 +1,6 @@
 #Manager
 #DATA  FILE
 <Group:PlayerInv>
-	<Group:Stick>
-		<Bool:bIsEnabled:True>
-		<Group:initialPos>
-			<Float:x:52.000000>
-			<Float:y:246.999969>
-		</Group>
-	</Group>
 </Group>
 <Group:WorldInv>
 </Group>
