@@ -5,17 +5,15 @@
 ItemManager::ItemManager(CPlayer*& _player) :
 	Player(_player) ,Loadable("Items/", "Manager")
 {
-
 	//For every inventory Group (e.g, PlayerInv or WorldInv), get the data in the group 
 	for (GameData::DataGroup _group : Data->FileData.m_Groups) {
+
 		//For all of the data in that group (e.g. {"Stick","10"}), get that data 
 		for (GameData::DataGroup& _childgroup : _group.m_Groups) {
 
 			//Find the window that the group is a part of, from the map of windows, using the Group ID 
 			std::map < std::string, sf::RenderWindow*>::iterator windIt = Globals::mapOfWindows.find(_group.GroupID);
 			if (windIt != Globals::mapOfWindows.end()) {
-
-				
 
 					//Find the item constructor function from the map of items, using the data id from the file
 					std::map <std::string, CItem* (*)(sf::RenderWindow* _wind, GameData::DataGroup _datag)>::iterator itemIt = mapOfItems.find(_childgroup.GroupID);
@@ -25,10 +23,7 @@ ItemManager::ItemManager(CPlayer*& _player) :
 
 						TrySpawnItem(itemIt->second(windIt->second, _childgroup));
 						
-
 					}
-				
-
 			}
 			
 		}
@@ -44,6 +39,9 @@ ItemManager::~ItemManager()
 	SaveData.Save(FilePath, "Manager");
 }
 
+/// <summary>
+/// Adds item to remove list
+/// </summary>
 void ItemManager::RemoveItem(CItem* _item)
 {
 	std::vector<CItem*>::iterator pos = std::find(items.begin(), items.end(), _item);
@@ -52,10 +50,9 @@ void ItemManager::RemoveItem(CItem* _item)
 	}
 }
 
-
 void ItemManager::FixedUpdate()
 {
-
+	//If Clicked
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
 
@@ -85,16 +82,21 @@ void ItemManager::FixedUpdate()
 			//Update items current position to mouse
 			currentlyDragging->sprite.setPosition(	currentlyDragging->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*currentlyDragging->currentInv)).x - currentlyDragging->sprite.getGlobalBounds().width / 2,
 													currentlyDragging->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*currentlyDragging->currentInv)).y - currentlyDragging->sprite.getGlobalBounds().height / 2);
+			
+			//if Right Clicked
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && currentStep % 5 == 0) {
 				sf::RenderWindow* worldInv = nullptr;
 				std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("WorldInv");
 				if (invWndIt != Globals::mapOfWindows.end()) {
 					worldInv = (*invWndIt).second;
 
+					//Try harvest resources
 					CheckSpecialTiles(worldInv);
 
+					//Try kill ents
 					CheckEntities(worldInv);
 
+					//Eat Meat
 					if (currentlyDragging != nullptr) {
 						if (currentlyDragging->itemName == "Meat") {
 
@@ -118,6 +120,7 @@ void ItemManager::FixedUpdate()
 				sf::Sprite sprite = _item->sprite;
 
 				if (!dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.empty()) {
+
 					//If mouse is over item, being dragging
 					if (sprite.getGlobalBounds().contains(_item->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*_item->currentInv)))) {
 						
@@ -137,8 +140,8 @@ void ItemManager::FixedUpdate()
 			currentlyDragging->sprite.setPosition(currentlyDragging->initialPos);
 			currentlyDragging->currentInv = currentlyDragging->initialWindow;
 		}
+
 		//Stack Items
-		
 		if (currentlyDragging != nullptr && currentMouseWindow != nullptr) {
 			currentlyDragging->initialPos = currentlyDragging->sprite.getPosition();
 			currentlyDragging->initialWindow = currentlyDragging->currentInv;
@@ -148,8 +151,11 @@ void ItemManager::FixedUpdate()
 				if (!_item->bIsEnabled || !dynamic_cast<ItemAttributes::Stackable*>(_item)) continue;
 
 				sf::Sprite sprite = _item->sprite;
+
+				//checks if over other item
 				if (sprite.getGlobalBounds().contains(_item->currentInv->mapPixelToCoords(sf::Mouse::getPosition(*_item->currentInv)))) {
 
+					//Checks if item is the same
 					if (currentlyDragging->itemName == _item->itemName && currentlyDragging != _item) {
 						
 						StackItem(_item, currentlyDragging);
@@ -159,10 +165,11 @@ void ItemManager::FixedUpdate()
 			}
 		}
 
-		//Deref
+		//Deref every tick
 		currentlyDragging = nullptr;
 	}
 
+	//Craft Button
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
 	{
 		if (!freezeCraftButton) {
@@ -174,7 +181,7 @@ void ItemManager::FixedUpdate()
 		freezeCraftButton = false;
 	}
 
-
+	//Count steps
 	currentStep++;
 }
 
@@ -182,6 +189,9 @@ void ItemManager::Update(float _fDeltaTime)
 {
 }
 
+/// <summary>
+/// Checks to see if there is an entity where the mouse is and kills them if possible
+/// </summary>
 void ItemManager::CheckEntities(sf::RenderWindow* worldInv)
 {
 	for (CEntity* _ent : entities) {
@@ -190,15 +200,17 @@ void ItemManager::CheckEntities(sf::RenderWindow* worldInv)
 		sf::RectangleShape rect = _ent->rect;
 		if (rect.getGlobalBounds().contains(worldInv->mapPixelToCoords(sf::Mouse::getPosition(*worldInv)))) {
 
-
+			//If using sword
 			if (currentlyDragging->itemName == "Sword") {
 
 				if (AddToToDeleteEnt(_ent)) {
 
+					//Damage tool
 					if (dynamic_cast<Tool*>(currentlyDragging)) {
 						dynamic_cast<Tool*>(currentlyDragging)->Durability -= 10;
 					}
 
+					//Spawn meat
 					TrySpawnItem(new Consumables(ConsumableType::Meat, worldInv, _ent->rect.getPosition(), "Meat"));
 				}
 			}
@@ -208,6 +220,9 @@ void ItemManager::CheckEntities(sf::RenderWindow* worldInv)
 	
 }
 
+/// <summary>
+/// Checks to see if there is a rock or tree to be harvested
+/// </summary>
 void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
 {
 	for (int y = 0; y < WorldLayer::height; y++)
@@ -219,9 +234,12 @@ void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
 			sf::Sprite sprite = WorldLayer::currentWorld->SpecialTilemap[x][y]->Sprite;
 			if (sprite.getGlobalBounds().contains(worldInv->mapPixelToCoords(sf::Mouse::getPosition(*worldInv)))) {
 
-
+				//If using axe and item is tree
 				if (currentlyDragging->itemName == "Axe" && WorldLayer::currentWorld->SpecialTilemap[x][y]->type == SpecialType::Tree) {
 					if (DamageSpecialTile(x, y, 20)) {
+
+						//Damage tool and spawn log and some sticks
+
 						dynamic_cast<Tool*>(currentlyDragging)->Durability -= 5;
 
 						TrySpawnItem(new Lumber(LumberType::Log, worldInv, sprite.getPosition(), "Log"));
@@ -234,6 +252,9 @@ void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
 				}
 				else if (currentlyDragging->itemName == "Pickaxe" && WorldLayer::currentWorld->SpecialTilemap[x][y]->type == SpecialType::Boulder) {
 					if (DamageSpecialTile(x, y, 20)) {
+						
+						//Damages tool and spawns stones
+
 						dynamic_cast<Tool*>(currentlyDragging)->Durability -= 7;
 
 						TrySpawnItem(new Mineral(MineralType::Stone, worldInv, sprite.getPosition(), "Stone"));
@@ -244,6 +265,9 @@ void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
 	}
 }
 
+/// <summary>
+/// If can damage special tile, do so and reutnr true, else false
+/// </summary>
 bool ItemManager::DamageSpecialTile(int x, int y, int _damage)
 {
 	WorldLayer::currentWorld->SpecialTilemap[x][y]->health -= _damage;
@@ -254,6 +278,7 @@ bool ItemManager::DamageSpecialTile(int x, int y, int _damage)
 			return false;
 		}
 		else {
+			//marks tile to be deleted later
 			toDeleteSpecial.push_back(WorldLayer::currentWorld->SpecialTilemap[x][y]);
 			WorldLayer::currentWorld->SpecialTilemap[x][y] = nullptr;
 			return true;
@@ -264,6 +289,9 @@ bool ItemManager::DamageSpecialTile(int x, int y, int _damage)
 	}
 }
 
+/// <summary>
+/// Marks Entity to be deleted after update loop
+/// </summary>
 bool ItemManager::AddToToDeleteEnt(CEntity* _ent)
 {
 	std::vector<CEntity*>::iterator pos = std::find(toDeleteEnt.begin(), toDeleteEnt.end(), _ent);
@@ -272,7 +300,6 @@ bool ItemManager::AddToToDeleteEnt(CEntity* _ent)
 	}
 	else {
 		
-
 		pos = std::find(entities.begin(), entities.end(), _ent);
 		if (pos != entities.end()) {
 			toDeleteEnt.push_back(_ent);
@@ -285,6 +312,9 @@ bool ItemManager::AddToToDeleteEnt(CEntity* _ent)
 	}
 }
 
+/// <summary>
+/// Marks Item to Be Deleted
+/// </summary>
 bool ItemManager::AddToToDeleteItem(CItem* _item)
 {
 	std::vector<CItem*>::iterator pos = std::find(toDeleteItem.begin(), toDeleteItem.end(), _item);
@@ -306,6 +336,9 @@ bool ItemManager::AddToToDeleteItem(CItem* _item)
 	}
 }
 
+/// <summary>
+/// Deletes items after the update calls to not break stuff
+/// </summary>
 void ItemManager::LateDelete()
 {
 	for (SpecialTile* _spTile : toDeleteSpecial) {
@@ -332,6 +365,7 @@ void ItemManager::LateDelete()
 	toDeleteEnt.clear();
 	toDeleteItem.clear();
 
+	//If tool is damaged delete it
 	for (CItem* _item : items) {
 		if (_item != nullptr) {
 			if (dynamic_cast<Tool*>(_item)) {
@@ -349,8 +383,12 @@ void ItemManager::LateDelete()
 	}
 }
 
+/// <summary>
+/// Try all crafting recipies
+/// </summary>
 void ItemManager::TryCrafting()
 {
+	//Delcares windows to be used in scope
 	sf::RenderWindow* craftingInv = nullptr;
 	std::map < std::string, sf::RenderWindow*>::iterator craftWndIt = Globals::mapOfWindows.find("CraftingInv");
 	if (craftWndIt != Globals::mapOfWindows.end()) {
@@ -369,7 +407,7 @@ void ItemManager::TryCrafting()
 		return;
 	}
 
-
+	//Counts all items in crafting window
 	std::vector<CItem*> inCrafting;
 	for (CItem* _item : items)
 	{
@@ -378,6 +416,7 @@ void ItemManager::TryCrafting()
 		}
 	}
 
+	//Lits of all the stacks
 	std::vector<CItem*> stickStacks;
 	std::vector<CItem*> logStacks;
 	std::vector<CItem*> stoneStacks;
@@ -388,6 +427,7 @@ void ItemManager::TryCrafting()
 	std::vector<CItem*> axeStacks;
 	std::vector<CItem*> pickaxeStacks;
 
+	//Adds all items to respective stacks
 	for (CItem* _item : inCrafting)
 	{
 		if (dynamic_cast<Lumber*>(_item)) {
@@ -428,6 +468,7 @@ void ItemManager::TryCrafting()
 
 	}
 
+	//Try craft Water with berries and stick
 	if (stickStacks.size()		== 1 && 
 		logStacks.size()		== 0 &&
 		axeStacks.size()		== 0 &&
@@ -449,6 +490,7 @@ void ItemManager::TryCrafting()
 		TrySpawnItem(craftedItem);
 	}
 
+	//Try crafting Stick with log and axe
 	if (stickStacks.size() == 0 &&
 		logStacks.size() == 1 &&
 		stoneStacks.size() == 0 &&
@@ -469,6 +511,7 @@ void ItemManager::TryCrafting()
 		TrySpawnItem(craftedItem);
 	}
 
+	//Try crafting axe
 	if (stickStacks.size() == 3 &&
 		logStacks.size() == 0 &&
 		stoneStacks.size() == 2 &&
@@ -494,6 +537,7 @@ void ItemManager::TryCrafting()
 		TrySpawnItem(craftedItem);
 	}
 
+	//Try crafting pick
 	if (stickStacks.size() == 2 &&
 		logStacks.size() == 0 &&
 		stoneStacks.size() == 3 &&
@@ -519,6 +563,7 @@ void ItemManager::TryCrafting()
 		TrySpawnItem(craftedItem);
 	}
 
+	//Try crafting sword
 	if (stickStacks.size() == 1 &&
 		logStacks.size() == 0 &&
 		stoneStacks.size() == 2 &&
@@ -543,6 +588,9 @@ void ItemManager::TryCrafting()
 	}
 }
 
+/// <summary>
+/// Tries to spawn an item into the game, if cant, deletes item
+/// </summary>
 void ItemManager::TrySpawnItem(CItem * _item, bool tryStack)
 {
 	if (items.size() < 1000) {
@@ -572,6 +620,9 @@ void ItemManager::TrySpawnItem(CItem * _item, bool tryStack)
 	}
 }
 
+/// <summary>
+/// Spawns items around the map
+/// </summary>
 void ItemManager::SpawnMapItems()
 {
 	sf::RenderWindow* worldInv = nullptr;
@@ -584,6 +635,7 @@ void ItemManager::SpawnMapItems()
 		return;
 	}
 
+	//If grass, spawn sticks, if rocky, spawn rocks
 	for (int x = 0; x < WorldLayer::width; x++) {
 		for (int y = 0; y < WorldLayer::height; y++) {
 			if (WorldLayer::currentWorld->TerrainTilemap[x][y]->Type == TerrainType::ROCK && rand() % 500 == 0) {
@@ -597,6 +649,9 @@ void ItemManager::SpawnMapItems()
 	}
 }
 
+/// <summary>
+/// Tries to remove one item from a stack, elese deletes item;
+/// </summary>
 void ItemManager::RemoveOneItemFromStack(CItem* _itemStack)
 {
 	if (dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.empty()) {
@@ -609,6 +664,9 @@ void ItemManager::RemoveOneItemFromStack(CItem* _itemStack)
 	}
 }
 
+/// <summary>
+/// Starts dragging item
+/// </summary>
 void ItemManager::StartDraggingItem(CItem* _item)
 {
 	_item->sprite.setColor(sf::Color(255, 255, 255));
@@ -617,6 +675,9 @@ void ItemManager::StartDraggingItem(CItem* _item)
 	currentlyDragging = _item;
 }
 
+/// <summary>
+/// Updates which window the mouse is over
+/// </summary>
 void ItemManager::UpdateCurrentMouseWindow()
 {
 	for (sf::RenderWindow* _wind : Globals::inventories)
@@ -632,6 +693,9 @@ void ItemManager::UpdateCurrentMouseWindow()
 	}
 }
 
+/// <summary>
+/// Splits one item off from the stack
+/// </summary>
 CItem* ItemManager::SplitOneItem(CItem* _itemStack)
 {
 	CItem* toReturn = dynamic_cast<ItemAttributes::Stackable*>(_itemStack)->disabledStack.top();
@@ -650,6 +714,9 @@ CItem* ItemManager::SplitOneItem(CItem* _itemStack)
 	return toReturn;
 }
 
+/// <summary>
+/// Tries to stack an item
+/// </summary>
 void ItemManager::StackItem(CItem* _item, CItem* _itemStack)
 {
 	dynamic_cast<ItemAttributes::Stackable*>(_item)->disabledStack.push(_itemStack);
