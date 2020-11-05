@@ -186,8 +186,20 @@ void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 		sf::Vector2f temp = player->rect.getPosition();
 		world->addPointLight((int)(temp.x/20), (int)(temp.y / 20), 9);*/
 
-
-		Drawing(view, player);
+		if (player->Health > 0) {
+			Drawing(view, player);
+		}
+		else {
+			worldInv->clear();
+			sf::Text text;
+			text.setFont(player->Font);
+			text.setString("You Died");
+			text.setCharacterSize(50);
+			text.setPosition(player->rect.getPosition());
+			worldInv->draw(text);
+			worldInv->display();
+		}
+		
 
 
 		CheckPlayerHitsEdge(player, itemMngr);
