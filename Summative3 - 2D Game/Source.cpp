@@ -17,6 +17,7 @@
 #include "Lumber.h"
 #include "Globals.h"
 #include "CButton.h"
+#include "Tool.h"
 
 
 
@@ -34,9 +35,9 @@ void CreateEntities(CPlayer& player, ItemManager* itemMngr);
 
 void CreateWindows();
 
-int StartGame();
+void StartGame();
 
-int GameLoop(ItemManager* itemMngr, CPlayer& player);
+void GameLoop(ItemManager* itemMngr, CPlayer& player);
 
 struct CButtonManager {
 	std::vector<CButton*> buttons;
@@ -115,13 +116,10 @@ void StartGame()
 
 	float spotlightX = 25, spotlightY = 25;
 
-	
-
-	int gameLoopReturn = GameLoop(itemMngr, player);
-	if (gameLoopReturn == 0) return 0;
+	GameLoop(itemMngr, player);
 }
 
-int GameLoop(ItemManager* itemMngr, CPlayer& player)
+void GameLoop(ItemManager* itemMngr, CPlayer& player)
 {
 	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));
 
@@ -153,7 +151,7 @@ int GameLoop(ItemManager* itemMngr, CPlayer& player)
 			{
 				delete itemMngr;
 				worldInv->close();
-				return 0;
+				return;
 			}
 
 			if (newEvent.type == sf::Event::MouseWheelMoved)
@@ -188,8 +186,6 @@ int GameLoop(ItemManager* itemMngr, CPlayer& player)
 
 		CheckPlayerHitsEdge(player, itemMngr);
 	}
-
-	return 1;
 }
 
 //ButtonFunctions
@@ -242,6 +238,10 @@ void GiveItem() {
 		buttonManager.m_itemManager->items.push_back(new Mineral(MineralType::Stone, playerInv, sf::Vector2f(10, 10), "Stone"));
 		break;
 
+	case 3:
+		buttonManager.m_itemManager->items.push_back(new Axe(playerInv, sf::Vector2f(10, 10), 100));
+		break;
+
 	default:
 		break;
 	}
@@ -250,7 +250,7 @@ void GiveItem() {
 
 void NextItem() {
 	buttonManager.currentChoice++;
-	if (buttonManager.currentChoice > 2) buttonManager.currentChoice = 0;
+	if (buttonManager.currentChoice > 3) buttonManager.currentChoice = 0;
 
 	switch (buttonManager.currentChoice)
 	{
@@ -264,6 +264,10 @@ void NextItem() {
 
 	case 2:
 		buttonManager.buttons[0]->text->setString("Stone");
+		break;
+
+	case 3:
+		buttonManager.buttons[0]->text->setString("Axe");
 		break;
 
 	default:
