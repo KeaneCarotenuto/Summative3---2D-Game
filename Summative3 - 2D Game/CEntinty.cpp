@@ -34,7 +34,7 @@ void CEntity::Movement()
 		}
 
 		if (itemManager->currentlyDragging != nullptr) {
-			if (itemManager->currentlyDragging->itemName == "Stick" && toPlayerMag <= 2000) {
+			if (itemManager->currentlyDragging->itemName == "Sword" && toPlayerMag <= 2000) {
 				velocity = -toPlayerNormed;
 			}
 		}

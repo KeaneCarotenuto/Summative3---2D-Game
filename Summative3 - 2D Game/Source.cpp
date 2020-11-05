@@ -297,6 +297,10 @@ void GiveItem() {
 		buttonManager.m_itemManager->items.push_back(Tool::Pickaxe(playerInv, sf::Vector2f(10, 10)));
 		break;
 
+	case 5:
+		buttonManager.m_itemManager->items.push_back(Tool::Sword(playerInv, sf::Vector2f(10, 10)));
+		break;
+
 	default:
 		break;
 	}
@@ -305,7 +309,7 @@ void GiveItem() {
 
 void NextItem() {
 	buttonManager.currentChoice++;
-	if (buttonManager.currentChoice > 4) buttonManager.currentChoice = 0;
+	if (buttonManager.currentChoice > 5) buttonManager.currentChoice = 0;
 
 	switch (buttonManager.currentChoice)
 	{
@@ -327,6 +331,10 @@ void NextItem() {
 
 	case 4:
 		buttonManager.buttons[0]->text->setString("Pickaxe");
+		break;
+
+	case 5:
+		buttonManager.buttons[0]->text->setString("Sword");
 		break;
 
 	default:

@@ -190,7 +190,7 @@ void ItemManager::CheckEntities(sf::RenderWindow* worldInv)
 		if (rect.getGlobalBounds().contains(worldInv->mapPixelToCoords(sf::Mouse::getPosition(*worldInv)))) {
 
 
-			if (currentlyDragging->itemName == "Stick") {
+			if (currentlyDragging->itemName == "Sword") {
 
 				if (AddToToDeleteEnt(_ent)) {
 					TrySpawnItem(new Consumables(ConsumableType::Meat, worldInv, _ent->rect.getPosition(), "Meat"));
@@ -507,6 +507,29 @@ void ItemManager::TryCrafting()
 		RemoveOneItemFromStack(stoneStacks[2]);
 
 		CItem* craftedItem = Tool::Pickaxe(playerInv, { 10,10 });
+
+		//Same for all Recipies
+		craftedItem->sprite.setColor(sf::Color(255, 255, 0));
+		TrySpawnItem(craftedItem);
+	}
+
+	if (stickStacks.size() == 1 &&
+		logStacks.size() == 0 &&
+		stoneStacks.size() == 2 &&
+		axeStacks.size() == 0 &&
+		pickaxeStacks.size() == 0 &&
+		ironOreStacks.size() == 0 &&
+		copperOreStacks.size() == 0 &&
+		meatStacks.size() == 0 &&
+		berriesStacks.size() == 0)
+	{
+		//Specific To Crafting Recipie
+		RemoveOneItemFromStack(stickStacks[0]);
+
+		RemoveOneItemFromStack(stoneStacks[0]);
+		RemoveOneItemFromStack(stoneStacks[1]);
+
+		CItem* craftedItem = Tool::Sword(playerInv, { 10,10 });
 
 		//Same for all Recipies
 		craftedItem->sprite.setColor(sf::Color(255, 255, 0));
