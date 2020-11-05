@@ -19,10 +19,6 @@
 #include "CButton.h"
 #include "Tool.h"
 
-
-
-
-
 void GenNewIsland(ItemManager* itemMngr);
 
 void CheckPlayerHitsEdge(CPlayer*& player, ItemManager* itemMngr);
@@ -43,6 +39,7 @@ void StartGame();
 
 void GameLoop(ItemManager* itemMngr, CPlayer*& player);
 
+//Manages the Debug Buttons
 struct CButtonManager {
 	std::vector<CButton*> buttons;
 	sf::Font buttonFont;
@@ -56,16 +53,23 @@ struct CButtonManager {
 	CButtonManager();
 }buttonManager;
 
+CButtonManager::CButtonManager()
+{
+	if (!buttonFont.loadFromFile("Resources/Fonts/uni.ttf")) std::cout << "Failed to load uni Font\n";
+}
+
 int main() {
 	StartGame();
-
-	
 
 	return 0;
 }
 
+/// <summary>
+/// Starts up the game
+/// </summary>
 void StartGame()
 {
+	//Load Seed
 	std::string line;
 	std::ifstream myfile("Data/seed.txt");
 	if (myfile.is_open())
@@ -83,10 +87,12 @@ void StartGame()
 		else std::cout << "Failed to Create Seed";
 	}
 
+	//Set Seed
 	srand(Globals::seed);
 
 	CreateWindows();
 
+	//Define windows to be used in scope
 	sf::RenderWindow* worldInv = nullptr;
 	std::map < std::string, sf::RenderWindow*>::iterator worldInvIt = Globals::mapOfWindows.find("WorldInv");
 	if (worldInvIt != Globals::mapOfWindows.end()) {
@@ -105,6 +111,7 @@ void StartGame()
 		std::cout << "ERROR: Cannot Find PlayerInv Window";
 	}
 
+	//Create a new World
 	WorldLayer::currentWorld = new WorldLayer(Globals::seed);
 
 	//Create Player
@@ -116,19 +123,27 @@ void StartGame()
 	ItemManager* itemMngr = new ItemManager(player);
 	buttonManager.m_itemManager = itemMngr;
 
+	//Spawn Items on Map
 	itemMngr->SpawnMapItems();
 
+	//Spawn Birds and Fish
 	CreateEntities(player, itemMngr);
 
 	float spotlightX = 25, spotlightY = 25;
 
+	//Starts the main game loop
 	GameLoop(itemMngr, player);
 }
 
+/// <summary>
+/// The main game loop
+/// </summary>
 void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 {
+	//Create view for SFML
 	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));
 
+	//Define windows to be used inscope
 	sf::RenderWindow* worldInv = nullptr;
 	std::map < std::string, sf::RenderWindow*>::iterator worldInvIt = Globals::mapOfWindows.find("WorldInv");
 	if (worldInvIt != Globals::mapOfWindows.end()) {
@@ -147,10 +162,12 @@ void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 		std::cout << "ERROR: Cannot Find PlayerInv Window";
 	}
 
+	//While game is open
 	while (worldInv->isOpen() == true)
 	{
 		sf::Event newEvent;
 
+		//Check for closing and zooming
 		while (worldInv->pollEvent(newEvent))
 		{
 			if (newEvent.type == sf::Event::Closed)
@@ -176,21 +193,19 @@ void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 
 		}
 
+		//Check if debug buttons are pressed
 		CheckButtonsPressed();
 
-		//Keeps Invntory on Top
+		//Keeps Inventory on Top
 		HWND hwnd = playerInv->getSystemHandle();
 		SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 
-
-		/*world->resetLightMap();
-		sf::Vector2f temp = player->rect.getPosition();
-		world->addPointLight((int)(temp.x/20), (int)(temp.y / 20), 9);*/
-
+		//Checks if the player is dead and generates new world
 		if (!player->dead) {
 			Drawing(view, player);
 		}
 		else {
+			//Death Text
 			worldInv->clear();
 			sf::Text text;
 			text.setFont(player->Font);
@@ -201,19 +216,24 @@ void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 			worldInv->display();
 			player->FixedUpdate();
 
+			//If 2 seconds has passed make new world
 			if (player->currentStep - player->deathStep > 120) {
 				Globals::seed = rand() % 1000;
 
+				//Delete all items
 				for (CItem* _item : itemMngr->items) {
 					delete _item;
 					_item = nullptr;
 				}
 				itemMngr->items.clear();
 
+				//Create new island
 				GenNewIsland(itemMngr);
 
+				//Move player
 				player->rect.setPosition(WorldLayer::currentWorld->GetFirstSandTilePos());
 
+				//create new seed
 				std::ofstream myfile("Data/seed.txt");
 				if (myfile.is_open())
 				{
@@ -222,25 +242,29 @@ void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 				}
 				else std::cout << "Failed to Create Seed";
 
+				//reset player stats
 				player->Health = 100;
 				player->Hunger = 0;
 				player->dead = false;
 			}
 		}
 		
-
-
+		//Check if player hits edge, and gen new map
 		CheckPlayerHitsEdge(player, itemMngr);
 
+		//Delete items that need to be deleted
 		itemMngr->LateDelete();
 
-		if (itemMngr->entities.size() < 20) {
+		//Spawn new Entities in ht world
+		if (itemMngr->entities.size() < 30) {
 			CreateEntities(player, itemMngr);
 		}
 	}
 }
 
-//ButtonFunctions
+/// <summary>
+/// Check if a Button has been pressed, then call its function
+/// </summary>
 void CheckButtonsPressed()
 {
 	//Check Mouse lick
@@ -266,6 +290,7 @@ void CheckButtonsPressed()
 	}
 }
 
+//Spawns an item in the player's inventory
 void GiveItem() {
 	sf::RenderWindow* playerInv = nullptr;
 	std::map < std::string, sf::RenderWindow*>::iterator playerInvIt = Globals::mapOfWindows.find("PlayerInv");
@@ -308,6 +333,9 @@ void GiveItem() {
 	
 }
 
+/// <summary>
+/// Cycles through some items
+/// </summary>
 void NextItem() {
 	buttonManager.currentChoice++;
 	if (buttonManager.currentChoice > 5) buttonManager.currentChoice = 0;
@@ -354,25 +382,22 @@ void DamagePlayer() {
 	buttonManager.player->Health -= 10;
 }
 
+/// <summary>
+/// Creates all windows used in game
+/// </summary>
 void CreateWindows()
 {
+	//Create Windows
 	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(1000, 1000), "2D Game");
-	sf::RenderWindow* inventory = new sf::RenderWindow(sf::VideoMode(200, 500), "Inventory");
-	sf::RenderWindow* crafting = new sf::RenderWindow(sf::VideoMode(200, 200), "Crafting");
+	sf::RenderWindow* inventory = new sf::RenderWindow(sf::VideoMode(300, 700), "Inventory");
+	sf::RenderWindow* crafting = new sf::RenderWindow(sf::VideoMode(300, 300), "Crafting");
 	sf::RenderWindow* debugWindow = new sf::RenderWindow(sf::VideoMode(200, 200), "Debug");
-	//sf::RenderWindow* menuWindow = new sf::RenderWindow(sf::VideoMode(200, 200), "Menu");
 
-	/*window->setVisible(false);
-	inventory->setVisible(false);
-	crafting->setVisible(false);
-	debugWindow->setVisible(false);*/
-	//menuWindow->setVisible(false);
-
+	//Set positions of windows
 	inventory->setPosition(sf::Vector2i(window->getPosition().x - inventory->getSize().x, window->getPosition().y));
 	crafting->setPosition(sf::Vector2i(inventory->getPosition().x, inventory->getPosition().y + inventory->getSize().y));
 	debugWindow->setPosition(sf::Vector2i(window->getPosition().x + window->getSize().x, window->getPosition().y));
 
-	//window.setVerticalSyncEnabled(true);
 	window->setFramerateLimit(60);
 
 	//Create Map of Widows and thier ID's
@@ -384,26 +409,32 @@ void CreateWindows()
 		{ "MenuInv",debugWindow }
 	};
 
-	//Globals::mapOfWindows = windowsMap;
 
+	//Registers all windows to map
 	for (std::map < std::string, sf::RenderWindow*>::iterator it = windowsMap.begin(); it != windowsMap.end(); it++) {
 		Globals::RegisterWindow(it->first, it->second);
 	}
 	
+	//Create buttons
 	buttonManager.buttons.push_back(new CButton(&GiveItem, "Stick", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 0, sf::Color::Color(0, 150, 0), 5, debugWindow));
 	buttonManager.buttons.push_back(new CButton(&NextItem, "Next", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 35, sf::Color::Color(0, 0, 0), 5, debugWindow));
 	buttonManager.buttons.push_back(new CButton(&HealPlayer, "Heal", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 70, sf::Color::Color(0, 150, 0), 5, debugWindow));
 	buttonManager.buttons.push_back(new CButton(&DamagePlayer, "Damage", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 105, sf::Color::Color(0, 150, 0), 5, debugWindow));
 }
 
+/// <summary>
+/// Spawns birds and fish around the map
+/// </summary>
 void CreateEntities(CPlayer*& player, ItemManager* itemMngr)
 {
+	//Change to spawn bird anywhere
 	for (int i = 0; i < 20; i++) {
 		if (rand() % 5 == 0) {
 			SpawnBird(sf::Vector2f{(float)( rand() % WorldLayer::width * 20), (float)(rand() % WorldLayer::width * 20) }, player, itemMngr);
 		}
 	}
 
+	//Chance to spawn fish in a corner
 	for (int i = 0; i < 20; i++) {
 		if (rand() % 5 == 0) {
 			bool onLeft = (rand() % 2 == 0);
@@ -412,10 +443,11 @@ void CreateEntities(CPlayer*& player, ItemManager* itemMngr)
 			SpawnFish(sf::Vector2f{ (float)((onLeft ? 0 : WorldLayer::width * 20) + (onLeft ? rand() % 100 : -1 * rand() % 100)), (float)((onTop ? 0 : WorldLayer::height * 20) + (onTop ? rand() % 100 : -1 * rand() % 100)) }, player, itemMngr);
 		}
 	}
-
-	
 }
 
+/// <summary>
+/// Spawns a Fish
+/// </summary>
 void SpawnFish(const sf::Vector2f& pos, CPlayer*& player, ItemManager* itemMngr)
 {
 	CEntity* fish = new CEntity(EntityType::Fish, pos, { 15,15 }, sf::Color::Red);
@@ -424,6 +456,9 @@ void SpawnFish(const sf::Vector2f& pos, CPlayer*& player, ItemManager* itemMngr)
 	itemMngr->entities.push_back(fish);
 }
 
+/// <summary>
+/// Spawns Bird
+/// </summary>
 void SpawnBird(const sf::Vector2f& pos, CPlayer*& player, ItemManager* itemMngr)
 {
 	CEntity* bird = new CEntity(EntityType::Bird, pos, { 15,15 }, sf::Color::White);
@@ -432,8 +467,12 @@ void SpawnBird(const sf::Vector2f& pos, CPlayer*& player, ItemManager* itemMngr)
 	itemMngr->entities.push_back(bird);
 }
 
+/// <summary>
+/// Manages Drawing things, and updating entities.
+/// </summary>
 void Drawing(sf::View& view, CPlayer*& player)
 {
+	//Define windows to be used in scope
 	sf::RenderWindow* worldInv = nullptr;
 	std::map < std::string, sf::RenderWindow*>::iterator worldInvIt = Globals::mapOfWindows.find("WorldInv");
 	if (worldInvIt != Globals::mapOfWindows.end()) {
@@ -479,8 +518,6 @@ void Drawing(sf::View& view, CPlayer*& player)
 	//Update all Objects
 	CObjectController::UpdateObjects();
 
-	
-
 	//Center View
 	view.setCenter(player->rect.getPosition() + sf::Vector2f(player->rect.getSize().x / 2, player->rect.getSize().y / 2));
 	worldInv->setView(view);
@@ -508,8 +545,13 @@ void Drawing(sf::View& view, CPlayer*& player)
 	CWindowUtilities::ToDrawList.clear(); 
 }
 
+/// <summary>
+/// Check if player hits egde of map and gen new map
+/// </summary>
 void CheckPlayerHitsEdge(CPlayer*& player, ItemManager* itemMngr)
 {
+	//Check all sides and set seed based on direction
+
 	bool changedWorld = false;
 	if (player->rect.getPosition().x < 0) {
 		Globals::seed -= 1;
@@ -543,6 +585,7 @@ void CheckPlayerHitsEdge(CPlayer*& player, ItemManager* itemMngr)
 		changedWorld = true;
 	}
 
+	//save seed
 	if (changedWorld) {
 		std::ofstream myfile("Data/seed.txt");
 		if (myfile.is_open())
@@ -554,8 +597,10 @@ void CheckPlayerHitsEdge(CPlayer*& player, ItemManager* itemMngr)
 	}
 }
 
+//Generate a new island
 void GenNewIsland(ItemManager* itemMngr)
 {
+	//Define player inv
 	sf::RenderWindow* playerInv = nullptr;
 	std::map < std::string, sf::RenderWindow*>::iterator invWndIt = Globals::mapOfWindows.find("PlayerInv");
 	if (invWndIt != Globals::mapOfWindows.end()) {
@@ -565,10 +610,14 @@ void GenNewIsland(ItemManager* itemMngr)
 		std::cout << "ERROR: Cannot Find PlayerInv Window";
 	}
 
+	//set seed
 	srand(Globals::seed);
+	
+	//del world and make new
 	delete WorldLayer::currentWorld;
 	WorldLayer::currentWorld = new WorldLayer(Globals::seed);
 
+	//Erase all items if not in inv
 	for (CItem* _item : itemMngr->items) {
 		if (_item->currentInv != playerInv) {
 			std::vector<CItem*>::iterator pos = std::find(itemMngr->items.begin(), itemMngr->items.end(), _item);
@@ -580,10 +629,6 @@ void GenNewIsland(ItemManager* itemMngr)
 		}
 	}
 
+	//spawn new items
 	itemMngr->SpawnMapItems();
-}
-
-CButtonManager::CButtonManager()
-{
-	if (!buttonFont.loadFromFile("Resources/Fonts/uni.ttf")) std::cout << "Failed to load uni Font\n";
 }
