@@ -47,13 +47,30 @@ struct CButtonManager {
 }buttonManager;
 
 int main() {
-	//StartGame();
+	StartGame();
 
 	return 0;
 }
 
 int StartGame()
 {
+	std::string line;
+	std::ifstream myfile("Data/seed.txt");
+	if (myfile.is_open())
+	{
+		getline(myfile, line);
+		Globals::seed = std::stoi(line);
+	}
+	else {
+		std::ofstream myfile("Data/seed.txt");
+		if (myfile.is_open())
+		{
+			myfile << "1234";
+			myfile.close();
+		}
+		else std::cout << "Failed to Create Seed";
+	}
+
 	srand(Globals::seed);
 
 	CreateWindows();
@@ -258,6 +275,13 @@ void CreateWindows()
 	sf::RenderWindow* inventory = new sf::RenderWindow(sf::VideoMode(200, 500), "Inventory");
 	sf::RenderWindow* crafting = new sf::RenderWindow(sf::VideoMode(200, 200), "Crafting");
 	sf::RenderWindow* debugWindow = new sf::RenderWindow(sf::VideoMode(200, 200), "Debug");
+	sf::RenderWindow* menuWindow = new sf::RenderWindow(sf::VideoMode(200, 200), "Menu");
+
+	/*window->setVisible(false);
+	inventory->setVisible(false);
+	crafting->setVisible(false);
+	debugWindow->setVisible(false);*/
+	menuWindow->setVisible(false);
 
 	inventory->setPosition(sf::Vector2i(window->getPosition().x - inventory->getSize().x, window->getPosition().y));
 	crafting->setPosition(sf::Vector2i(inventory->getPosition().x, inventory->getPosition().y + inventory->getSize().y));
@@ -271,7 +295,8 @@ void CreateWindows()
 		{ "PlayerInv",inventory },
 		{ "WorldInv",window },
 		{ "CraftingInv",crafting },
-		{ "DebugInv",debugWindow }
+		{ "DebugInv",menuWindow },
+		{ "MenuInv",debugWindow }
 	};
 
 	//Globals::mapOfWindows = windowsMap;
@@ -406,6 +431,16 @@ void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr)
 
 		GenNewIsland(itemMngr);
 		changedWorld = true;
+	}
+
+	if (changedWorld) {
+		std::ofstream myfile("Data/seed.txt");
+		if (myfile.is_open())
+		{
+			myfile << Globals::seed;
+			myfile.close();
+		}
+		else std::cout << "Failed to Create Seed";
 	}
 }
 
