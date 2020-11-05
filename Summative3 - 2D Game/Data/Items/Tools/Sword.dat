@@ -1,0 +1,6 @@
+#DATA FILE
+<Group:SpriteData>
+	<String:Path:Resources/Sprites/Sword.png>
+	<Int:TextureIndex:0>
+</Group>
+<ENDFILE>

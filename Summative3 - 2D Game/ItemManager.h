@@ -126,7 +126,8 @@ private:
 		{"Berries", &Consumables::Berries},
 		{"Water", &Consumables::Water},
 		{"Axe", &Tool::Axe},
-		{"Pickaxe", &Tool::Pickaxe}
+		{"Pickaxe", &Tool::Pickaxe},
+		{"Sword", &Tool::Sword}
 		
 	};
 };
