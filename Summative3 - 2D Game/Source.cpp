@@ -278,6 +278,8 @@ void NextItem() {
 
 void HealPlayer() {
 	buttonManager.player->Health = 100;
+	buttonManager.player->Hunger = 0;
+
 }
 
 void CreateWindows()
@@ -316,8 +318,9 @@ void CreateWindows()
 		Globals::RegisterWindow(it->first, it->second);
 	}
 	
-	buttonManager.buttons.push_back(new CButton(&GiveItem, "Log", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 0, sf::Color::Color(0, 150, 0), 5, debugWindow));
-	buttonManager.buttons.push_back(new CButton(&NextItem, "Next", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 35, sf::Color::Color(0, 150, 0), 5, debugWindow));
+	buttonManager.buttons.push_back(new CButton(&GiveItem, "Stick", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 0, sf::Color::Color(0, 150, 0), 5, debugWindow));
+	buttonManager.buttons.push_back(new CButton(&NextItem, "Next", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 35, sf::Color::Color(0, 0, 0), 5, debugWindow));
+	buttonManager.buttons.push_back(new CButton(&HealPlayer, "Heal", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 70, sf::Color::Color(0, 150, 0), 5, debugWindow));
 }
 
 void CreateEntities(CPlayer& player, ItemManager* itemMngr)
