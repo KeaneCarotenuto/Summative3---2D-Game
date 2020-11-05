@@ -478,6 +478,7 @@ void GenNewIsland(ItemManager* itemMngr)
 			std::vector<CItem*>::iterator pos = std::find(itemMngr->items.begin(), itemMngr->items.end(), _item);
 			if (pos != itemMngr->items.end()) {
 				delete _item;
+				_item = nullptr;
 				itemMngr->items.erase(pos);
 			}
 		}

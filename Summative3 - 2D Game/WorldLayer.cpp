@@ -27,6 +27,24 @@ WallTile::WallTile(int _Xpos, int _Ypos)
 	Collider.setPosition(sf::Vector2f((float)(_Xpos * 20), (float)(_Ypos * 20)));
 }
 
+WorldLayer::~WorldLayer()
+{
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			delete TerrainTilemap[x][y];
+			TerrainTilemap[x][y] = nullptr;
+
+			delete SpecialTilemap[x][y];
+			SpecialTilemap[x][y] = nullptr;
+
+			delete WallTilemap[x][y];
+			WallTilemap[x][y] = nullptr;
+		}
+	}
+}
+
 WorldLayer::WorldLayer(int _seed)
 {
 	seed = _seed;
