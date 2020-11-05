@@ -1,11 +1,11 @@
 #Manager
 #DATA  FILE
 <Group:PlayerInv>
-	<Group:Axe>
-		<Float:Durability:100.000000>
+	<Group:Stick>
+		<Bool:bIsEnabled:True>
 		<Group:initialPos>
-			<Float:x:10.000000>
-			<Float:y:10.000000>
+			<Float:x:37.000000>
+			<Float:y:16.000000>
 		</Group>
 	</Group>
 </Group>

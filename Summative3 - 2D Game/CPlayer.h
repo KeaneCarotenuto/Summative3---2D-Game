@@ -39,7 +39,8 @@ public:
 	virtual void Update(float _fDeltaTime);
 	virtual void FixedUpdate();
 
-private:
 	int currentStep = 0;
+	int deathStep = 0;
+	bool dead = false;
 };
 

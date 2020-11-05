@@ -187,20 +187,21 @@ void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 		sf::Vector2f temp = player->rect.getPosition();
 		world->addPointLight((int)(temp.x/20), (int)(temp.y / 20), 9);*/
 
-		if (player->Health > 0) {
+		if (!player->dead) {
 			Drawing(view, player);
 		}
 		else {
 			worldInv->clear();
 			sf::Text text;
 			text.setFont(player->Font);
-			text.setString("You Died");
+			text.setString("You Died\n" + std::to_string(120 - (player->currentStep - player->deathStep)));
 			text.setCharacterSize(50);
 			text.setPosition(player->rect.getPosition() - sf::Vector2f(200.0f, 0.0f));
 			worldInv->draw(text);
 			worldInv->display();
+			player->FixedUpdate();
 
-			if (rand() % 100 == 0) {
+			if (player->currentStep - player->deathStep > 120) {
 				Globals::seed = rand() % 1000;
 
 				for (CItem* _item : itemMngr->items) {
@@ -222,6 +223,7 @@ void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 				else std::cout << "Failed to Create Seed";
 
 				player->Health = 100;
+				player->dead = false;
 			}
 		}
 		
