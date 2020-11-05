@@ -156,6 +156,7 @@ void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 			if (newEvent.type == sf::Event::Closed)
 			{
 				delete itemMngr;
+				delete player;
 				worldInv->close();
 				return;
 			}
@@ -186,8 +187,44 @@ void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 		sf::Vector2f temp = player->rect.getPosition();
 		world->addPointLight((int)(temp.x/20), (int)(temp.y / 20), 9);*/
 
+		if (player->Health > 0) {
+			Drawing(view, player);
+		}
+		else {
+			worldInv->clear();
+			sf::Text text;
+			text.setFont(player->Font);
+			text.setString("You Died");
+			text.setCharacterSize(50);
+			text.setPosition(player->rect.getPosition() - sf::Vector2f(200.0f, 0.0f));
+			worldInv->draw(text);
+			worldInv->display();
 
-		Drawing(view, player);
+			if (rand() % 100 == 0) {
+				Globals::seed = rand() % 1000;
+
+				for (CItem* _item : itemMngr->items) {
+					delete _item;
+					_item = nullptr;
+				}
+				itemMngr->items.clear();
+
+				GenNewIsland(itemMngr);
+
+				player->rect.setPosition(WorldLayer::currentWorld->GetFirstSandTilePos());
+
+				std::ofstream myfile("Data/seed.txt");
+				if (myfile.is_open())
+				{
+					myfile << Globals::seed;
+					myfile.close();
+				}
+				else std::cout << "Failed to Create Seed";
+
+				player->Health = 100;
+			}
+		}
+		
 
 
 		CheckPlayerHitsEdge(player, itemMngr);
@@ -302,6 +339,10 @@ void HealPlayer() {
 
 }
 
+void DamagePlayer() {
+	buttonManager.player->Health -= 10;
+}
+
 void CreateWindows()
 {
 	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(1000, 1000), "2D Game");
@@ -341,6 +382,7 @@ void CreateWindows()
 	buttonManager.buttons.push_back(new CButton(&GiveItem, "Stick", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 0, sf::Color::Color(0, 150, 0), 5, debugWindow));
 	buttonManager.buttons.push_back(new CButton(&NextItem, "Next", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 35, sf::Color::Color(0, 0, 0), 5, debugWindow));
 	buttonManager.buttons.push_back(new CButton(&HealPlayer, "Heal", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 70, sf::Color::Color(0, 150, 0), 5, debugWindow));
+	buttonManager.buttons.push_back(new CButton(&DamagePlayer, "Damage", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 105, sf::Color::Color(0, 150, 0), 5, debugWindow));
 }
 
 void CreateEntities(CPlayer*& player, ItemManager* itemMngr)
