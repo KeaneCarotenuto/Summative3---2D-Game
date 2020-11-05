@@ -14,6 +14,8 @@ public:
     Tool(ToolType _type, sf::RenderWindow* _wind, sf::Vector2f _pos, std::string _name, float _durability);
 	Tool(sf::RenderWindow* _wind, GameData::DataGroup datg, ToolType _type);
     float Durability;
+	sf::Text DurabilityText;
+	sf::Font Font;
 	ToolType type;
 	operator GameData::DataGroup()
 	{
