@@ -32,6 +32,15 @@ void CPlayer::Update(float _fDeltaTime)
 	CWindowUtilities::Draw(&rect);
 	CWindowUtilities::Draw(&HealthText);
 	CWindowUtilities::Draw(&HungerText);
+
+	if (!dead && Health <= 0) {
+		dead = true;
+		deathStep = currentStep;
+	}
+
+	if (Health > 100) {
+		Health = 100;
+	}
 }
 
 void CPlayer::FixedUpdate()

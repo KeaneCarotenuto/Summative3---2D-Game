@@ -95,6 +95,13 @@ void ItemManager::FixedUpdate()
 					CheckSpecialTiles(worldInv);
 
 					CheckEntities(worldInv);
+
+					if (currentlyDragging != nullptr) {
+						if (currentlyDragging->itemName == "Meat") {
+							Player->Health += 30;
+							AddToToDeleteItem(currentlyDragging);
+						}
+					}
 				}
 
 				
