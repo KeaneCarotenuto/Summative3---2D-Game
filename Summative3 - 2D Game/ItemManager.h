@@ -38,6 +38,8 @@ public:
 	void RemoveItem(CItem* _item);
 
 	virtual void FixedUpdate();
+	
+	virtual void Update(float _fDeltaTime);
 
 	void CheckEntities(sf::RenderWindow* worldInv);
 
