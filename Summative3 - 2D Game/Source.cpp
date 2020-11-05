@@ -60,7 +60,7 @@ int main() {
 	return 0;
 }
 
-void StartGame()
+int StartGame()
 {
 	std::string line;
 	std::ifstream myfile("Data/seed.txt");

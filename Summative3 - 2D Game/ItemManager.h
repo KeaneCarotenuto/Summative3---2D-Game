@@ -12,6 +12,7 @@
 #include "CEntity.h"
 #include "WorldLayer.h"
 #include "Globals.h"
+#include "Tool.h"
 
 
 class ItemManager:
@@ -113,7 +114,10 @@ private:
 		{"CopperOre", &Mineral::CopperOre},
 		{"Meat", &Consumables::Meat},
 		{"Berries", &Consumables::Berries},
-		{"Water", &Consumables::Water}
+		{"Water", &Consumables::Water},
+		{"Axe", &Tool::newAxe},
+		{"Pickaxe", &Tool::newPickaxe}
+		
 	};
 };
 
