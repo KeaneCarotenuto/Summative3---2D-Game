@@ -71,34 +71,6 @@
 			</Group>
 		</Group>
 	</Group>
-	<Group:Meat>
-		<Bool:bIsEnabled:True>
-		<Group:initialPos>
-			<Float:x:95.000000>
-			<Float:y:177.999985>
-		</Group>
-		<Group:Meat>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:95.000000>
-				<Float:y:177.999985>
-			</Group>
-		</Group>
-		<Group:Meat>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:95.000000>
-				<Float:y:177.999985>
-			</Group>
-		</Group>
-		<Group:Meat>
-			<Bool:bIsEnabled:False>
-			<Group:initialPos>
-				<Float:x:95.000000>
-				<Float:y:177.999985>
-			</Group>
-		</Group>
-	</Group>
 	<Group:Stick>
 		<Bool:bIsEnabled:True>
 		<Group:initialPos>
@@ -1000,6 +972,34 @@
 		<Group:initialPos>
 			<Float:x:92.000000>
 			<Float:y:280.000000>
+		</Group>
+	</Group>
+	<Group:Meat>
+		<Bool:bIsEnabled:True>
+		<Group:initialPos>
+			<Float:x:104.000000>
+			<Float:y:162.999969>
+		</Group>
+		<Group:Meat>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:104.000000>
+				<Float:y:162.999969>
+			</Group>
+		</Group>
+		<Group:Meat>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:104.000000>
+				<Float:y:162.999969>
+			</Group>
+		</Group>
+		<Group:Meat>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:104.000000>
+				<Float:y:162.999969>
+			</Group>
 		</Group>
 	</Group>
 </Group>

@@ -1,5 +1,5 @@
 #PlayerData
 #DATA  FILE
-<Int:Health:1000000>
-<Float:Hunger:5.399790>
+<Float:Health:100>
+<Float:Hunger:0>
 <ENDFILE>
