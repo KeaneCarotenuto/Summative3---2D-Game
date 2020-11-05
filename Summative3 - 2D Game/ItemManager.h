@@ -19,8 +19,10 @@ class ItemManager:
 	private CGameObject, Loadable
 {
 public:
-	ItemManager();
+	ItemManager(CPlayer*& _player);
 	~ItemManager();
+
+	CPlayer*& Player;
 
 	std::vector<CItem*> items;
 

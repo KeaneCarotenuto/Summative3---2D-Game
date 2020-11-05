@@ -1,13 +1,46 @@
 #include "CEntity.h"
 #include "ItemManager.h"
 
+float GetMag(sf::Vector2f _vec) {
+	return sqrt(pow(_vec.x, 2) + pow(_vec.y, 2));
+}
+
+sf::Vector2f Norm(sf::Vector2f _vec) {
+	return _vec * (1 / GetMag(_vec));
+}
+
 void CEntity::Movement()
 {
-	velocity = player->rect.getPosition() - rect.getPosition();
+	if (currentStep % 120 == 0) {
+		sf::Vector2f toPlayer = player->rect.getPosition() - rect.getPosition();
+		float toPlayerMag = GetMag(toPlayer);
 
-	float mag = sqrt(pow(rect.getPosition().x - player->rect.getPosition().x, 2) + pow(rect.getPosition().y - player->rect.getPosition().y, 2));
-	
-	velocity *= 1/mag * moveSpeed;
+		sf::Vector2f toPlayerNormed = Norm(toPlayer) * moveSpeed;
+
+		if (toPlayerMag <= 1000 && toPlayerMag >= 500) {
+			velocity = toPlayerNormed;
+		}
+		else if (toPlayerMag < 500) {
+
+			if (itemManager->currentlyDragging != nullptr) {
+				if (itemManager->currentlyDragging->itemName == "Stick") {
+					velocity = -toPlayerNormed;
+				}
+			}
+			else {
+				sf::Vector2f randDir = Norm(sf::Vector2f(rand() % 100 - 50, rand() % 100 - 50)) * moveSpeed;
+
+				velocity = -randDir;
+			}
+
+			
+		}
+		else if (currentStep % 2 == 0) {
+			sf::Vector2f randDir = Norm(sf::Vector2f(rand() % 100 - 50, rand() % 100 - 50)) * moveSpeed;
+
+			velocity = -randDir;
+		}
+	}
 	
 
 	int x = floor((rect.getPosition() + velocity).x / 20);

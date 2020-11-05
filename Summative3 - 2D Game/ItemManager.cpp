@@ -3,8 +3,8 @@
 
 
 
-ItemManager::ItemManager() :
-	Loadable("Items/", "Manager")
+ItemManager::ItemManager(CPlayer*& _player) :
+	Player(_player) ,Loadable("Items/", "Manager")
 {
 
 	//For every inventory Group (e.g, PlayerInv or WorldInv), get the data in the group 
@@ -183,12 +183,12 @@ void ItemManager::CheckEntities(sf::RenderWindow* worldInv)
 
 				if (AddToToDeleteEnt(_ent)) {
 					TrySpawnItem(new Consumables(ConsumableType::Meat, worldInv, _ent->rect.getPosition(), "Meat"));
-
-					_ent = nullptr;
 				}
 			}
 		}
 	}
+
+	
 }
 
 void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
@@ -247,14 +247,17 @@ bool ItemManager::AddToToDeleteEnt(CEntity* _ent)
 		return false;
 	}
 	else {
-		toDeleteEnt.push_back(_ent);
+		
 
 		pos = std::find(entities.begin(), entities.end(), _ent);
 		if (pos != entities.end()) {
+			toDeleteEnt.push_back(_ent);
 			entities.erase(pos);
+			return true;
 		}
+		else return false;
 
-		return true;
+		
 	}
 
 	

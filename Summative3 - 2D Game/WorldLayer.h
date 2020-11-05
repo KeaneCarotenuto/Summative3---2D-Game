@@ -58,6 +58,7 @@ public:
 	
 	int Altitude;
 	
+	~WorldLayer();
 	WorldLayer(int _seed);
 	WorldLayer(int _seed, WorldLayer*&_Above, WorldLayer*&_Below, int _altitude);
 	void resetLightMap();
