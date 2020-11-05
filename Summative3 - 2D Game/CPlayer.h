@@ -16,16 +16,6 @@ public:
 
 	int Health;
 	float Hunger;
-	float Thirst;
-	bool IsBleeding;
-
-	int Str;
-	int Agi;
-	int Wis;
-	int Def;
-
-	std::vector<std::string> Effects;
-	std::vector<std::vector<int>> TestVector;
 	
 	operator GameData()
 	{
@@ -34,17 +24,6 @@ public:
 		dat.FileData.GroupID = "PlayerData";
 		dat.AddVariable(Variable(Health));
 		dat.AddVariable(Variable(Hunger));
-		dat.AddVariable(Variable(Thirst));
-		dat.AddVariable(Variable(IsBleeding));
-
-		dat.AddVariable(Variable(Str));
-		dat.AddVariable(Variable(Agi));
-		dat.AddVariable(Variable(Wis));
-		dat.AddVariable(Variable(Def));
-
-		dat.AddGroup(Group(Effects));
-		dat.AddGroup(Group(TestVector));
-
 		return dat;
 	}
 
