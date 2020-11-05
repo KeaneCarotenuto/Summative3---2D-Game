@@ -59,7 +59,7 @@ int main() {
 	return 0;
 }
 
-void StartGame()
+int StartGame()
 {
 	srand(Globals::seed);
 
