@@ -286,13 +286,13 @@ void CreateWindows()
 	sf::RenderWindow* inventory = new sf::RenderWindow(sf::VideoMode(200, 500), "Inventory");
 	sf::RenderWindow* crafting = new sf::RenderWindow(sf::VideoMode(200, 200), "Crafting");
 	sf::RenderWindow* debugWindow = new sf::RenderWindow(sf::VideoMode(200, 200), "Debug");
-	sf::RenderWindow* menuWindow = new sf::RenderWindow(sf::VideoMode(200, 200), "Menu");
+	//sf::RenderWindow* menuWindow = new sf::RenderWindow(sf::VideoMode(200, 200), "Menu");
 
 	/*window->setVisible(false);
 	inventory->setVisible(false);
 	crafting->setVisible(false);
 	debugWindow->setVisible(false);*/
-	menuWindow->setVisible(false);
+	//menuWindow->setVisible(false);
 
 	inventory->setPosition(sf::Vector2i(window->getPosition().x - inventory->getSize().x, window->getPosition().y));
 	crafting->setPosition(sf::Vector2i(inventory->getPosition().x, inventory->getPosition().y + inventory->getSize().y));
@@ -306,7 +306,7 @@ void CreateWindows()
 		{ "PlayerInv",inventory },
 		{ "WorldInv",window },
 		{ "CraftingInv",crafting },
-		{ "DebugInv",menuWindow },
+		//{ "DebugInv",menuWindow },
 		{ "MenuInv",debugWindow }
 	};
 
