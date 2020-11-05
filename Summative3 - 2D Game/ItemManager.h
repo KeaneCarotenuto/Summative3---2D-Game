@@ -90,7 +90,10 @@ public:
 					{
 						datg.m_Groups.push_back(*dynamic_cast<Resource*>(item));
 					}
-					
+					if (dynamic_cast<Tool*>(item))
+					{
+						datg.m_Groups.push_back(*dynamic_cast<Tool*>(item));
+					}
 					
 				}
 			}
@@ -115,8 +118,8 @@ private:
 		{"Meat", &Consumables::Meat},
 		{"Berries", &Consumables::Berries},
 		{"Water", &Consumables::Water},
-		{"Axe", &Tool::newAxe},
-		{"Pickaxe", &Tool::newPickaxe}
+		{"Axe", &Tool::Axe},
+		{"Pickaxe", &Tool::Pickaxe}
 		
 	};
 };
