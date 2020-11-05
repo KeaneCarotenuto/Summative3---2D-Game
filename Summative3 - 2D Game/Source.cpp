@@ -35,7 +35,7 @@ void CreateEntities(CPlayer& player, ItemManager* itemMngr);
 
 void CreateWindows();
 
-void StartGame();
+int StartGame();
 
 void GameLoop(ItemManager* itemMngr, CPlayer& player);
 
@@ -117,6 +117,7 @@ int StartGame()
 	float spotlightX = 25, spotlightY = 25;
 
 	GameLoop(itemMngr, player);
+	return 0;
 }
 
 void GameLoop(ItemManager* itemMngr, CPlayer& player)
@@ -239,7 +240,7 @@ void GiveItem() {
 		break;
 
 	case 3:
-		buttonManager.m_itemManager->items.push_back(new Axe(playerInv, sf::Vector2f(10, 10), 100));
+		buttonManager.m_itemManager->items.push_back( Tool::Axe(playerInv, sf::Vector2f(10, 10)));
 		break;
 
 	default:
