@@ -2,7 +2,6 @@
 #pragma warning(disable : 6011) 
 
 
-
 ItemManager::ItemManager(CPlayer*& _player) :
 	Player(_player) ,Loadable("Items/", "Manager")
 {
@@ -100,7 +99,8 @@ void ItemManager::FixedUpdate()
 						if (currentlyDragging->itemName == "Meat") {
 							Player->Health += 30;
 							Player->Hunger -= 60;
-							AddToToDeleteItem(currentlyDragging);
+
+							RemoveOneItemFromStack(currentlyDragging);
 						}
 					}
 				}
