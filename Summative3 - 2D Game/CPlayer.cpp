@@ -6,6 +6,8 @@ CPlayer::CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col)
 	rect.setPosition(_pos);
 	rect.setSize(_size);
 	rect.setFillColor(_col);
+	Hunger = Data->FileData.GetDataByID("Hunger");
+	Health = Data->FileData.GetDataByID("Health");
 
 }
 
@@ -28,8 +30,8 @@ void CPlayer::FixedUpdate()
 
 	CWindowUtilities::ScreenCentre = rect.getPosition();
 	Hunger += 0.001;
-	Thirst += 0.01;
-	if (Hunger > 50 || Thirst > 50)
+	
+	if (Hunger > 50 )
 	{
 		Health -= 0.5;
 	}

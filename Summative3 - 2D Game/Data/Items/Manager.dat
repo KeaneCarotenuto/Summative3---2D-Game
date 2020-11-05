@@ -210,6 +210,34 @@
 				<Float:y:100.000000>
 			</Group>
 		</Group>
+		<Group:Stick>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:30.000000>
+				<Float:y:100.000000>
+			</Group>
+		</Group>
+		<Group:Stick>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:30.000000>
+				<Float:y:100.000000>
+			</Group>
+		</Group>
+		<Group:Stick>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:30.000000>
+				<Float:y:100.000000>
+			</Group>
+		</Group>
+		<Group:Stick>
+			<Bool:bIsEnabled:False>
+			<Group:initialPos>
+				<Float:x:30.000000>
+				<Float:y:100.000000>
+			</Group>
+		</Group>
 	</Group>
 	<Group:IronOre>
 		<Bool:bIsEnabled:True>
