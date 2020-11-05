@@ -99,6 +99,7 @@ void ItemManager::FixedUpdate()
 					if (currentlyDragging != nullptr) {
 						if (currentlyDragging->itemName == "Meat") {
 							Player->Health += 30;
+							Player->Hunger += 60;
 							AddToToDeleteItem(currentlyDragging);
 						}
 					}
