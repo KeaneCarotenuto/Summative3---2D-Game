@@ -116,7 +116,7 @@ void StartGame()
 	ItemManager* itemMngr = new ItemManager(player);
 	buttonManager.m_itemManager = itemMngr;
 
-	
+	itemMngr->SpawnMapItems();
 
 	CreateEntities(player, itemMngr);
 
@@ -570,6 +570,8 @@ void GenNewIsland(ItemManager* itemMngr)
 			}
 		}
 	}
+
+	itemMngr->SpawnMapItems();
 }
 
 CButtonManager::CButtonManager()
