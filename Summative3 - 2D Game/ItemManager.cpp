@@ -170,6 +170,10 @@ void ItemManager::FixedUpdate()
 	currentStep++;
 }
 
+void ItemManager::Update(float _fDeltaTime)
+{
+}
+
 void ItemManager::CheckEntities(sf::RenderWindow* worldInv)
 {
 	for (CEntity* _ent : entities) {
@@ -205,6 +209,8 @@ void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
 
 				if (currentlyDragging->itemName == "Axe" && WorldLayer::currentWorld->SpecialTilemap[x][y]->type == SpecialType::Tree) {
 					if (DamageSpecialTile(x, y, 20)) {
+						dynamic_cast<Tool*>(currentlyDragging)->Durability -= 5;
+
 						TrySpawnItem(new Lumber(LumberType::Log, worldInv, sprite.getPosition(), "Log"));
 
 						if (rand() % 2 == 0) {
@@ -215,6 +221,8 @@ void ItemManager::CheckSpecialTiles(sf::RenderWindow* worldInv)
 				}
 				else if (currentlyDragging->itemName == "Pickaxe" && WorldLayer::currentWorld->SpecialTilemap[x][y]->type == SpecialType::Boulder) {
 					if (DamageSpecialTile(x, y, 20)) {
+						dynamic_cast<Tool*>(currentlyDragging)->Durability -= 7;
+
 						TrySpawnItem(new Mineral(MineralType::Stone, worldInv, sprite.getPosition(), "Stone"));
 					}
 				}
@@ -278,6 +286,22 @@ void ItemManager::LateDelete()
 
 		_ent = nullptr;
 
+	}
+
+	for (CItem* _item : items) {
+		if (_item != nullptr) {
+			if (dynamic_cast<Tool*>(_item)) {
+				if (dynamic_cast<Tool*>(_item)->Durability <= 0) {
+
+					std::vector<CItem*>::iterator pos = std::find(items.begin(), items.end(), _item);
+					if (pos != items.end()) {
+						delete _item;
+						_item = nullptr;
+						items.erase(pos);
+					}
+				}
+			}
+		}
 	}
 
 
