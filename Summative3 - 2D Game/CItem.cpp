@@ -10,6 +10,7 @@ void CItem::FixedUpdate()
 	
 }
 
+//Renders and updates vars
 void CItem::Update(float _fDeltaTime)
 {
 	sf::RenderWindow* worldInv = nullptr;
