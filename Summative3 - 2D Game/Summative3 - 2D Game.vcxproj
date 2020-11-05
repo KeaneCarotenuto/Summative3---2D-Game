@@ -164,6 +164,7 @@
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SpecialTile.cpp" />
+    <ClCompile Include="Tool.cpp" />
     <ClCompile Include="WorldLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SpecialTile.h" />
     <ClInclude Include="Stackable.h" />
+    <ClInclude Include="Tool.h" />
     <ClInclude Include="WorldLayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
