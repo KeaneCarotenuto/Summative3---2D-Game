@@ -35,7 +35,7 @@ void CreateEntities(CPlayer& player, ItemManager* itemMngr);
 
 void CreateWindows();
 
-int StartGame();
+void StartGame();
 
 void GameLoop(ItemManager* itemMngr, CPlayer& player);
 
@@ -60,7 +60,7 @@ int main() {
 	return 0;
 }
 
-int StartGame()
+void StartGame()
 {
 	std::string line;
 	std::ifstream myfile("Data/seed.txt");
@@ -117,7 +117,6 @@ int StartGame()
 	float spotlightX = 25, spotlightY = 25;
 
 	GameLoop(itemMngr, player);
-	return 0;
 }
 
 void GameLoop(ItemManager* itemMngr, CPlayer& player)
