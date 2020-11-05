@@ -16,6 +16,11 @@
 #include "ItemManager.h"
 #include "Lumber.h"
 #include "Globals.h"
+#include "CButton.h"
+
+
+
+
 
 void GenNewIsland(ItemManager* itemMngr);
 
@@ -49,10 +54,12 @@ struct CButtonManager {
 int main() {
 	//StartGame();
 
+	
+
 	return 0;
 }
 
-int StartGame()
+void StartGame()
 {
 	srand(Globals::seed);
 
