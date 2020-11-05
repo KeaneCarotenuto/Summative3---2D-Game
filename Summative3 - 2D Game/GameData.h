@@ -52,11 +52,26 @@ public:
 		}
 		operator int()
 		{
-			return std::stoi(DataString);
+			try
+			{
+				return std::stoi(DataString);
+			}
+			catch (...)
+			{
+				return 0;
+			}
+			
 		}
 		operator float()
 		{
-			return std::stof(DataString);
+			try
+			{
+				return std::stof(DataString);
+			}
+			catch (...)
+			{
+				return 0;
+			}
 		}
 		operator std::string()
 		{
