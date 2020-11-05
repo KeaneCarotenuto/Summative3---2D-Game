@@ -4,7 +4,8 @@
 enum class ToolType
 {
 	Pickaxe,
-	Axe
+	Axe,
+	Sword
 };
 
 class Tool :
@@ -33,6 +34,9 @@ public:
 	static CItem* Pickaxe(sf::RenderWindow* _wind, GameData::DataGroup _datag) { return new Tool(_wind, _datag, ToolType::Pickaxe); }
 	static CItem* Axe(sf::RenderWindow* _wind, sf::Vector2f _pos) { return new Tool(ToolType::Axe, _wind, _pos, "Axe", 100); }
 	static CItem* Pickaxe(sf::RenderWindow* _wind, sf::Vector2f _pos) { return new Tool(ToolType::Pickaxe, _wind, _pos, "Pickaxe", 100 ); }
+	static CItem* Sword(sf::RenderWindow* _wind, GameData::DataGroup _datag) { return new Tool(_wind, _datag, ToolType::Sword); }
+	static CItem* Sword(sf::RenderWindow* _wind, sf::Vector2f _pos) { return new Tool(ToolType::Sword, _wind, _pos, "Sword", 100); }
+	
 };
 
 
