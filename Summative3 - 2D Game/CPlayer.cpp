@@ -8,6 +8,7 @@ CPlayer::CPlayer(sf::Vector2f _pos, sf::Vector2f _size, sf::Color _col)
 	rect.setFillColor(_col);
 	Hunger = Data->FileData.GetDataByID("Hunger");
 	Health = Data->FileData.GetDataByID("Health");
+	if (Health == 0) { Health = 100; }
 	Font.loadFromFile("Resources/Fonts/uni.ttf");
 	HealthText.setFont(Font);
 	HungerText.setFont(Font);
