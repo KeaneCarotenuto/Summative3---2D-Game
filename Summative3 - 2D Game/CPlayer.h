@@ -12,9 +12,12 @@ class CPlayer:
 {
 public:
 	sf::RectangleShape rect;
+	sf::Text HealthText;
+	sf::Text HungerText;
+	sf::Font Font;
 	float moveSpeed = 5;
 
-	int Health;
+	float Health;
 	float Hunger;
 	
 	operator GameData()
