@@ -49,8 +49,7 @@ void ItemManager::RemoveItem(CItem* _item)
 {
 	std::vector<CItem*>::iterator pos = std::find(items.begin(), items.end(), _item);
 	if (pos != items.end()) {
-		items.erase(pos);
-		delete _item;
+		AddToToDeleteItem(_item);
 	}
 }
 
@@ -272,6 +271,27 @@ bool ItemManager::AddToToDeleteEnt(CEntity* _ent)
 	}
 }
 
+bool ItemManager::AddToToDeleteItem(CItem* _item)
+{
+	std::vector<CItem*>::iterator pos = std::find(toDeleteItem.begin(), toDeleteItem.end(), _item);
+	if (pos != toDeleteItem.end()) {
+		return false;
+	}
+	else {
+
+
+		pos = std::find(items.begin(), items.end(), _item);
+		if (pos != items.end()) {
+			toDeleteItem.push_back(_item);
+			items.erase(pos);
+			return true;
+		}
+		else return false;
+
+
+	}
+}
+
 void ItemManager::LateDelete()
 {
 	for (SpecialTile* _spTile : toDeleteSpecial) {
@@ -288,6 +308,16 @@ void ItemManager::LateDelete()
 
 	}
 
+	for (CItem* _item : toDeleteItem) {
+		delete _item;
+
+		_item = nullptr;
+	}
+
+	toDeleteSpecial.clear();
+	toDeleteEnt.clear();
+	toDeleteItem.clear();
+
 	for (CItem* _item : items) {
 		if (_item != nullptr) {
 			if (dynamic_cast<Tool*>(_item)) {
@@ -303,10 +333,6 @@ void ItemManager::LateDelete()
 			}
 		}
 	}
-
-
-	toDeleteSpecial.clear();
-	toDeleteEnt.clear();
 }
 
 void ItemManager::TryCrafting()

@@ -1,2 +1,7 @@
-#DATA FILE
+#Manager
+#DATA  FILE
+<Group:PlayerInv>
+</Group>
+<Group:WorldInv>
+</Group>
 <ENDFILE>

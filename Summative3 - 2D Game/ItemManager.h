@@ -30,6 +30,7 @@ public:
 
 	std::vector<SpecialTile*> toDeleteSpecial;
 	std::vector<CEntity*> toDeleteEnt;
+	std::vector<CItem*> toDeleteItem;
 
 	sf::RenderWindow* currentMouseWindow = nullptr;
 
@@ -48,6 +49,8 @@ public:
 	bool DamageSpecialTile(int x, int y, int _damage);
 
 	bool AddToToDeleteEnt(CEntity* _ent);
+
+	bool AddToToDeleteItem(CItem* _item);
 
 	void LateDelete();
 
