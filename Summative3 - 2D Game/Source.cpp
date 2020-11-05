@@ -25,19 +25,23 @@
 
 void GenNewIsland(ItemManager* itemMngr);
 
-void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr);
+void CheckPlayerHitsEdge(CPlayer*& player, ItemManager* itemMngr);
 
 void CheckButtonsPressed();
 
-void Drawing(sf::View& view, CPlayer& player);
+void Drawing(sf::View& view, CPlayer*& player);
 
-void CreateEntities(CPlayer& player, ItemManager* itemMngr);
+void CreateEntities(CPlayer*& player, ItemManager* itemMngr);
+
+void SpawnFish(const sf::Vector2f& pos, CPlayer*& player, ItemManager* itemMngr);
+
+void SpawnBird(const sf::Vector2f& pos, CPlayer*& player, ItemManager* itemMngr);
 
 void CreateWindows();
 
 void StartGame();
 
-void GameLoop(ItemManager* itemMngr, CPlayer& player);
+void GameLoop(ItemManager* itemMngr, CPlayer*& player);
 
 struct CButtonManager {
 	std::vector<CButton*> buttons;
@@ -103,14 +107,16 @@ void StartGame()
 
 	WorldLayer::currentWorld = new WorldLayer(Globals::seed);
 
+	//Create Player
+	CPlayer* player = new CPlayer({ 0,0 }, { 20,20 }, sf::Color::Green);
+	player->rect.setPosition(WorldLayer::currentWorld->GetFirstSandTilePos());
+	buttonManager.player = player;
+
 	//Create itemmanager 
-	ItemManager* itemMngr = new ItemManager();
+	ItemManager* itemMngr = new ItemManager(player);
 	buttonManager.m_itemManager = itemMngr;
 
-	//Create Player
-	CPlayer player({ 0,0 }, { 20,20 }, sf::Color::Green);
-	player.rect.setPosition(WorldLayer::currentWorld->GetFirstSandTilePos());
-	buttonManager.player = &player;
+	
 
 	CreateEntities(player, itemMngr);
 
@@ -119,7 +125,7 @@ void StartGame()
 	GameLoop(itemMngr, player);
 }
 
-void GameLoop(ItemManager* itemMngr, CPlayer& player)
+void GameLoop(ItemManager* itemMngr, CPlayer*& player)
 {
 	sf::View view(sf::FloatRect(0.f, 0.f, 1000.0f, 1000.0f));
 
@@ -163,7 +169,7 @@ void GameLoop(ItemManager* itemMngr, CPlayer& player)
 					view.zoom(1 / 0.75f);
 				}
 
-				view.setSize(std::clamp(std::ceil(view.getSize().x / 100) * 100, 100.0f, 1500.0f), std::clamp(std::ceil(view.getSize().y / 100) * 100, 100.0f, 1500.0f));
+				view.setSize(std::clamp(std::ceil(view.getSize().x / 100) * 100, 100.0f, 150000.0f), std::clamp(std::ceil(view.getSize().y / 100) * 100, 100.0f, 150000.0f));
 				std::cout << view.getSize().x << std::endl;
 			}
 
@@ -177,7 +183,7 @@ void GameLoop(ItemManager* itemMngr, CPlayer& player)
 
 
 		/*world->resetLightMap();
-		sf::Vector2f temp = player.rect.getPosition();
+		sf::Vector2f temp = player->rect.getPosition();
 		world->addPointLight((int)(temp.x/20), (int)(temp.y / 20), 9);*/
 
 
@@ -185,6 +191,8 @@ void GameLoop(ItemManager* itemMngr, CPlayer& player)
 
 
 		CheckPlayerHitsEdge(player, itemMngr);
+
+		itemMngr->LateDelete();
 	}
 }
 
@@ -323,20 +331,43 @@ void CreateWindows()
 	buttonManager.buttons.push_back(new CButton(&HealPlayer, "Heal", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 70, sf::Color::Color(0, 150, 0), 5, debugWindow));
 }
 
-void CreateEntities(CPlayer& player, ItemManager* itemMngr)
+void CreateEntities(CPlayer*& player, ItemManager* itemMngr)
 {
-	CEntity* bird = new CEntity(EntityType::Bird, { 1000,1000 }, { 15,15 }, sf::Color::White);
-	bird->player = &player;
-	bird->itemManager = itemMngr;
-	itemMngr->entities.push_back(bird);
+	for (int i = 0; i < 20; i++) {
+		if (rand() % 5 == 0) {
+			SpawnBird(sf::Vector2f{(float)( rand() % WorldLayer::width * 20), (float)(rand() % WorldLayer::width * 20) }, player, itemMngr);
+		}
+	}
 
-	CEntity* fish = new CEntity(EntityType::Fish, { 100,100 }, { 15,15 }, sf::Color::Red);
-	fish->player = &player;
+	for (int i = 0; i < 20; i++) {
+		if (rand() % 5 == 0) {
+			bool onLeft = (rand() % 2 == 0);
+			bool onTop = (rand() % 2 == 0);
+
+			SpawnFish(sf::Vector2f{ (float)((onLeft ? 0 : WorldLayer::width * 20) + (onLeft ? rand() % 100 : -1 * rand() % 100)), (float)((onTop ? 0 : WorldLayer::height * 20) + (onTop ? rand() % 100 : -1 * rand() % 100)) }, player, itemMngr);
+		}
+	}
+
+	
+}
+
+void SpawnFish(const sf::Vector2f& pos, CPlayer*& player, ItemManager* itemMngr)
+{
+	CEntity* fish = new CEntity(EntityType::Fish, pos, { 15,15 }, sf::Color::Red);
+	fish->player = player;
 	fish->itemManager = itemMngr;
 	itemMngr->entities.push_back(fish);
 }
 
-void Drawing(sf::View& view, CPlayer& player)
+void SpawnBird(const sf::Vector2f& pos, CPlayer*& player, ItemManager* itemMngr)
+{
+	CEntity* bird = new CEntity(EntityType::Bird, pos, { 15,15 }, sf::Color::White);
+	bird->player = player;
+	bird->itemManager = itemMngr;
+	itemMngr->entities.push_back(bird);
+}
+
+void Drawing(sf::View& view, CPlayer*& player)
 {
 	sf::RenderWindow* worldInv = nullptr;
 	std::map < std::string, sf::RenderWindow*>::iterator worldInvIt = Globals::mapOfWindows.find("WorldInv");
@@ -386,7 +417,7 @@ void Drawing(sf::View& view, CPlayer& player)
 	
 
 	//Center View
-	view.setCenter(player.rect.getPosition() + sf::Vector2f(player.rect.getSize().x / 2, player.rect.getSize().y / 2));
+	view.setCenter(player->rect.getPosition() + sf::Vector2f(player->rect.getSize().x / 2, player->rect.getSize().y / 2));
 	worldInv->setView(view);
 	
 	//Draw Everything in Todraw List
@@ -412,36 +443,36 @@ void Drawing(sf::View& view, CPlayer& player)
 	CWindowUtilities::ToDrawList.clear(); 
 }
 
-void CheckPlayerHitsEdge(CPlayer& player, ItemManager* itemMngr)
+void CheckPlayerHitsEdge(CPlayer*& player, ItemManager* itemMngr)
 {
 	bool changedWorld = false;
-	if (player.rect.getPosition().x < 0) {
+	if (player->rect.getPosition().x < 0) {
 		Globals::seed -= 1;
-		player.rect.setPosition(10000 - 50, player.rect.getPosition().y);
+		player->rect.setPosition(10000 - 50, player->rect.getPosition().y);
 
 		GenNewIsland(itemMngr);
 		changedWorld = true;
 	}
 
-	if (player.rect.getPosition().x > 10000) {
+	if (player->rect.getPosition().x > 10000) {
 		Globals::seed += 1;
-		player.rect.setPosition(50, player.rect.getPosition().y);
+		player->rect.setPosition(50, player->rect.getPosition().y);
 
 		GenNewIsland(itemMngr);
 		changedWorld = true;
 	}
 
-	if (player.rect.getPosition().y < 0) {
+	if (player->rect.getPosition().y < 0) {
 		Globals::seed -= 10000;
-		player.rect.setPosition(player.rect.getPosition().x, 10000 - 50);
+		player->rect.setPosition(player->rect.getPosition().x, 10000 - 50);
 
 		GenNewIsland(itemMngr);
 		changedWorld = true;
 	}
 
-	if (player.rect.getPosition().y > 10000) {
+	if (player->rect.getPosition().y > 10000) {
 		Globals::seed += 10000;
-		player.rect.setPosition(player.rect.getPosition().x, 50);
+		player->rect.setPosition(player->rect.getPosition().x, 50);
 
 		GenNewIsland(itemMngr);
 		changedWorld = true;
