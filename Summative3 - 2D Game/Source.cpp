@@ -411,6 +411,14 @@ void GiveItem() {
 		buttonManager.m_itemManager->items.push_back(Tool::Sword(playerInv, sf::Vector2f(10, 10)));
 		break;
 
+	case 6:
+		buttonManager.m_itemManager->items.push_back(new Consumables(ConsumableType::Meat, playerInv, sf::Vector2f(10, 10), "Meat"));
+		break;
+
+	case 7:
+		buttonManager.m_itemManager->items.push_back(new Consumables(ConsumableType::Berries, playerInv, sf::Vector2f(10, 10), "Berries"));
+		break;
+
 	default:
 		break;
 	}
@@ -422,7 +430,7 @@ void GiveItem() {
 /// </summary>
 void NextItem() {
 	buttonManager.currentChoice++;
-	if (buttonManager.currentChoice > 5) buttonManager.currentChoice = 0;
+	if (buttonManager.currentChoice > 7) buttonManager.currentChoice = 0;
 
 	switch (buttonManager.currentChoice)
 	{
@@ -448,6 +456,14 @@ void NextItem() {
 
 	case 5:
 		buttonManager.buttons[0]->text->setString("Sword");
+		break;
+
+	case 6:
+		buttonManager.buttons[0]->text->setString("Meat");
+		break;
+
+	case 7:
+		buttonManager.buttons[0]->text->setString("Berries");
 		break;
 
 	default:
