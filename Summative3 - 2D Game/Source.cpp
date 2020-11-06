@@ -66,6 +66,8 @@ struct CButtonManager {
 	ItemManager* m_itemManager;
 	CPlayer* player;
 
+	sf::RenderWindow* menu;
+
 	bool frozenClick = false;
 	
 	int currentChoice = 0;
@@ -78,8 +80,59 @@ CButtonManager::CButtonManager()
 	if (!buttonFont.loadFromFile("Resources/Fonts/uni.ttf")) std::cout << "Failed to load uni Font\n";
 }
 
+void Quit() {
+	buttonManager.menu->close();
+	buttonManager.menu->setActive(false);
+	buttonManager.menu->setVisible(false);
+	buttonManager.menu->setSize({ 0,0 });
+
+
+	for (CButton* button : buttonManager.buttons) {
+		delete button;
+		button = nullptr;
+	}
+	buttonManager.buttons.clear();
+}
+
 int main() {
-	StartGame();
+	sf::RenderWindow* menu = new sf::RenderWindow(sf::VideoMode(200, 70), "2D Game");
+
+	buttonManager.menu = menu;
+
+	buttonManager.buttons.push_back(new CButton(&StartGame, "Start", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 0, sf::Color::Color(0, 150, 0), 5, menu));
+	buttonManager.buttons.push_back(new CButton(&Quit, "Quit", buttonManager.buttonFont, 25, sf::Color::White, sf::Text::Style::Bold, 0, 35, sf::Color::Color(0, 150, 0), 5, menu));
+
+	sf::Event newEvent;
+
+	//Check for closing and zooming
+	while (menu->isOpen())
+	{
+		while (menu->pollEvent(newEvent))
+		{
+			if (newEvent.type == sf::Event::Closed)
+			{
+				menu->close();
+				return 0;
+			}
+		}
+
+		menu->clear();
+
+		//Draw Buttons
+		for (CButton* button : buttonManager.buttons) {
+			button->targetWindow->draw(*button->rect);
+			button->text->setFont(buttonManager.buttonFont);
+			button->targetWindow->draw(*button->text);
+		}
+
+		menu->display();
+
+		CheckButtonsPressed();
+	}
+	
+
+
+	//StartGame();
 
 	return 0;
 }
@@ -89,6 +142,15 @@ int main() {
 /// </summary>
 void StartGame()
 {
+	//Close Menu
+	buttonManager.menu->close();
+
+	for (CButton* button : buttonManager.buttons) {
+		delete button;
+		button = nullptr;
+	}
+	buttonManager.buttons.clear();
+
 	//Load Seed
 	std::string line;
 	std::ifstream myfile("Data/seed.txt");
@@ -296,11 +358,13 @@ void CheckButtonsPressed()
 			//Loops through all buttons
 			for (CButton* _button : buttonManager.buttons)
 			{
-
-				//If click, do func
-				if (_button->rect->getGlobalBounds().contains((sf::Vector2f)sf::Mouse::getPosition(*_button->targetWindow))) {
-					if (_button->function != nullptr) _button->function();
+				if (_button != nullptr) {
+					//If click, do func
+					if (_button->rect->getGlobalBounds().contains((sf::Vector2f)sf::Mouse::getPosition(*_button->targetWindow))) {
+						if (_button->function != nullptr) _button->function();
+					}
 				}
+				
 			}
 		}
 		buttonManager.frozenClick = true;
