@@ -7,12 +7,17 @@ Loadable::Loadable(std::string Filepath, std::string _name)
 	Data = new GameData(FilePath, _name + ".dat");
 }
 
+/// <summary>
+/// Read from file and create Game Data
+/// </summary>
+/// <param name="Path"></param>
+/// <param name="Filename"></param>
 GameData::GameData(std::string Path, std::string Filename)
 {
 	
-	std::ifstream Reader;
-	Reader.open(Path+Filename);
-	if (Reader.fail())
+	std::ifstream Reader; //File reader
+	Reader.open(Path+Filename); //Open file
+	if (Reader.fail())//Create file if it doesnt exist
 	{
 		fs::create_directories(Path);
 		std::ofstream Writer(Path+Filename);
@@ -21,43 +26,48 @@ GameData::GameData(std::string Path, std::string Filename)
 		Reader.open(Path+Filename);
 	}
 	bool bReading = true;
+
+	//Args for Tags
 	std::string Arg1;
 	std::string Arg2;
 	std::string Arg3;
 	std::string Temp;
+
+	//Data structure control groups
 	std::stack<DataGroup*> Groups;
 	std::stack<DataGroup*> Parent;
 	DataGroup temp;
-	Parent.push(&FileData);
+
+	Parent.push(&FileData); //Push main parent group
 	std::cout << "Started Reading" << std::endl;
 	Groups.push(&FileData);
-	while (bReading)
+	while (bReading)//While reading
 	{
 		std::string line;
 		std::string tag;
-		std::getline(Reader, line);
-		if (line == ""||line[0] == '#')
+		std::getline(Reader, line); //Get a line from the file
+		if (line == ""||line[0] == '#') //Sip the line if its empty of starts with the comment character #
 		{
 			continue;
 		}
 
-		std::istringstream stream(line);
-		std::getline(stream, Temp, '<');
-		std::getline(stream, tag, '>');
-		std::istringstream tagstream(tag);
+		std::istringstream stream(line); //Make a stringstream from the line
+		std::getline(stream, Temp, '<'); //Dump all characters before the first argument
+		std::getline(stream, tag, '>'); //Get all text within the angle brackets to parse
+		std::istringstream tagstream(tag); //create stringstream from tag
 
-		if (tag == "ENDFILE")
+		if (tag == "ENDFILE")//If the argument is ENDFILE
 		{
-			bReading = false;
+			bReading = false; //Stop reading
 			std::cout << "File end reached" << std::endl;
 			break;
 		}
 		
 		
-		std::getline(tagstream, Arg1, ':');
+		std::getline(tagstream, Arg1, ':'); //Get the 1st Arg
 		
 		
-		if (Arg1 == "Group")
+		if (Arg1 == "Group") //Check if the first arg is a group declaration
 		{
 			
 			std::getline(tagstream, Arg2);
@@ -67,7 +77,7 @@ GameData::GameData(std::string Path, std::string Filename)
 			Groups.push(new DataGroup(Arg2));
 			
 		}
-		else if (tag == "/Group")
+		else if (tag == "/Group") //Check if the first arg is a group termination
 		{
 			
 			std::cout << "Closed Group: " << Groups.top()->GroupID << std::endl;
@@ -76,7 +86,7 @@ GameData::GameData(std::string Path, std::string Filename)
 			Parent.pop();
 			
 		}
-		else
+		else //Treat the args as Member args
 		{
 			Data datamember;
 			datamember.DataType = Arg1;
@@ -93,22 +103,30 @@ GameData::GameData(std::string Path, std::string Filename)
 
 	}
 	std::cout << "Stopped Reading" << std::endl;
-	Reader.close();
+	Reader.close(); //Close file
 }
 
+/// <summary>
+/// Serialises a member
+/// </summary>
+/// <param name="dat"></param>
 void GameData::AddVariable(Data dat)
 {
-	FileData.m_Data.push_back(dat);
+	FileData.m_Data.push_back(dat); //Add member
 }
 
+/// <summary>
+/// Serialises a group
+/// </summary>
+/// <param name="datg"></param>
 void GameData::AddGroup(DataGroup datg)
 {
-	FileData.m_Groups.push_back(datg);
+	FileData.m_Groups.push_back(datg); //Add group
 }
 
 
 
-void GameData::Save(std::string Path, std::string Filename)
+void GameData::Save(std::string Path, std::string Filename) //Saves serialised data to a file
 {
 	std::ofstream Writer;
 	Writer.open(Path + Filename + ".dat");
@@ -118,7 +136,7 @@ void GameData::Save(std::string Path, std::string Filename)
 	Writer.close();
 }
 
-std::string GameData::SaveGroup(DataGroup datg, int depth)
+std::string GameData::SaveGroup(DataGroup datg, int depth) //Generates string from group
 {
 	std::string result = "";
 	std::string indent = "";
@@ -141,16 +159,27 @@ std::string GameData::SaveGroup(DataGroup datg, int depth)
 
 
 
-
+/// <summary>
+/// Constructor
+/// </summary>
 GameData::DataGroup::DataGroup()
 {
 }
 
+/// <summary>
+/// Constructor
+/// </summary>
+/// <param name="_name"></param>
 GameData::DataGroup::DataGroup(std::string _name)
 {
 	GroupID = _name;
 }
 
+/// <summary>
+/// Gets data by its ID
+/// </summary>
+/// <param name="_ID"></param>
+/// <returns></returns>
 GameData::Data GameData::DataGroup::GetDataByID(std::string _ID)
 {
 	for (GameData::Data dat : m_Data)
@@ -163,6 +192,11 @@ GameData::Data GameData::DataGroup::GetDataByID(std::string _ID)
 	return Data();
 }
 
+/// <summary>
+/// Gets group by its ID
+/// </summary>
+/// <param name="_ID"></param>
+/// <returns></returns>
 GameData::DataGroup GameData::DataGroup::GetGroupByID(std::string _ID)
 {
 	for (GameData::DataGroup datg : m_Groups)
@@ -175,10 +209,17 @@ GameData::DataGroup GameData::DataGroup::GetGroupByID(std::string _ID)
 	return DataGroup();
 }
 
+/// <summary>
+/// Constructor
+/// </summary>
 GameData::Data::Data()
 {
 }
 
+/// <summary>
+/// Copy constructor
+/// </summary>
+/// <param name="copy"></param>
 GameData::Data::Data(const Data& copy)
 {
 	DataType = copy.DataType;
