@@ -358,7 +358,7 @@ void CheckButtonsPressed()
 			//Loops through all buttons
 			for (CButton* _button : buttonManager.buttons)
 			{
-				if (_button != nullptr) {
+				if (_button != nullptr && _button->targetWindow != nullptr) {
 					//If click, do func
 					if (_button->rect->getGlobalBounds().contains((sf::Vector2f)sf::Mouse::getPosition(*_button->targetWindow))) {
 						if (_button->function != nullptr) _button->function();
