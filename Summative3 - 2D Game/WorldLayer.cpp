@@ -29,7 +29,7 @@ WallTile::WallTile(int _Xpos, int _Ypos)
 
 WorldLayer::~WorldLayer()
 {
-	for (int y = 0; y < height; y++)
+	for (int y = 0; y < height; y++) //Free up all memory used
 	{
 		for (int x = 0; x < width; x++)
 		{
@@ -76,9 +76,13 @@ void WorldLayer::populateTileMaps()
 		for (int j = 0; j < height; j++)
 		{
 			
-			val = Noise.GetValue((double)(i)*(2.0f/ width), (double)(j) * (2.0f / height), 0.5);
-			val -= 0.006 * std::abs(std::sqrt((i - 250) * (i - 250) + (j - 250) * (j - 250)));
-			if (val < -0.9)
+			val = Noise.GetValue((double)(i)*(2.0f/ width), (double)(j) * (2.0f / height), 0.5); //Generate noise
+			val -= 0.006 * std::abs(std::sqrt((i - 250) * (i - 250) + (j - 250) * (j - 250))); //Lower value of edges of map for island effect
+
+			/// <summary>
+			/// Set terrain type based on height
+			/// </summary>
+			if (val < -0.9) 
 			{
 				map[i][j] = 0;
 			}
@@ -111,17 +115,17 @@ void WorldLayer::populateTileMaps()
 		}
 	}
 	
-	//TESTING CODE
+	
 	for (size_t i = 0; i < width; i++)
 	{
 		for (size_t j = 0; j < height; j++)
 		{
-			TerrainTilemap[i][j] = new TerrainTile((TerrainType)(map[i][j]), i, j);
+			TerrainTilemap[i][j] = new TerrainTile((TerrainType)(map[i][j]), i, j); //Generate tile based on provided type from perlin noise
 			
 			SpecialTilemap[i][j] = nullptr;
 			if (map[i][j] == 6)
 			{
-				WallTilemap[i][j] = new WallTile(WallType::ROCK, i, j);
+				WallTilemap[i][j] = new WallTile(WallType::ROCK, i, j); //Generate rock walls in ultra high terrain 
 			}
 			else
 			{
@@ -132,7 +136,7 @@ void WorldLayer::populateTileMaps()
 			{
 
 			}
-			else if (map[i][j] == 5 && rand() % 50 == 0) 
+			else if (map[i][j] == 5 && rand() % 50 == 0)  //Generate boulders and trees to populate the map
 			{
 				SpecialTilemap[i][j] = new Boulder(sf::Vector2f(i * 20, j * 20));
 			}
@@ -154,7 +158,7 @@ void WorldLayer::populateTileMaps()
 void WorldLayer::renderTileMaps()
 {
 
-	float xIndex = floorf(CWindowUtilities::ScreenCentre.x / 20);
+	float xIndex = floorf(CWindowUtilities::ScreenCentre.x / 20); //Get centre tile
 	float yIndex = floorf(CWindowUtilities::ScreenCentre.y / 20);
 
 	float xIndexMin = xIndex - 50;
@@ -188,7 +192,7 @@ void WorldLayer::renderTileMaps()
 
 	for (int i = xIndexMin; i < xIndexMax; ++i)
 	{
-		for (int j = yIndexMin; j < yIndexMax; ++j)
+		for (int j = yIndexMin; j < yIndexMax; ++j) //Generated textured Quads
 		{
 			sf::Vertex* quad = &m_TerrainVertices[(i + j * 500) * 4];
 
@@ -220,7 +224,7 @@ void WorldLayer::renderTileMaps()
 	}
 }
 
-sf::Vector2f WorldLayer::GetFirstSandTilePos()
+sf::Vector2f WorldLayer::GetFirstSandTilePos() //Get coords of first sand tile found so the player doesnt spawn in water
 {
 	for (int i = 0; i < width; i++)
 	{
@@ -257,7 +261,7 @@ bool WorldLayer::CheckCollision(sf::Vector2f _nextPos)
 	
 }
 
-void WorldLayer::resetLightMap()
+void WorldLayer::resetLightMap()  //Resets the light map
 {
 	int iGlobalLightLevel;
 	if (Altitude > 0)
@@ -284,8 +288,11 @@ void WorldLayer::resetLightMap()
 	}
 }
 
-void WorldLayer::renderLightMap()
+void WorldLayer::renderLightMap() //Renders the light map (WARNING: HIGH RESOURCE USAGE)
 {
+
+
+	/*DEPRECATED: DO NOT USE*/
 	//Circular Light
 	/*if (false) {
 		int tempMap[50][50];
@@ -422,7 +429,7 @@ void WorldLayer::renderLightMap()
 	}
 }
 
-void WorldLayer::addPointLight(int _X, int _Y, int _intensity)
+void WorldLayer::addPointLight(int _X, int _Y, int _intensity) //DISABLED (WARNING: HIGH RESOURCE USAGE DO NOT USE LIGHTING SYSTEM)
 {
 	if (WallTilemap[_X][_Y] == nullptr)
 	{
@@ -434,7 +441,7 @@ void WorldLayer::addPointLight(int _X, int _Y, int _intensity)
 	}
 }
 
-void WorldLayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void WorldLayer::draw(sf::RenderTarget& target, sf::RenderStates states) const //Draw all Quads
 {
 
 	
@@ -453,7 +460,7 @@ void WorldLayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 }
 
-void WorldLayer::DrawSpecial()
+void WorldLayer::DrawSpecial() //Draw Rocks and trees
 {
 	for (int i = 0; i < width; i++)
 	{

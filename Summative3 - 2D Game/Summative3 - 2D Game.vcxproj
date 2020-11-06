@@ -156,7 +156,6 @@
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="EasySFML.cpp" />
     <ClCompile Include="GameData.cpp" />
-    <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="Lumber.cpp" />
@@ -177,7 +176,6 @@
     <ClInclude Include="CItem.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="EasySFML.h" />
-    <ClInclude Include="GameEntity.h" />
     <ClInclude Include="Lumber.h" />
     <ClInclude Include="ItemAttributes.h" />
     <ClInclude Include="Mineral.h" />
