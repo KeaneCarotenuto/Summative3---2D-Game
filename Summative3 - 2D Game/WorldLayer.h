@@ -1,3 +1,24 @@
+////////////////////////////////////////////////////////////
+//========================================================//
+// Bachelor of Software Engineering                       //
+// Media Design School                                    //
+// Auckland                                               //
+// New Zealand                                            //
+//--------------------------------------------------------//
+// (c) 2020 Media Design School                           //
+//========================================================//
+//   File Name  :	World Layer
+//					Manages the world and special tiles
+//--------------------------------------------------------//
+//					BSE20021
+//    Author    :	Nerys Thamm
+//					Keane Carotenuto
+//--------------------------------------------------------//
+//    E-mails   :	NerysThamm@gmail.com
+//					Keane Carotenuto@gmail.com
+//========================================================//
+////////////////////////////////////////////////////////////
+
 #pragma once
 #include "SpecialTile.h"
 #include "EasySFML.h"

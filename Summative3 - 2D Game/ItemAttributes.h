@@ -4,9 +4,6 @@ namespace ItemAttributes
 {
 	class Material
 	{
-	
-		
-	
 		struct Properties
 		{
 			float Durability;

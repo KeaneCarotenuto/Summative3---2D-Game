@@ -1,3 +1,24 @@
+////////////////////////////////////////////////////////////
+//========================================================//
+// Bachelor of Software Engineering                       //
+// Media Design School                                    //
+// Auckland                                               //
+// New Zealand                                            //
+//--------------------------------------------------------//
+// (c) 2020 Media Design School                           //
+//========================================================//
+//   File Name  :	ItemManager
+//					Manages items, crafting, entities, and some other stuff
+//--------------------------------------------------------//
+//					BSE20021
+//    Author    :	Nerys Thamm
+//					Keane Carotenuto
+//--------------------------------------------------------//
+//    E-mails   :	NerysThamm@gmail.com
+//					Keane Carotenuto@gmail.com
+//========================================================//
+////////////////////////////////////////////////////////////
+
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>

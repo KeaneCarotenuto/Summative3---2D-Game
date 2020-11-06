@@ -27,28 +27,40 @@ CPlayer::~CPlayer()
 
 void CPlayer::Update(float _fDeltaTime)
 {
+	//draw text
 	HealthText.setPosition(rect.getPosition());
 	HungerText.setPosition(rect.getPosition());
 	CWindowUtilities::Draw(&rect);
 	CWindowUtilities::Draw(&HealthText);
 	CWindowUtilities::Draw(&HungerText);
 
+	//Updates death stuff
 	if (!dead && Health <= 0) {
 		dead = true;
 		deathStep = currentStep;
 	}
 
+	//Caps values
+
 	if (Health > 100) {
 		Health = 100;
+	}
+
+	if (Hunger < 0) {
+		Hunger = 0;
+	}
+
+	if (Hunger > 100) {
+		Hunger = 100;
 	}
 }
 
 void CPlayer::FixedUpdate()
 {
+	//Movement
 	Movement();
 
-	//ScreenWrap();
-
+	//sets center to player
 	CWindowUtilities::ScreenCentre = rect.getPosition();
 	
 	Hunger += 0.01;
@@ -57,13 +69,20 @@ void CPlayer::FixedUpdate()
 	{
 		Health -= 0.03;
 	}
+
+	//Updates text
 	HealthText.setString("Health:" + std::to_string((int)Health));
 	HungerText.setString("Hunger:" + std::to_string((int)Hunger));
 	HealthText.setFillColor((Health < 20 ? sf::Color::Red : sf::Color::White));
 	HungerText.setFillColor((Hunger > 50 ? sf::Color::Red : sf::Color::White));
+
+	//Counts steps
 	currentStep++;
 }
 
+/// <summary>
+/// Manages input and movement
+/// </summary>
 void CPlayer::Movement()
 {
 	if (currentStep % 1 == 0) {
@@ -106,6 +125,10 @@ void CPlayer::Movement()
 	}
 }
 
+
+/// <summary>
+/// Unused - Was used to walk around map
+/// </summary>
 void CPlayer::ScreenWrap()
 {
 	//Horizontal

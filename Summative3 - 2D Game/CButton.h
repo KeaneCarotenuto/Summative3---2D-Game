@@ -1,4 +1,23 @@
-//A Class for clickable buttons
+////////////////////////////////////////////////////////////
+//========================================================//
+// Bachelor of Software Engineering                       //
+// Media Design School                                    //
+// Auckland                                               //
+// New Zealand                                            //
+//--------------------------------------------------------//
+// (c) 2020 Media Design School                           //
+//========================================================//
+//   File Name  :	Button
+//					A Clickable button with a function
+//--------------------------------------------------------//
+//					BSE20021
+//    Author    :	Nerys Thamm
+//					Keane Carotenuto
+//--------------------------------------------------------//
+//    E-mails   :	NerysThamm@gmail.com
+//					Keane Carotenuto@gmail.com
+//========================================================//
+////////////////////////////////////////////////////////////
 
 #pragma once
 #include <SFML/Graphics.hpp>
